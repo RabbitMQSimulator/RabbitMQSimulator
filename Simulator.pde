@@ -21,7 +21,6 @@ void setup() {
   smooth();
   addNode("exchange");
   addNode("queue");
-  // addEdge("exchange", "queue");
 }
 
 void addEdgeFromLabels(String fromLabel, String toLabel) {
@@ -81,6 +80,11 @@ void draw() {
   if (tmpEdge != null) {
     tmpEdge.draw();
   }
+  
+  if (currTransfer != null) {
+    currTransfer.update();
+    currTransfer.draw();
+  }
 }
 
 Node from;
@@ -123,6 +127,8 @@ void mouseDragged() {
   }
 }
 
+Transfer currTransfer;
+
 void mouseReleased() {
   // if we have a an edge below us we need to make the connection
   to = nodeBelowMouse();
@@ -131,7 +137,10 @@ void mouseReleased() {
     addEdge(from, to);
   }
   
-  println(edgeCount);
+  if (edgeCount > 0) {
+    // get firts edge and animate circle along it.
+    currTransfer = new Transfer(edges[0]);
+  }
   
   from = null;
   tmpEdge = null;
