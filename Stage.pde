@@ -1,8 +1,7 @@
 class Stage {
-  ArrayList transfers;
+  ArrayList transfers = new ArrayList();
   
   Stage() {
-    transfers =  new ArrayList();
   }
   
   void addTransfer(Transfer transfer) {
