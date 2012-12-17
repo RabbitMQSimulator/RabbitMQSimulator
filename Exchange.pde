@@ -1,8 +1,8 @@
 class Exchange extends Node implements IConnectable {
   int type = EXCHANGE; 
   
-  Exchange(String name) {
-    super(name, #FF8408);
+  Exchange(String name, float x, float y) {
+    super(name, colors[EXCHANGE], x, y);
   }
 
   int getType() {

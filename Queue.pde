@@ -1,8 +1,8 @@
 class Queue extends Node implements IConnectable {
   int type = QUEUE;
   
-  Queue(String name) {
-    super(name, #0816FF);
+  Queue(String name, float x, float y) {
+    super(name, colors[QUEUE], x, y);
   }
   
   int getType() {

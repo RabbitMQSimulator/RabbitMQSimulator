@@ -1,8 +1,8 @@
 class Consumer extends Node implements IConnectable {
   int type = CONSUMER;
   
-  Consumer(String name) {
-    super(name, #E1FF08);
+  Consumer(String name, float x, float y) {
+    super(name, colors[CONSUMER], x, y);
   }
   
   int getType() {

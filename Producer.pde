@@ -1,8 +1,8 @@
 class Producer extends Node implements IConnectable {
   int type = PRODUCER; 
   
-  Producer(String name) {
-    super(name, #3F4031);
+  Producer(String name, float x, float y) {
+    super(name, colors[PRODUCER], x, y);
   }
   
   int getType() {

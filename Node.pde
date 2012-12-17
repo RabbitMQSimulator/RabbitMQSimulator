@@ -9,16 +9,34 @@ abstract class Node {
   Node[] incoming = new Node[100];
   Node[] outgoing = new Node[100];
   
-  Node(String label, color nodeColor) {
+  Node(String label, color nodeColor, float x, float y) {
      this.label = label;
      this.nodeColor = nodeColor;
-     x = random(width);
-     y = random(height);
+     this.x = x;
+     this.y = y;
   }
   
   abstract int getType();
   abstract boolean accepts(Node n);
   abstract boolean canStartConnection();
+  
+  String getLabel() {
+    return label;
+  }
+  
+  float getX() {
+    return x;
+  }
+  
+  float getY() {
+    return y;
+  }
+  
+  boolean isBelowMouse() {
+    float closest = 20;
+    float d = dist(mouseX, mouseY, this.x, this.y);
+    return d < closest;
+  }
   
   void connectWith(Node n, int endpoint) {
     if (endpoint == DESTINATION) {
