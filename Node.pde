@@ -1,5 +1,6 @@
 abstract class Node {
   float x, y;
+  int radii = 10;
   String label;
   color nodeColor;
   
@@ -68,9 +69,13 @@ abstract class Node {
     println("transferDelivered");
   }
   
+  void padding() {
+    return this.radii * 2 + 2;
+  }
+  
   void mouseDragged() {
-    x = constrain(mouseX, 0, width);
-    y = constrain(mouseY, 0, height);
+    x = constrain(mouseX, TOOLBARWIDTH + padding(), width - padding());
+    y = constrain(mouseY, 0 + padding(), height - padding());
   }
   
   void draw() {
@@ -79,7 +84,7 @@ abstract class Node {
     strokeWeight(0.5);
     
     //draw node
-    ellipse(x, y, 20, 20);
+    ellipse(x, y, this.radii * 2, this.radii * 2);
     
     // draw node text
     fill (0);

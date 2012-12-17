@@ -37,12 +37,14 @@ static final int CONSUMER = 3;
 static final int SOURCE = 0;
 static final int DESTINATION = 1;
 
+static final int TOOLBARWIDTH = 60;
+
 color[] colors = new color[20];
 
 PFont font;
 
 void setup() {
-  size(600, 600);
+  size(800, 600);
   font = createFont("SansSerif", 10);
   textFont(font);
   smooth();
@@ -162,6 +164,10 @@ Node addNodeByType(int type, String label, float x, float y) {
 void draw() {
   background(255);
   
+  stroke(0);
+  strokeWeight(2);
+  line(TOOLBARWIDTH, 0, TOOLBARWIDTH, height);
+  
   for (int i = 0; i < toolbarItemsCount ; i++) {
     toolbarItems[i].draw();
   }
@@ -239,6 +245,7 @@ boolean validNodes(Node from, Node to, TmpEdge tmpEdge) {
 }
 
 void mouseReleased() {
+  // we are dragging a new node from the toolbar
   if (tmpNode != null) {
     addNodeByType(tmpNode.getType(), tmpNode.getLabel(), tmpNode.getX(), tmpNode.getY());
   }
