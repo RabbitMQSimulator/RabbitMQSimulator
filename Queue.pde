@@ -12,4 +12,8 @@ class Queue extends Node implements IConnectable {
   boolean accepts(Node n) {
     return n.getType() == CONSUMER;
   }
+  
+  boolean canStartConnection() {
+    return true;
+  }
 }

@@ -20,4 +20,8 @@ class Exchange extends Node implements IConnectable {
         return false;
     }
   }
+  
+  boolean canStartConnection() {
+    return true;
+  }
 }

@@ -12,4 +12,8 @@ class Producer extends Node implements IConnectable {
   boolean accepts(Node n) {
     return false;
   }
+  
+  boolean canStartConnection() {
+    return outgoingCount < 1;
+  }
 }

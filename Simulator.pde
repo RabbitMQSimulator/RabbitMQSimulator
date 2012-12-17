@@ -33,6 +33,9 @@ static final int QUEUE = 1;
 static final int PRODUCER = 2;
 static final int CONSUMER = 3;
 
+static final int SOURCE = 0;
+static final int DESTINATION = 1;
+
 PFont font;
 
 void setup() {
@@ -164,7 +167,7 @@ Node nodeBelowMouse() {
 void mousePressed() {
   from = nodeBelowMouse();
   
-  if (from != null && altKeyPressed()) {
+  if (from != null && altKeyPressed() && from.canStartConnection()) {
     println("adding tmpEdge"); 
     tmpEdge = new TmpEdge(from, mouseX, mouseY, edgeColor);
   }
@@ -195,19 +198,9 @@ void mouseReleased() {
   if (validNodes(from, to, tmpEdge) && to.accepts(from)) {
     println("after valid nodes");
     if (addEdge(from, to)) {
+      from.connectWith(to, DESTINATION);
+      to.connectWith(from, SOURCE);
       println("addEdge true");
-      switch(from.getType()) {
-        case EXCHANGE:
-        case QUEUE:
-        case PRODUCER:
-          from.addOutgoing(to);
-          to.addIncoming(from);
-          break;
-        default:
-          from.addIncoming(to);
-          to.addOutgoing(from);
-          break;
-      }
     } else {
        println("addEdge false");
     }

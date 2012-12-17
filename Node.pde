@@ -18,6 +18,15 @@ abstract class Node {
   
   abstract int getType();
   abstract boolean accepts(Node n);
+  abstract boolean canStartConnection();
+  
+  void connectWith(Node n, int endpoint) {
+    if (endpoint == DESTINATION) {
+      this.addOutgoing(n);
+    } else {
+      this.addIncoming(n);
+    }
+  }
   
   void addIncoming(Node n) {
     if (incomingCount == incoming.length) {
