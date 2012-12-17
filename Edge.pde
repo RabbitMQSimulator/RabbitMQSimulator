@@ -11,7 +11,7 @@ class Edge {
   
   void draw() {
     stroke(this.edgeColor);
-    strokeWeight(0.35);
+    strokeWeight(1);
     line(from.x, from.y, to.x, to.y);
   }
 }

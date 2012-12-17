@@ -1,3 +1,19 @@
+class Stage {
+  Transfer currentTransfer = null;
+  Stage() {
+  }
+  
+  Transfer getCurrentTransfer() {
+    return currentTransfer;
+  }
+  
+  void setCurrentTransfer(Transfer transfer) {
+    currentTransfer = transfer;
+  }
+}
+
+Stage stage = new Stage();
+
 int nodeCount;
 Node[] nodes = new Node[100];
 HashMap nodeTable = new HashMap();
@@ -12,15 +28,25 @@ static final color selectColor = #FF3030;
 static final color fixedColor  = #FF8080;
 static final color edgeColor   = #000000;
 
+static final int EXCHANGE = 0;
+static final int QUEUE = 1;
+static final int PRODUCER = 2;
+static final int CONSUMER = 3;
+
 PFont font;
 
 void setup() {
+  println(this);
   size(600, 600);
   font = createFont("SansSerif", 10);
   textFont(font);
   smooth();
-  addNode("exchange");
-  addNode("queue");
+  // addNode("exchange");
+  // addNode("queue");
+  addNodeByType(EXCHANGE, "my-exchange");
+  addNodeByType(QUEUE, "my-queue");
+  addNodeByType(PRODUCER, "my-producer");
+  addNodeByType(CONSUMER, "my-consumer");
 }
 
 void addEdgeFromLabels(String fromLabel, String toLabel) {
@@ -30,13 +56,11 @@ void addEdgeFromLabels(String fromLabel, String toLabel) {
   addEdge(from, to);
 }
 
-void addEdge(Node from, Node to) {
-  println("addEdge");
+boolean addEdge(Node from, Node to) {
   for (int i = 0; i < edgeCount; i++) {
     if ((edges[i].from == from && edges[i].to == to) ||
-        (edges[i].to == from && edges[i].to == from)) {
-      println("connection exists");
-      return;
+        (edges[i].to == from && edges[i].from == to)) {
+      return false;
     }
   }
   
@@ -45,6 +69,7 @@ void addEdge(Node from, Node to) {
     edges = (Edge[]) expand(edges);
   }
   edges[edgeCount++] = e;
+  return true;
 }
 
 Node findNode(String label) {
@@ -53,6 +78,36 @@ Node findNode(String label) {
   if (n == null) {
     return addNode(label);
   }
+  return n;
+}
+
+Node addNodeByType(int type, String label) {
+  Node n;
+  switch (type) {
+    case EXCHANGE:
+      n = new Exchange(label);
+      break;
+    case QUEUE:
+      n = new Queue(label);
+      break;
+    case PRODUCER:
+      n = new Producer(label);
+      break;
+    case CONSUMER:
+      n = new Consumer(label);
+      break;
+    default:
+      println("Unknown type");
+      n = new Node(label, nodeColor);
+      break;
+  }
+    
+  if (nodeCount == nodes.length) {
+    nodes = (Node[]) expand(nodes);
+  }
+  
+  nodeTable.put(label, n);
+  nodes[nodeCount++] = n;
   return n;
 }
 
@@ -81,9 +136,9 @@ void draw() {
     tmpEdge.draw();
   }
   
-  if (currTransfer != null) {
-    currTransfer.update();
-    currTransfer.draw();
+  if (stage.getCurrentTransfer() != null) {
+    stage.getCurrentTransfer().update();
+    stage.getCurrentTransfer().draw();
   }
 }
 
@@ -127,19 +182,33 @@ void mouseDragged() {
   }
 }
 
-Transfer currTransfer;
+boolean validNodes() {
+  return to != null && from != null && tmpEdge != null && to != from; 
+}
 
 void mouseReleased() {
   // if we have a an edge below us we need to make the connection
   to = nodeBelowMouse();
   
-  if (to != null && from != null && tmpEdge != null && to != from) {
-    addEdge(from, to);
+  if (validNodes()) {
+    println("after valid nodes");
+    if (addEdge(from, to)) {
+      println("addEdge true");
+      if (from.getType() == "exchange" || from.getType() == "queue" || from.getType() == "producer") {
+        from.addOutgoing(to);
+        to.addIncoming(from);
+      } else {
+        from.addIncoming(to);
+        to.addOutgoing(from);
+      }
+    } else {
+       println("addEdge false");
+    }
   }
   
   if (edgeCount > 0) {
     // get firts edge and animate circle along it.
-    currTransfer = new Transfer(edges[0]);
+    // stage.setCurrentTransfer(new Transfer(stage, edges[0]));
   }
   
   from = null;

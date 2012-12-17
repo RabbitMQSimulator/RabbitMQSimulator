@@ -1,12 +1,16 @@
 class Transfer {
+  Stage stage;
+  
   float x, y;
   float distX, distY;
   float step = 0.01;
   float pct = 0.0;
   Edge along;
   
-  Transfer(Edge along) {
+  Transfer(Stage stage, Edge along) {
+    this.stage = stage;
     this.along = along;
+    
     x = along.from.x;
     y = along.from.y;
     this.updateDist();    
@@ -29,5 +33,11 @@ class Transfer {
     pct += step;
     fill(255);
     ellipse(x, y, 5, 5);
+    
+    if (pct >= 1.0) {
+      stage.setCurrentTransfer(null);
+      along.from.trasnferArrived(this);
+      along.to.trasnferArrived(this);
+    }
   }
 }
