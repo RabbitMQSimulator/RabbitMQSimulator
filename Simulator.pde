@@ -1,17 +1,3 @@
-class Stage {
-  Transfer currentTransfer = null;
-  Stage() {
-  }
-  
-  Transfer getCurrentTransfer() {
-    return currentTransfer;
-  }
-  
-  void setCurrentTransfer(Transfer transfer) {
-    currentTransfer = transfer;
-  }
-}
-
 Stage stage = new Stage();
 
 int nodeCount;
@@ -54,14 +40,6 @@ void setup() {
   colors[PRODUCER] = #3F4031;
   colors[CONSUMER] = #E1FF08;
   
-  
-  // addNode("exchange");
-  // addNode("queue");
-  // addNodeByType(EXCHANGE, "my-exchange", random(width), random(height));
-  // addNodeByType(QUEUE, "my-queue", random(width), random(height));
-  // addNodeByType(PRODUCER, "my-producer", random(width), random(height));
-  // addNodeByType(CONSUMER, "my-consumer", random(width), random(height));
-  
   buildToolbar();
 }
 
@@ -80,14 +58,6 @@ ToolbarItem addToolbarItem(int type, String label, float x, float y) {
   toolbarItems[toolbarItemsCount++] = t;
   return t;
 }
-  
-
-//void addEdgeFromLabels(String fromLabel, String toLabel) {
-//  Node from = findNode(fromLabel);
-//  Node to = findNode(toLabel);
-//  
-//  addEdge(from, to);
-//}
 
 boolean addEdge(Node from, Node to) {
   for (int i = 0; i < edgeCount; i++) {
@@ -104,15 +74,6 @@ boolean addEdge(Node from, Node to) {
   edges[edgeCount++] = e;
   return true;
 }
-
-//Node findNode(String label) {
-//  label = label.toLowerCase();
-//  Node n = (Node) nodeTable.get(label);
-//  if (n == null) {
-//    return addNode(label);
-//  }
-//  return n;
-//}
 
 Node newNodeByType(int type, String label, float x, float y) {
   Node n = null;
@@ -150,16 +111,6 @@ Node addNodeByType(int type, String label, float x, float y) {
   
   return n;
 }
-
-//Node addNode(String label) {
-//  Node n = new Node(label, nodeColor);  
-//  if (nodeCount == nodes.length) {
-//    nodes = (Node[]) expand(nodes);
-//  }
-//  nodeTable.put(label, n);
-//  nodes[nodeCount++] = n;  
-//  return n;
-//}
 
 void draw() {
   background(255);
