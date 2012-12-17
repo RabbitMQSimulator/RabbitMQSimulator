@@ -3,29 +3,41 @@ class Transfer {
   
   float x, y;
   float distX, distY;
-  float step = 0.01;
+  float step = 0.02;
   float pct = 0.0;
-  Edge along;
+  boolean finished = false;
+  String data;
+  Node from, to;
   
-  Transfer(Stage stage, Edge along) {
+  Transfer(Stage stage, Node from, Node to, String data) {
     this.stage = stage;
-    this.along = along;
+    this.from = from;
+    this.to = to;
+    this.data = data;
     
-    x = along.from.x;
-    y = along.from.y;
+    x = from.x;
+    y = from.y;
     this.updateDist();    
   }
   
+  String getData() {
+    return data;
+  }
+  
+  boolean isFinished() {
+    return finished;
+  }
+  
   void updateDist() {
-    distX = along.to.x - along.from.x;
-    distY = along.to.y - along.from.y;
+    distX = to.x - from.x;
+    distY = to.y - from.y;
   }
   
   void update() {
     updateDist();
     if (pct < 1.0) {
-      this.x = along.from.x + (pct * distX);
-      this.y = along.from.y + (pct * distY);
+      this.x = from.x + (pct * distX);
+      this.y = from.y + (pct * distY);
     }
   }
   
@@ -33,11 +45,13 @@ class Transfer {
     pct += step;
     fill(255);
     ellipse(x, y, 5, 5);
-    
+  }
+  
+  void afterDraw() {
     if (pct >= 1.0) {
-      stage.setCurrentTransfer(null);
-      along.from.trasnferArrived(this);
-      along.to.trasnferArrived(this);
+      finished = true;
+      from.transferDelivered(this);
+      to.trasnferArrived(this);
     }
   }
 }

@@ -142,22 +142,25 @@ void draw() {
     tmpNode.draw();
   }
   
-  if (stage.getCurrentTransfer() != null) {
-    stage.getCurrentTransfer().update();
-    stage.getCurrentTransfer().draw();
-  }
+  stage.draw();
 }
 
 Node nodeBelowMouse() {
-
   for (int i = 0; i < nodeCount; i++) {
     Node n = nodes[i];    
     if (n.isBelowMouse()) {
       return n;
     }
   }
-  
   return null;
+}
+
+void mouseClicked() {
+  Producer target = (Producer) nodeBelowMouse();
+  
+  if (target != null && target.getType() == PRODUCER) {
+    target.publishMessage("data");
+  }
 }
 
 void mousePressed() {
@@ -215,11 +218,6 @@ void mouseReleased() {
     } else {
        println("addEdge false");
     }
-  }
-  
-  if (edgeCount > 0) {
-    // get firts edge and animate circle along it.
-    // stage.setCurrentTransfer(new Transfer(stage, edges[0]));
   }
   
   from = null;

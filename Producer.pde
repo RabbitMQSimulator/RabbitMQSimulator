@@ -16,4 +16,8 @@ class Producer extends Node implements IConnectable {
   boolean canStartConnection() {
     return outgoingCount < 1;
   }
+  
+  void publishMessage(String data) {
+    stage.addTransfer(new Transfer(stage, this, outgoing[0], data));
+  }
 }

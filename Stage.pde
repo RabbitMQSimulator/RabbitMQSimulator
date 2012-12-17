@@ -1,13 +1,24 @@
 class Stage {
-  Transfer currentTransfer = null;
+  ArrayList transfers;
+  
   Stage() {
+    transfers =  new ArrayList();
   }
   
-  Transfer getCurrentTransfer() {
-    return currentTransfer;
+  void addTransfer(Transfer transfer) {
+    transfers.add(transfer);
   }
   
-  void setCurrentTransfer(Transfer transfer) {
-    currentTransfer = transfer;
+  void draw() {
+    for (int i = transfers.size()-1; i >= 0; i--) {
+      Transfer transfer = (Transfer) transfers.get(i);
+      transfer.update();
+      transfer.draw();
+      transfer.afterDraw();
+
+      if (transfer.isFinished()) {
+          transfers.remove(i);
+      }      
+    }
   }
 }
