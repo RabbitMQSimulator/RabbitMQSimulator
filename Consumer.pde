@@ -1,7 +1,15 @@
-class Consumer extends Node {
-  String type = "consumer";
+class Consumer extends Node implements IConnectable {
+  int type = CONSUMER;
   
   Consumer(String name) {
     super(name, #E1FF08);
+  }
+  
+  int getType() {
+    return type;
+  }
+  
+  boolean accepts(Node n) {
+    return false;
   }
 }

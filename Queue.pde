@@ -1,8 +1,15 @@
-class Queue extends Node {
-  String type = "queue";
-  color nodeColor = #0816FF;
+class Queue extends Node implements IConnectable {
+  int type = QUEUE;
   
   Queue(String name) {
     super(name, #0816FF);
+  }
+  
+  int getType() {
+    return type;
+  }
+  
+  boolean accepts(Node n) {
+    return n.getType() == CONSUMER;
   }
 }

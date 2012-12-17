@@ -49,12 +49,12 @@ void setup() {
   addNodeByType(CONSUMER, "my-consumer");
 }
 
-void addEdgeFromLabels(String fromLabel, String toLabel) {
-  Node from = findNode(fromLabel);
-  Node to = findNode(toLabel);
-  
-  addEdge(from, to);
-}
+//void addEdgeFromLabels(String fromLabel, String toLabel) {
+//  Node from = findNode(fromLabel);
+//  Node to = findNode(toLabel);
+//  
+//  addEdge(from, to);
+//}
 
 boolean addEdge(Node from, Node to) {
   for (int i = 0; i < edgeCount; i++) {
@@ -72,17 +72,17 @@ boolean addEdge(Node from, Node to) {
   return true;
 }
 
-Node findNode(String label) {
-  label = label.toLowerCase();
-  Node n = (Node) nodeTable.get(label);
-  if (n == null) {
-    return addNode(label);
-  }
-  return n;
-}
+//Node findNode(String label) {
+//  label = label.toLowerCase();
+//  Node n = (Node) nodeTable.get(label);
+//  if (n == null) {
+//    return addNode(label);
+//  }
+//  return n;
+//}
 
 Node addNodeByType(int type, String label) {
-  Node n;
+  Node n = null;
   switch (type) {
     case EXCHANGE:
       n = new Exchange(label);
@@ -98,28 +98,30 @@ Node addNodeByType(int type, String label) {
       break;
     default:
       println("Unknown type");
-      n = new Node(label, nodeColor);
       break;
   }
-    
-  if (nodeCount == nodes.length) {
-    nodes = (Node[]) expand(nodes);
+  
+  if (n != null) {
+      if (nodeCount == nodes.length) {
+        nodes = (Node[]) expand(nodes);
+      }
+  
+      nodeTable.put(label, n);
+      nodes[nodeCount++] = n;
   }
   
-  nodeTable.put(label, n);
-  nodes[nodeCount++] = n;
   return n;
 }
 
-Node addNode(String label) {
-  Node n = new Node(label, nodeColor);  
-  if (nodeCount == nodes.length) {
-    nodes = (Node[]) expand(nodes);
-  }
-  nodeTable.put(label, n);
-  nodes[nodeCount++] = n;  
-  return n;
-}
+//Node addNode(String label) {
+//  Node n = new Node(label, nodeColor);  
+//  if (nodeCount == nodes.length) {
+//    nodes = (Node[]) expand(nodes);
+//  }
+//  nodeTable.put(label, n);
+//  nodes[nodeCount++] = n;  
+//  return n;
+//}
 
 void draw() {
   background(255);
@@ -182,7 +184,7 @@ void mouseDragged() {
   }
 }
 
-boolean validNodes() {
+boolean validNodes(Node from, Node to, TmpEdge tmpEdge) {
   return to != null && from != null && tmpEdge != null && to != from; 
 }
 
@@ -190,16 +192,21 @@ void mouseReleased() {
   // if we have a an edge below us we need to make the connection
   to = nodeBelowMouse();
   
-  if (validNodes()) {
+  if (validNodes(from, to, tmpEdge) && to.accepts(from)) {
     println("after valid nodes");
     if (addEdge(from, to)) {
       println("addEdge true");
-      if (from.getType() == "exchange" || from.getType() == "queue" || from.getType() == "producer") {
-        from.addOutgoing(to);
-        to.addIncoming(from);
-      } else {
-        from.addIncoming(to);
-        to.addOutgoing(from);
+      switch(from.getType()) {
+        case EXCHANGE:
+        case QUEUE:
+        case PRODUCER:
+          from.addOutgoing(to);
+          to.addIncoming(from);
+          break;
+        default:
+          from.addIncoming(to);
+          to.addOutgoing(from);
+          break;
       }
     } else {
        println("addEdge false");

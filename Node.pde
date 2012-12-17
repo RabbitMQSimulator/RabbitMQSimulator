@@ -1,12 +1,13 @@
-class Node {
+abstract class Node {
   float x, y;
   String label;
   color nodeColor;
-  String type = "";
-  Node[] incoming = new Node[100];
-  Node[] outgoing = new Node[100];  
+  
+  // List Nodes connected to this Node
   int incomingCount = 0;
   int outgoingCount = 0;
+  Node[] incoming = new Node[100];
+  Node[] outgoing = new Node[100];
   
   Node(String label, color nodeColor) {
      this.label = label;
@@ -15,9 +16,8 @@ class Node {
      y = random(height);
   }
   
-  String getType() {
-    return type;
-  }
+  abstract int getType();
+  abstract boolean accepts(Node n);
   
   void addIncoming(Node n) {
     if (incomingCount == incoming.length) {
