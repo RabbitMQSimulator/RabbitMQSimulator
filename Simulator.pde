@@ -7,8 +7,11 @@ HashMap nodeTable = new HashMap();
 int edgeCount;
 Edge[] edges = new Edge[500];
 
+// use to track interactions between objects
 TmpEdge tmpEdge;
 Node tmpNode;
+Node from;
+Node to;
 
 static final color nodeColor   = #F0C070;
 static final color selectColor = #FF3030;
@@ -144,9 +147,6 @@ void draw() {
     stage.getCurrentTransfer().draw();
   }
 }
-
-Node from;
-Node to;
 
 Node nodeBelowMouse() {
 

@@ -69,7 +69,7 @@ abstract class Node {
     println("transferDelivered");
   }
   
-  void padding() {
+  int padding() {
     return this.radii * 2 + 2;
   }
   
