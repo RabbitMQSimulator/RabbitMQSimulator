@@ -2,6 +2,7 @@ class Transfer {
   Stage stage;
   
   float x, y;
+  int radii = 5;
   float distX, distY;
   float step = 0.02;
   float pct = 0.0;
@@ -44,7 +45,7 @@ class Transfer {
   void draw() {
     pct += step;
     fill(255);
-    ellipse(x, y, 5, 5);
+    ellipse(x, y, radii*2, radii*2);
   }
   
   void afterDraw() {
