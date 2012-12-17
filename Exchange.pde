@@ -26,9 +26,10 @@ class Exchange extends Node implements IConnectable {
   }
   
   void trasnferArrived(Transfer transfer) {
-    for (int i = 0 ; i < incomingCount ; i++) {
-      if (incoming[i].getType() != PRODUCER) {
-        stage.addTransfer(new Transfer(stage, this, incoming[i], transfer.getData()));
+    for (int i = incoming.size()-1; i >= 0; i--) {
+      Node n = (Node) incoming.get(i);
+      if (n.getType() != PRODUCER) {
+        stage.addTransfer(new Transfer(stage, this, n, transfer.getData()));
       }
     }
   }

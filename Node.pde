@@ -4,11 +4,8 @@ abstract class Node {
   String label;
   color nodeColor;
   
-  // List Nodes connected to this Node
-  int incomingCount = 0;
-  int outgoingCount = 0;
-  Node[] incoming = new Node[100];
-  Node[] outgoing = new Node[100];
+  ArrayList incoming = new ArrayList(); // nodes that connected to this node
+  ArrayList outgoing = new ArrayList(); // nodes this node connected to
   
   Node(String label, color nodeColor, float x, float y) {
      this.label = label;
@@ -48,17 +45,11 @@ abstract class Node {
   }
   
   void addIncoming(Node n) {
-    if (incomingCount == incoming.length) {
-      incoming = (Node[]) expand(incoming);
-    }
-    incoming[incomingCount++] = n;
+    incoming.add(n);
   }
   
   void addOutgoing(Node n) {
-    if (outgoingCount == outgoing.length) {
-      outgoing = (Node[]) expand(outgoing);
-    }
-    outgoing[outgoingCount++] = n;
+    outgoing.add(n);
   }
   
   void trasnferArrived(Transfer transfer) {

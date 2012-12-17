@@ -25,6 +25,14 @@ class Transfer {
     return data;
   }
   
+  Node getFrom() {
+    return from;
+  }
+  
+  Node getTo() {
+    return to;
+  }
+  
   boolean isFinished() {
     return finished;
   }

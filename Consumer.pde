@@ -14,7 +14,6 @@ class Consumer extends Node implements IConnectable {
   }
   
   boolean canStartConnection() {
-    println(outgoingCount);
-    return outgoingCount < 1;
+    return outgoing.size() < 1;
   }
 }

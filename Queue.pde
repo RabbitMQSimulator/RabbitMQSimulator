@@ -1,6 +1,6 @@
 class Queue extends Node implements IConnectable {
   int type = QUEUE;
-  int depth = 0;
+  ArrayList messages = new ArrayList();  
   
   Queue(String name, float x, float y) {
     super(name, colors[QUEUE], x, y);
@@ -18,15 +18,37 @@ class Queue extends Node implements IConnectable {
     return true;
   }
   
+  void connectWith(Node n, int endpoint) {
+    super.connectWith(n, endpoint);
+    maybeDeliverMessage();
+  }
+  
   void trasnferArrived(Transfer transfer) {
-    depth++;
-    for (int i = 0 ; i < incomingCount ; i++) {
-        stage.addTransfer(new Transfer(stage, this, incoming[i], transfer.getData()));
-    }
+    enqueue(transfer);
+    maybeDeliverMessage();
   }
   
   void transferDelivered(Transfer transfer) {
-    depth--;
+    incoming.add(transfer.getTo());
+    maybeDeliverMessage();
+  }
+  
+  void enqueue(Transfer transfer) {
+    messages.add(transfer);
+  }
+  
+  Transfer dequeue() {
+    return (Transfer) messages.remove(0);
+  }
+  
+  void maybeDeliverMessage() {
+    if (messages.size() > 0) {
+      if (incoming.size() > 0) {
+        Node consumer = (Node) incoming.remove(0);
+        Transfer transfer = dequeue();
+        stage.addTransfer(new Transfer(stage, this, consumer, transfer.getData()));
+      }
+    }
   }
   
   void draw() {
@@ -35,6 +57,6 @@ class Queue extends Node implements IConnectable {
     // draw queue depth text
     fill (0);
     textAlign(CENTER, CENTER);
-    text(str(depth), x + radii + 5, y - radii - 5);
+    text(str(messages.size()), x + radii + 5, y - radii - 5);
   }
 }
