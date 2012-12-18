@@ -10,7 +10,6 @@ class Exchange extends Node implements IConnectable {
   }
 
   boolean accepts(Node n) {
-    println(n.getType());
     switch(n.getType()) {
       case EXCHANGE:
       case QUEUE:
