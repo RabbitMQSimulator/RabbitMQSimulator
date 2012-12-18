@@ -35,6 +35,12 @@ color[] colors = new color[20];
 
 PFont font;
 
+void bindJavascript(JavaScript js) {
+  javascript = js;
+}
+
+JavaScript javascript;
+
 void setup() {
   Processing.logger = console;
   

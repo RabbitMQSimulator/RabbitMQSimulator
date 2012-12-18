@@ -27,6 +27,19 @@ function getProcessing() {
     return Processing.getInstanceById("Simulator");
 }
 
+var bound = false;
+
+function bindJavascript() {
+    var pjs = getProcessing();
+    if(pjs!=null) {
+        pjs.bindJavascript(this);
+        bound = true;
+    }
+
+    if(!bound) setTimeout(bindJavascript, 250);
+}
+
+bindJavascript();
 
 jQuery(document).ready(function() {
     
