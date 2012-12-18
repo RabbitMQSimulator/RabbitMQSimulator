@@ -21,4 +21,8 @@ class Producer extends Node implements IConnectable {
     Node n = (Node) outgoing.get(0);
     stage.addTransfer(new Transfer(stage, this, n, data));
   }
+  
+  void mouseClicked() {
+    this.publishMessage("data");
+  }
 }

@@ -16,4 +16,8 @@ class Consumer extends Node implements IConnectable {
   boolean canStartConnection() {
     return outgoing.size() < 1;
   }
+  
+  void mouseClicked() {
+    println("Consumer Clicked");
+  }
 }

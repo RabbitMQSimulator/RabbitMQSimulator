@@ -59,4 +59,12 @@ class Queue extends Node implements IConnectable {
     textAlign(CENTER, CENTER);
     text(str(messages.size()), x + radii + 5, y - radii - 5);
   }
+  
+  void mouseClicked() {
+    println("Queue Clicked");
+    reset_form("#queue_form");
+    jQuery("#queue_id").val(this.label);
+    jQuery("#queue_name").val(this.label);
+    enable_form("#queue_form");
+  }
 }

@@ -32,4 +32,8 @@ class Exchange extends Node implements IConnectable {
       }
     }
   }
+  
+  void mouseClicked() {
+    println("Exchange Clicked");
+  }
 }
