@@ -1,6 +1,6 @@
 class Producer extends Node implements IConnectable {
   int type = PRODUCER;
-  String msg = null;
+  Message msg = null;
   
   Producer(String name, float x, float y) {
     super(name, colors[PRODUCER], x, y);
@@ -21,7 +21,7 @@ class Producer extends Node implements IConnectable {
   void publishMessage(String payload, String routingKey) {
     if (outgoing.size() > 0) {
       Node n = (Node) outgoing.get(0);
-      Message msg = new Message(payload, routingKey);
+      msg = new Message(payload, routingKey);
       stage.addTransfer(new Transfer(stage, this, n, msg));
     }
   }
@@ -29,6 +29,10 @@ class Producer extends Node implements IConnectable {
   void mouseClicked() {
     reset_form("#new_message_form");
     jQuery("#new_message_producer_id").val(this.label);
+    if (msg != null) {
+      jQuery("#new_message_producer_payload").val(msg.payload);
+      jQuery("#new_message_producer_routing_key").val(msg.routingKey);
+    }
     enable_form("#new_message_form");
   }
 }
