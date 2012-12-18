@@ -51,6 +51,12 @@ class Queue extends Node implements IConnectable {
     }
   }
   
+  void changeName(String name) {
+    println("queue changeName" + name);
+    this.label = name;
+    println(this.label);
+  }
+  
   void draw() {
     super.draw();
     
