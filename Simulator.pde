@@ -36,6 +36,8 @@ color[] colors = new color[20];
 PFont font;
 
 void setup() {
+  Processing.logger = console;
+  
   size(780, 410);
   font = createFont("SansSerif", 10);
   textFont(font);
