@@ -175,10 +175,10 @@ Node nodeBelowMouse() {
 }
 
 void mouseClicked() {
-  Producer target = (Producer) nodeBelowMouse();
+  Node target = nodeBelowMouse();
   
-  if (target != null && target.getType() == PRODUCER) {
-    target.publishMessage("data");
+  if (target != null) {
+    target.mouseClicked();
   }
 }
 
