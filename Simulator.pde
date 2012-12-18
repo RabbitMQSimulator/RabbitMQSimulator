@@ -208,7 +208,14 @@ boolean validNodes(Node from, Node to, TmpEdge tmpEdge) {
 void mouseReleased() {
   // we are dragging a new node from the toolbar
   if (tmpNode != null) {
-    addNodeByType(tmpNode.getType(), tmpNode.getLabel(), tmpNode.getX(), tmpNode.getY());
+    switch(tmpNode.getType()) {
+      case QUEUE:
+      case EXCHANGE:
+        addNodeByType(tmpNode.getType(), randomQueueName(), tmpNode.getX(), tmpNode.getY());
+        break;
+      default:
+        addNodeByType(tmpNode.getType(), tmpNode.getLabel(), tmpNode.getX(), tmpNode.getY());
+    }
   }
   
   
