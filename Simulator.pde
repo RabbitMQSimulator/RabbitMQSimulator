@@ -124,6 +124,14 @@ Node findNode(String label) {
   return nodeTable.get(label);
 }
 
+void changeNodeName(String oldName, String name) {
+  println("changeNodeName called");
+  Node n = findNode(oldName);
+  n.changeName(name);
+  nodeTable.remove(oldName);
+  nodeTable.put(name, n);
+}
+
 void draw() {
   background(255);
   
