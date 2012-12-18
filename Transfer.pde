@@ -7,10 +7,10 @@ class Transfer {
   float step = 0.02;
   float pct = 0.0;
   boolean finished = false;
-  String data;
+  Message data;
   Node from, to;
   
-  Transfer(Stage stage, Node from, Node to, String data) {
+  Transfer(Stage stage, Node from, Node to, Message data) {
     this.stage = stage;
     this.from = from;
     this.to = to;
@@ -21,7 +21,7 @@ class Transfer {
     this.updateDist();    
   }
   
-  String getData() {
+  Message getData() {
     return data;
   }
   

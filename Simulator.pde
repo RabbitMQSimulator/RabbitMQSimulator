@@ -138,6 +138,11 @@ void changeNodeName(String oldName, String name) {
   nodeTable.put(name, n);
 }
 
+void publishMessage(String uuid, String payload, String routingKey) {
+  Producer n = (Producer) findNode(uuid);
+  n.publishMessage(payload, routingKey);
+}
+
 void draw() {
   background(255);
   
@@ -226,14 +231,7 @@ boolean validNodes(Node from, Node to, TmpEdge tmpEdge) {
 void mouseReleased() {
   // we are dragging a new node from the toolbar
   if (tmpNode != null) {
-    switch(tmpNode.getType()) {
-      case QUEUE:
-      case EXCHANGE:
-        addNodeByType(tmpNode.getType(), randomQueueName(), tmpNode.getX(), tmpNode.getY());
-        break;
-      default:
-        addNodeByType(tmpNode.getType(), tmpNode.getLabel(), tmpNode.getX(), tmpNode.getY());
-    }
+    addNodeByType(tmpNode.getType(), randomQueueName(), tmpNode.getX(), tmpNode.getY());
   }
   
   

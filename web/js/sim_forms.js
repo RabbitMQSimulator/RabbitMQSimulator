@@ -19,10 +19,11 @@ function init_form(id, submit_callback) {
 
 function handle_new_message_form() {
     console.log('handle_new_message_form');
-    var el_uuid = jQuery('#new_message_producer_id').val();
-    elements[el_uuid].publish_message(jQuery('#new_message_producer_payload').val(),
-                              jQuery('#new_message_producer_routing_key').val());
-
+    var uuid = jQuery('#new_message_producer_id').val();
+    var payload = jQuery('#new_message_producer_payload').val();
+    var routing_key = jQuery('#new_message_producer_routing_key').val();
+    var pjs = getProcessing();
+    pjs.publishMessage(uuid, payload, routing_key);
     return false;
 }
 
