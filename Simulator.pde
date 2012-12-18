@@ -13,6 +13,9 @@ Node tmpNode;
 Node from;
 Node to;
 
+static final int WIDTH = 780;
+static final int HEIGHT = 410;
+
 static final color nodeColor   = #F0C070;
 static final color selectColor = #FF3030;
 static final color fixedColor  = #FF8080;
@@ -33,7 +36,7 @@ color[] colors = new color[20];
 PFont font;
 
 void setup() {
-  size(800, 600);
+  size(780, 410);
   font = createFont("SansSerif", 10);
   textFont(font);
   smooth();
@@ -120,6 +123,8 @@ void draw() {
   
   stroke(0);
   strokeWeight(2);
+  noFill();
+  rect(0, 0, WIDTH, HEIGHT);
   line(TOOLBARWIDTH, 0, TOOLBARWIDTH, height);
   
   for (int i = 0; i < toolbarItemsCount ; i++) {
