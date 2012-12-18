@@ -120,6 +120,10 @@ Node addNodeByType(int type, String label, float x, float y) {
   return n;
 }
 
+Node findNode(String label) {
+  return nodeTable.get(label);
+}
+
 void draw() {
   background(255);
   
