@@ -36,6 +36,10 @@ abstract class Node {
     return d < closest;
   }
   
+  /** 
+    endpoint DESTINATION | SOURCE specifies the role of the
+    Node n.  
+  */
   void connectWith(Node n, int endpoint) {
     if (endpoint == DESTINATION) {
       this.addOutgoing(n);
