@@ -6,4 +6,12 @@ class Message {
     this.payload = payload;
     this.routingKey = routingKey;
   }
+  
+  String getPayload() {
+    return payload;
+  }
+  
+  String getRoutingKey() {
+    return routingKey;
+  }
 }
