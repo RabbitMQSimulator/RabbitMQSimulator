@@ -215,10 +215,17 @@ void mouseClicked() {
   for (int i = 0 ; i < edgeCount ; i++) {
     println("anon exchange: " + str(edges[i].connectedToAnonExchange()));
     
-    if (edges[i].labelClicked() && !edges[i].connectedToAnonExchange()) {
+    if (edges[i].labelClicked()) {
       println("binding clicked");
       jQuery("#binding_id").val(i);
-      enable_form("#bindings_form"); 
+      jQuery("#binding_key").val(edges[i].getBindingKey());
+      
+      if (edges[i].connectedToAnonExchange()) {
+        disable_form("#bindings_form");
+      } else {
+        enable_form("#bindings_form");
+      }
+       
       break;
     }
   }
