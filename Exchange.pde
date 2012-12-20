@@ -31,15 +31,31 @@ class Exchange extends Node implements IConnectable {
     
     if (endpoint == SOURCE && (n.getType() == QUEUE || n.getType() == EXCHANGE)) {
       String defaultRoutingKey = "";
-      
-      HashMap boundNodes = (HashMap) bindings.get("");
-      if (boundNodes == null) {
-        println("boundNodes was null");
-        boundNodes = new HashMap();
-      }
-      boundNodes.put(n.getLabel(), n);
-      bindings.put("", boundNodes);
+      addBinding(n, defaultRoutingKey);
     }
+  }
+  
+  void addBinding(Node n, String bindingKey) {
+    HashMap boundNodes = (HashMap) bindings.get(bindingKey);
+    if (boundNodes == null) {
+      println("boundNodes was null");
+      boundNodes = new HashMap();
+    }
+    boundNodes.put(n.getLabel(), n);
+    bindings.put(bindingKey, boundNodes);
+  }
+  
+  boolean updateBinding(Node n, String oldBk, String newBk) {
+    if (oldBk != newBk) {
+      // remove binding   
+      HashMap bd = bindings.get(oldBk);
+      bd.remove(n.getLabel());
+      
+      addBinding(n, newBk);
+      return true;
+    }
+    
+    return false;
   }
   
   void trasnferArrived(Transfer transfer) {
@@ -56,6 +72,17 @@ class Exchange extends Node implements IConnectable {
       }
     }
   }
+  
+  /*
+  fanout routing:
+  
+      for (int i = incoming.size()-1; i >= 0; i--) {
+        Node n = (Node) incoming.get(i);
+        if (n.getType() != PRODUCER) {
+          stage.addTransfer(new Transfer(stage, this, n, transfer.getData()));
+        }
+      }
+  */
   
   void mouseClicked() {
     println("Exchange Clicked");

@@ -30,10 +30,9 @@ function handle_new_message_form() {
 function handle_binding_form() {
     console.log('handle_binding_form');
     var binding_id = jQuery('#binding_id').val();
-    var parts = binding_id.split('_');
-    var uuid = parts[0];
-    var line_id = parts[1];
-    elements[uuid].update_binding_key(line_id, jQuery('#binding_key').val());        
+    var bk = jQuery.trim(jQuery('#binding_key').val());
+    var pjs = getProcessing();
+    pjs.updateBindingKey(binding_id, bk);        
     return false;
 }
 

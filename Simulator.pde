@@ -25,9 +25,12 @@ static final int EXCHANGE = 0;
 static final int QUEUE = 1;
 static final int PRODUCER = 2;
 static final int CONSUMER = 3;
+static final int ANON_EXCHANGE = 4;
 
 static final int SOURCE = 0;
 static final int DESTINATION = 1;
+
+static final String DEFAULT_BINDING_KEY = "binding key";
 
 static final int TOOLBARWIDTH = 60;
 
@@ -143,6 +146,11 @@ void publishMessage(String uuid, String payload, String routingKey) {
   n.publishMessage(payload, routingKey);
 }
 
+void updateBindingKey(int i, String bk) {
+  Edge e = edges[i];
+  e.updateBindingKey(bk);
+}
+
 void draw() {
   background(255);
   
@@ -191,13 +199,24 @@ void mouseClicked() {
   if (target != null) {
     target.mouseClicked();
   }
+  
+  for (int i = 0 ; i < edgeCount ; i++) {
+    println("anon exchange: " + str(edges[i].connectedToAnonExchange()));
+    
+    if (edges[i].labelClicked() && !edges[i].connectedToAnonExchange()) {
+      println("binding clicked");
+      jQuery("#binding_id").val(i);
+      enable_form("#bindings_form"); 
+      break;
+    }
+  }
 }
 
 void mousePressed() {
   from = nodeBelowMouse();
   
   if (from != null && altKeyPressed() && from.canStartConnection()) {
-    println("adding tmpEdge"); 
+    println("adding tmpEdge");
     tmpEdge = new TmpEdge(from, mouseX, mouseY, edgeColor);
   }
 }
