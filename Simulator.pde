@@ -151,6 +151,18 @@ void updateBindingKey(int i, String bk) {
   e.updateBindingKey(bk);
 }
 
+void removeBinding(int i) {
+  Edge e = edges[i];
+  e.remove();
+  if (i == 0) {
+    edges = new Edge[500];
+  } else {
+    arrayCopy(edges, i+1, edges, i, edges.length - (i+1));
+    edges = shorten(edges);
+  }
+  edgeCount--;
+}
+
 void draw() {
   background(255);
   

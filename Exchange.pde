@@ -46,16 +46,19 @@ class Exchange extends Node implements IConnectable {
   }
   
   boolean updateBinding(Node n, String oldBk, String newBk) {
-    if (oldBk != newBk) {
-      // remove binding   
-      HashMap bd = bindings.get(oldBk);
-      bd.remove(n.getLabel());
+    if (oldBk != newBk) {   
+      removeBinding(n, oldBk);
       
       addBinding(n, newBk);
       return true;
     }
     
     return false;
+  }
+  
+  void removeBinding(Node n, String bk) {
+    HashMap bd = bindings.get(bk);
+    bd.remove(n.getLabel());
   }
   
   void trasnferArrived(Transfer transfer) {
