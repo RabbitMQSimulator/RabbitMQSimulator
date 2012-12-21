@@ -39,7 +39,7 @@ function handle_binding_form() {
 function handle_queue_form() {
     console.log('handle_queue_form');
     var uuid = jQuery('#queue_id').val();
-    var name = jQuery('#queue_name').val();
+    var name = jQuery.trim(jQuery('#queue_name').val());
     var pjs = getProcessing();
     pjs.changeNodeName(uuid, name);
     jQuery('#queue_id').val(name);

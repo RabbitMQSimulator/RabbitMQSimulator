@@ -1,6 +1,7 @@
 class Queue extends Node implements IConnectable {
   int type = QUEUE;
-  ArrayList messages = new ArrayList();  
+  ArrayList messages = new ArrayList();
+  Edge anonBinding;  
   
   Queue(String name, float x, float y) {
     super(name, colors[QUEUE], x, y);
@@ -18,10 +19,18 @@ class Queue extends Node implements IConnectable {
     return true;
   }
   
+  void setAnonBinding(Edge e) {
+    anonBinding = e;
+  }
+  
+  Edge getAnonBinding() {
+    return anonBinding;
+  }
+  
   void connectWith(Node n, int endpoint) {
     super.connectWith(n, endpoint);
     maybeDeliverMessage();
-  }
+  }  
   
   void trasnferArrived(Transfer transfer) {
     enqueue(transfer);
@@ -52,9 +61,7 @@ class Queue extends Node implements IConnectable {
   }
   
   void changeName(String name) {
-    println("queue changeName" + name);
     this.label = name;
-    println(this.label);
   }
   
   void draw() {

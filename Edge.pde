@@ -23,22 +23,26 @@ class Edge {
     return (from.getType() == ANON_EXCHANGE || to.getType() == ANON_EXCHANGE);
   }
   
+  void setBindingKey(String bk) {
+    bindingKeyLabel = bk == "" ? DEFAULT_BINDING_KEY : bk;
+  }
+  
   String getBindingKey() {
     return bindingKeyLabel == DEFAULT_BINDING_KEY ? "" : bindingKeyLabel;
   }
   
   void updateBindingKey(String bk) {
-    println("updateBindingKey: " + bk);
-    if (to.getType() == EXCHANGE) {
+    if (to.getType() == EXCHANGE || to.getType() == ANON_EXCHANGE) {
       Exchange x = (Exchange) to;
       String oldBk = getBindingKey();
       if (x.updateBinding(from, oldBk, bk)) {
-        bindingKeyLabel = bk == "" ? DEFAULT_BINDING_KEY : bk;
+        setBindingKey(bk);
       }
     }
   }
   
   void remove() {
+    println("edge remove");
     Exchange x = (Exchange) to;
     x.removeBinding(from, getBindingKey());
   }

@@ -64,6 +64,9 @@ abstract class Node {
     println("transferDelivered");
   }
   
+  /**
+   * Padding from the simulator boundaries
+   */
   int padding() {
     return this.radii * 2 + 2;
   }

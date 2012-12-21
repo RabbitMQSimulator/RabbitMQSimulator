@@ -35,7 +35,7 @@ class Exchange extends Node implements IConnectable {
     }
   }
   
-  void addBinding(Node n, String bindingKey) {
+  boolean addBinding(Node n, String bindingKey) {
     HashMap boundNodes = (HashMap) bindings.get(bindingKey);
     if (boundNodes == null) {
       println("boundNodes was null");
@@ -43,6 +43,7 @@ class Exchange extends Node implements IConnectable {
     }
     boundNodes.put(n.getLabel(), n);
     bindings.put(bindingKey, boundNodes);
+    return true;
   }
   
   boolean updateBinding(Node n, String oldBk, String newBk) {
@@ -56,9 +57,10 @@ class Exchange extends Node implements IConnectable {
     return false;
   }
   
-  void removeBinding(Node n, String bk) {
+  boolean removeBinding(Node n, String bk) {
     HashMap bd = bindings.get(bk);
     bd.remove(n.getLabel());
+    return true;
   }
   
   void trasnferArrived(Transfer transfer) {

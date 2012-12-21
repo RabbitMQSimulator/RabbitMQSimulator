@@ -2,6 +2,8 @@ Stage stage = new Stage();
 
 int nodeCount;
 Node[] nodes = new Node[100];
+// TODO see how to keep track of Exchanges vs. Queues, etc. since the names may collide
+// maybe use names like str(n.getType()) + n.getLabel())
 HashMap nodeTable = new HashMap();
 
 ArrayList edges = new ArrayList();
@@ -11,6 +13,7 @@ TmpEdge tmpEdge;
 Node tmpNode;
 Node from;
 Node to;
+AnonExchange anonExchange;
 
 static final int WIDTH = 780;
 static final int HEIGHT = 410;
@@ -55,8 +58,10 @@ void setup() {
   colors[QUEUE] = #0816FF;
   colors[PRODUCER] = #3F4031;
   colors[CONSUMER] = #E1FF08;
+  colors[ANON_EXCHANGE] = #FFFFFF;
   
   buildToolbar();
+  anonExchange = new AnonExchange("anon-exchange", 100, 20);
 }
 
 void buildToolbar() {
@@ -75,18 +80,18 @@ ToolbarItem addToolbarItem(int type, String label, float x, float y) {
   return t;
 }
 
-boolean addEdge(Node from, Node to) {
+Edge addEdge(Node from, Node to) {
   for (int i = edges.size()-1; i >= 0; i--) {
     Edge et = (Edge) edges.get(i);
     if ((et.from == from && et.to == to) ||
         (et.to == from && et.from == to)) {
-      return false;
+      return null;
     }
   }
   
   Edge e = new Edge(from, to, edgeColor);
   edges.add(e);
-  return true;
+  return e;
 }
 
 Node newNodeByType(int type, String label, float x, float y) {
@@ -131,11 +136,19 @@ Node findNode(String label) {
 }
 
 void changeNodeName(String oldName, String name) {
-  println("changeNodeName called");
+  if (name == "") {
+    return;
+  }
+  
   Node n = findNode(oldName);
   n.changeName(name);
   nodeTable.remove(oldName);
   nodeTable.put(name, n);
+  
+  // update the binding to the anon exchange.
+  if (n.getType() == QUEUE) {
+    n.getAnonBinding().updateBindingKey(name);
+  }
 }
 
 void publishMessage(String uuid, String payload, String routingKey) {
@@ -149,7 +162,6 @@ void updateBindingKey(int i, String bk) {
 }
 
 void removeBinding(int i) {
-  println("removeBinding: " + str(i));
   Edge e = (Edge) edges.get(i);
   e.remove();
   edges.remove(e);
@@ -167,6 +179,8 @@ void draw() {
   for (int i = 0; i < toolbarItemsCount ; i++) {
     toolbarItems[i].draw();
   }
+  
+  anonExchange.draw();
   
   for (int i = 0 ; i < nodeCount ; i++) {
     nodes[i].draw();
@@ -195,6 +209,11 @@ Node nodeBelowMouse() {
       return n;
     }
   }
+  
+  if (anonExchange.isBelowMouse()) {
+    return anonExchange; 
+  }
+  
   return null;
 }
 
@@ -208,7 +227,6 @@ void mouseClicked() {
   for (int i = edges.size()-1; i >= 0; i--) {
     Edge e = (Edge) edges.get(i);
     if (e.labelClicked()) {
-      println("binding clicked");
       jQuery("#binding_id").val(i);
       jQuery("#binding_key").val(e.getBindingKey());
       
@@ -227,7 +245,6 @@ void mousePressed() {
   from = nodeBelowMouse();
   
   if (from != null && altKeyPressed() && from.canStartConnection()) {
-    println("adding tmpEdge");
     tmpEdge = new TmpEdge(from, mouseX, mouseY, edgeColor);
   }
 }
@@ -258,23 +275,34 @@ boolean validNodes(Node from, Node to, TmpEdge tmpEdge) {
   return to != null && from != null && tmpEdge != null && to != from; 
 }
 
+void bindToAnonExchange(Queue n) {
+  Edge e = addEdge(n, anonExchange); 
+  if (e != null) {
+    n.connectWith(anonExchange, DESTINATION);
+    n.setAnonBinding(e);
+    anonExchange.connectWith(n, SOURCE);
+    e.setBindingKey(n.getLabel());
+  }
+}
+
 void mouseReleased() {
   // we are dragging a new node from the toolbar
   if (tmpNode != null) {
-    addNodeByType(tmpNode.getType(), randomQueueName(), tmpNode.getX(), tmpNode.getY());
+    Node n = addNodeByType(tmpNode.getType(), randomQueueName(), tmpNode.getX(), tmpNode.getY());
+    if (n.getType() == QUEUE) {
+      bindToAnonExchange(n);
+    }
   }
-  
   
   // if we have a an edge below us we need to make the connection
   to = nodeBelowMouse();
   
   // Logic to make a connection between Nodes
   if (validNodes(from, to, tmpEdge) && to.accepts(from)) {
-    println("after valid nodes");
-    if (addEdge(from, to)) {
+    Edge e = addEdge(from, to); 
+    if (e != null) {
       from.connectWith(to, DESTINATION);
       to.connectWith(from, SOURCE);
-      println("addEdge true");
     } else {
        println("addEdge false");
     }
