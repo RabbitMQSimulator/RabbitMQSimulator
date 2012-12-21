@@ -42,6 +42,7 @@ function handle_queue_form() {
     var name = jQuery('#queue_name').val();
     var pjs = getProcessing();
     pjs.changeNodeName(uuid, name);
+    jQuery('#queue_id').val(name);
     return false;
 }
 
