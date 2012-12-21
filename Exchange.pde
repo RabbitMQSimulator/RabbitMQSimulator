@@ -21,7 +21,7 @@ class Exchange extends Node implements IConnectable {
   }
   
   void setExchangeType(int type) {
-    exchangeType = type;
+    exchangeType = int(type);
   }
   
   void changeName(String name) {
@@ -81,6 +81,22 @@ class Exchange extends Node implements IConnectable {
   }
   
   void trasnferArrived(Transfer transfer) {
+    println(exchangeType + " " + getExchangeTypeString());
+    switch(exchangeType) {
+      case DIRECT:
+        directRouting(transfer);
+        break;
+      case FANOUT:
+        fanoutRouting(transfer);
+        break;
+      case TOPIC:
+        topicRouting(transfer);
+        break;      
+    }
+  }
+  
+  void directRouting(Transfer transfer) {
+    println("directRouting");
     Message msg = transfer.getData();
     HashMap bd = bindings.get(msg.getRoutingKey());
     
@@ -95,16 +111,19 @@ class Exchange extends Node implements IConnectable {
     }
   }
   
-  /*
-  fanout routing:
-  
-      for (int i = incoming.size()-1; i >= 0; i--) {
-        Node n = (Node) incoming.get(i);
-        if (n.getType() != PRODUCER) {
-          stage.addTransfer(new Transfer(stage, this, n, transfer.getData()));
-        }
+  void fanoutRouting(Transfer transfer) {
+    println("fanoutRouting");
+    for (int i = incoming.size()-1; i >= 0; i--) {
+      Node n = (Node) incoming.get(i);
+      if (n.getType() != PRODUCER) {
+        stage.addTransfer(new Transfer(stage, this, n, transfer.getData()));
       }
-  */
+    }
+  }
+  
+  void topicRouting(Transfer transfer) {
+    println("topicRouting");
+  }
   
   void mouseClicked() {
     println("Exchange Clicked");
