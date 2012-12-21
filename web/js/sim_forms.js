@@ -57,11 +57,13 @@ function handle_queue_unbind() {
 }
 
 function handle_advanced_mode_form() {
-    anon_exchange.toggle_visiblity();
     jQuery('#advanced_mode').toggleClass('btn-inverse');
-
-    var text = jQuery('#advanced_mode').text() == 'Advanced Mode' ? 'Normal Mode' : 'Advanced Mode';
+    var current = jQuery('#advanced_mode').text();
+    var text = current  == 'Advanced Mode' ? 'Normal Mode' : 'Advanced Mode';
     jQuery('#advanced_mode').text(text);
+
+    var pjs = getProcessing();
+    pjs.toggleAdvancedMode(current  == 'Advanced Mode');
 
     return false;
 }

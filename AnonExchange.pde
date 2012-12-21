@@ -57,4 +57,10 @@ class AnonExchange extends Node {
       stage.addTransfer(new Transfer(stage, this, q, msg));
     }
   }
+  
+  void draw() {
+    if (advancedMode) {
+      super.draw();
+    }
+  }
 }

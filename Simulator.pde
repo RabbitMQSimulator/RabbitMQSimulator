@@ -15,6 +15,9 @@ Node from;
 Node to;
 AnonExchange anonExchange;
 
+// whether the anon exchange + bindings are displayed
+boolean advancedMode = false;
+
 static final int WIDTH = 780;
 static final int HEIGHT = 410;
 
@@ -133,6 +136,10 @@ Node addNodeByType(int type, String label, float x, float y) {
 
 Node findNode(String label) {
   return nodeTable.get(label);
+}
+
+void toggleAdvancedMode(boolean mode) {
+  advancedMode = mode;
 }
 
 void changeNodeName(String oldName, String name) {

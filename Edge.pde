@@ -54,6 +54,10 @@ class Edge {
   }
   
   void draw() {
+    if (!advancedMode && connectedToAnonExchange()) {
+      return;
+    }
+    
     stroke(this.edgeColor);
     strokeWeight(1);
     line(from.x, from.y, to.x, to.y);
