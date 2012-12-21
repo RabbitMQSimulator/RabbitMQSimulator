@@ -4,8 +4,7 @@ int nodeCount;
 Node[] nodes = new Node[100];
 HashMap nodeTable = new HashMap();
 
-int edgeCount;
-Edge[] edges = new Edge[500];
+ArrayList edges = new ArrayList();
 
 // use to track interactions between objects
 TmpEdge tmpEdge;
@@ -77,18 +76,16 @@ ToolbarItem addToolbarItem(int type, String label, float x, float y) {
 }
 
 boolean addEdge(Node from, Node to) {
-  for (int i = 0; i < edgeCount; i++) {
-    if ((edges[i].from == from && edges[i].to == to) ||
-        (edges[i].to == from && edges[i].from == to)) {
+  for (int i = edges.size()-1; i >= 0; i--) {
+    Edge et = (Edge) edges.get(i);
+    if ((et.from == from && et.to == to) ||
+        (et.to == from && et.from == to)) {
       return false;
     }
   }
   
   Edge e = new Edge(from, to, edgeColor);
-  if (edgeCount == edges.length) {
-    edges = (Edge[]) expand(edges);
-  }
-  edges[edgeCount++] = e;
+  edges.add(e);
   return true;
 }
 
@@ -147,20 +144,15 @@ void publishMessage(String uuid, String payload, String routingKey) {
 }
 
 void updateBindingKey(int i, String bk) {
-  Edge e = edges[i];
+  Edge e = (Edge) edges.get(i);
   e.updateBindingKey(bk);
 }
 
 void removeBinding(int i) {
-  Edge e = edges[i];
+  println("removeBinding: " + str(i));
+  Edge e = (Edge) edges.get(i);
   e.remove();
-  if (i == 0) {
-    edges = new Edge[500];
-  } else {
-    arrayCopy(edges, i+1, edges, i, edges.length - (i+1));
-    edges = shorten(edges);
-  }
-  edgeCount--;
+  edges.remove(e);
 }
 
 void draw() {
@@ -176,8 +168,9 @@ void draw() {
     toolbarItems[i].draw();
   }
   
-  for (int i = 0 ; i < edgeCount ; i++) {
-    edges[i].draw();
+  for (int i = edges.size()-1; i >= 0; i--) {
+    Edge e = (Edge) edges.get(i);
+    e.draw();
   }
   
   for (int i = 0 ; i < nodeCount ; i++) {
@@ -212,15 +205,14 @@ void mouseClicked() {
     target.mouseClicked();
   }
   
-  for (int i = 0 ; i < edgeCount ; i++) {
-    println("anon exchange: " + str(edges[i].connectedToAnonExchange()));
-    
-    if (edges[i].labelClicked()) {
+  for (int i = edges.size()-1; i >= 0; i--) {
+    Edge e = (Edge) edges.get(i);
+    if (e.labelClicked()) {
       println("binding clicked");
       jQuery("#binding_id").val(i);
-      jQuery("#binding_key").val(edges[i].getBindingKey());
+      jQuery("#binding_key").val(e.getBindingKey());
       
-      if (edges[i].connectedToAnonExchange()) {
+      if (e.connectedToAnonExchange()) {
         disable_form("#bindings_form");
       } else {
         enable_form("#bindings_form");
