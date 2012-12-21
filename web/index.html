@@ -100,6 +100,19 @@
               <button id="queue_edit" type="submit" class="btn btn-primary">Edit</button>
             </fieldset>
           </form>
+          <form id="exchange_form">
+            <fieldset>
+              <legend>Edit Exchange</legend>
+              <input id="exchange_id" type="hidden" name="exchange_id">
+              <input id="exchange_name" name="exchange_name" type="text" placeholder="exchange name">
+              <select id="exchange_type">
+                <option value="0">direct</option>
+                <option value="1">fanout</option>
+                <option value="2">topic</option>
+              </select>
+              <button id="exchange_edit" type="submit" class="btn btn-primary">Edit</button>
+            </fieldset>
+          </form>
         </div>
       </div>
       <div class="row">

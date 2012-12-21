@@ -1,5 +1,6 @@
 class Exchange extends Node implements IConnectable {
   int type = EXCHANGE;
+  int exchangeType = DIRECT;
   HashMap bindings;
   
   Exchange(String name, float x, float y) {
@@ -9,6 +10,22 @@ class Exchange extends Node implements IConnectable {
 
   int getType() {
     return type;
+  }
+  
+  int getExchangeType() {
+    return exchangeType;
+  }
+  
+  int getExchangeTypeString() {
+    return exchangeTypes[exchangeType];
+  }
+  
+  void setExchangeType(int type) {
+    exchangeType = type;
+  }
+  
+  void changeName(String name) {
+    this.label = name;
   }
 
   boolean accepts(Node n) {
@@ -91,5 +108,10 @@ class Exchange extends Node implements IConnectable {
   
   void mouseClicked() {
     println("Exchange Clicked");
+    reset_form("#exchange_form");
+    jQuery("#exchange_id").val(this.label);
+    jQuery("#exchange_name").val(this.label);
+    jQuery("#exchange_type").val(this.exchangeType);
+    enable_form("#exchange_form");
   }
 }

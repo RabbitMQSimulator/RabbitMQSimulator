@@ -41,7 +41,7 @@ function handle_queue_form() {
     var uuid = jQuery('#queue_id').val();
     var name = jQuery.trim(jQuery('#queue_name').val());
     var pjs = getProcessing();
-    pjs.changeNodeName(uuid, name);
+    pjs.editQueue(uuid, name);
     jQuery('#queue_id').val(name);
     return false;
 }
@@ -68,10 +68,22 @@ function handle_advanced_mode_form() {
     return false;
 }
 
+function handle_exchange_form() {
+    console.log('handle_exchange_form');
+    var uuid = jQuery('#exchange_id').val();
+    var name = jQuery.trim(jQuery('#exchange_name').val());
+    var type = jQuery('#exchange_type').val();
+    var pjs = getProcessing();
+    pjs.editExchange(uuid, name, type);
+    jQuery('#exchange_id').val(name);
+    return false; 
+}
+
 jQuery(document).ready(function() {
     init_form('#new_message_form', handle_new_message_form);
     init_form('#bindings_form', handle_binding_form);
     init_form('#queue_form', handle_queue_form);
+    init_form('#exchange_form', handle_exchange_form);
 
     jQuery('#advanced_mode_form').submit(handle_advanced_mode_form);
 

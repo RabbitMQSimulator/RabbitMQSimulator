@@ -32,6 +32,10 @@ static final int PRODUCER = 2;
 static final int CONSUMER = 3;
 static final int ANON_EXCHANGE = 4;
 
+static final int DIRECT = 0;
+static final int FANOUT = 1;
+static final int TOPIC = 2;
+
 static final int SOURCE = 0;
 static final int DESTINATION = 1;
 
@@ -40,6 +44,8 @@ static final String DEFAULT_BINDING_KEY = "binding key";
 static final int TOOLBARWIDTH = 60;
 
 color[] colors = new color[20];
+
+String[] exchangeTypes = new String[3];
 
 PFont font;
 
@@ -62,6 +68,10 @@ void setup() {
   colors[PRODUCER] = #3F4031;
   colors[CONSUMER] = #E1FF08;
   colors[ANON_EXCHANGE] = #FFFFFF;
+  
+  exchangeTypes[DIRECT] = "direct";
+  exchangeTypes[FANOUT] = "fanout";
+  exchangeTypes[TOPIC] = "topic";
   
   buildToolbar();
   anonExchange = new AnonExchange("anon-exchange", 100, 20);
@@ -142,20 +152,32 @@ void toggleAdvancedMode(boolean mode) {
   advancedMode = mode;
 }
 
-void changeNodeName(String oldName, String name) {
-  if (name == "") {
-    return;
-  }
-  
+Node changeNodeName(String oldName, String name) {
   Node n = findNode(oldName);
   n.changeName(name);
   nodeTable.remove(oldName);
   nodeTable.put(name, n);
+  return n;
+}
+
+void editQueue(String oldName, String name) {
+  if (name == "") {
+    return;
+  }
+  
+  Node n = changeNodeName(oldName, name);
   
   // update the binding to the anon exchange.
-  if (n.getType() == QUEUE) {
-    n.getAnonBinding().updateBindingKey(name);
+  n.getAnonBinding().updateBindingKey(name);
+}
+
+void editExchange(String oldName, String name, int type) {
+  if (name == "") {
+    return;
   }
+  
+  Node n = changeNodeName(oldName, name);
+  n.setExchangeType(type);
 }
 
 void publishMessage(String uuid, String payload, String routingKey) {
