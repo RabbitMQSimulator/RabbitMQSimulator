@@ -51,7 +51,8 @@ function handle_queue_unbind() {
     var binding_id = jQuery('#binding_id').val();
     var pjs = getProcessing();
     pjs.removeBinding(binding_id);
-    reset_form("bindings_form");
+    reset_form("#bindings_form");
+    disable_form("#bindings_form");
     return false;
 }
 
