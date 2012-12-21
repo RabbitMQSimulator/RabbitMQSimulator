@@ -62,5 +62,35 @@ class Edge {
     }
   }
   
-
+  void drawArrowHead() {
+    boolean atStart;
+    float distance;
+    
+    switch(from.getType()) {
+      case QUEUE:
+      case CONSUMER:
+      case EXCHANGE:
+        atStart = true;
+        distance = 0.1;
+        break;
+      default:
+        atStart = false;
+        distance = 0.9;
+        break;
+    }
+    
+    if (atStart) {
+      float x0 = lerp(from.x, to.x, distance);
+      float y0 = lerp(from.y, to.y, distance);
+      float x1 = to.x;
+      float y1 = to.y;
+      arrowhead(x0, y0, atan2(y1 - y0, x1 - x0), radians(30), false);
+    } else {
+      float x0 = from.x;
+      float y0 = from.y;
+      float x1 = lerp(from.x, to.x, distance);
+      float y1 = lerp(from.y, to.y, distance);
+      arrowhead(x1, y1, atan2(y0 - y1, x0 - x1), radians(30), false);
+    }
+  }
 }
