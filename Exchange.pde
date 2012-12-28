@@ -121,8 +121,22 @@ class Exchange extends Node implements IConnectable {
     }
   }
   
+  /**
+    * Naive topic routing
+    *
+    */
   void topicRouting(Transfer transfer) {
     println("topicRouting");
+    Message msg = transfer.getData();
+    Iterator i = bindings.entrySet().iterator();
+    while (i.hasNext()) {
+      Map.Entry binding = (Map.Entry) i.next();
+      String bindingKey = binding.getKey();
+      if (true) {
+        Node n = (Node) binding.getValue(bindingKey);
+        stage.addTransfer(new Transfer(stage, this, n, msg));
+      }  
+    }
   }
   
   void mouseClicked() {
