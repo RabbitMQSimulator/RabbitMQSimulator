@@ -183,7 +183,7 @@ class TrieST<Value> {
     while (i.hasNext()) {
       Map.Entry me = (Map.Entry)i.next();
       String currKey = me.getKey();
-      valuesWithPrefix(x.next.get(currKey), acc);
+      allChildValues(x.next.get(currKey), acc);
     }
   }
   
