@@ -122,72 +122,73 @@ class TrieST<Value> {
     // TODO works like collect but pushes the actual value in the key not the keys;
   }
   
+  void collectWithHash(TNode x, String[] pre, String[] pat, int remainPattern, int remainMatch, ArrayList q) {
+    if (x.length >= remainMatch) {
+      Iterator i = x.next.entrySet().iterator();
+      while (i.hasNext()) {
+        Map.Entry me = (Map.Entry)i.next();
+        String currKey = me.getKey();
+        collectWithHash(x.next.get(currKey), pre, pat, remainPattern, remainMatch, q);
+      }
+    } else {
+      collectWithPattern(x, pre, pat, remainPattern, remainMatch, q); 
+    }
+  }
+  
   // remainPattern starts as pat.length
   // remainMatch starts as pat.length
-  void collectWithPattern(TNode x, String[] pre, String[] pat, int remainPattern, int remainMatch, ArrayList q) {
+  void collectWithPattern(TNode x, String[] pre, String[] pat, int remainPattern, int remainMatch, boolean withHash, ArrayList q) {
     // int d = pre.length;
     if (x == null) return;
     
-    if (!patterHasHash(pat) && x.length > pat.length) {
+    if (remainPattern == 0) {
+      // add value to q
+      return;
+    }
+    
+    String[] rest = subset(pat, pat.length - remainPattern + 1);
+    
+    if (!patterHasHash(rest) && pat.length > x.length) {
       return null;
     }
     
     // TODO make sure we don't overflow the array
     int currWord = pat.length - remainPattern;
-    String word = words[currWord];
+    String word = pat[currWord];
     
     if (remainPattern == 1) {
       if (word == "*") {
         // collect all the values of this node childrens without comparing keys.
+        Iterator i = x.next.entrySet().iterator();
+        while (i.hasNext()) {
+          Map.Entry me = (Map.Entry)i.next();
+          String currKey = me.getKey();
+          collectWithPattern(x.next.get(currKey), pre, pat, remainPattern-1, remainMatch-1, q);
+        }
       } else if (word = "#") {
         // collect all the values of this node childrens without comparing keys and possible decendants.
+        // String[] prefix; // TODO array 
+        // valuesWithPrefix(getTNode(root, prefix, 0), prefix, q);
       } else {
         // collect the value of the first decendant of this node comparing keys.
         // and return from the function.
+        collectWithPattern(x.next.get(word), pre, pat, remainPattern-1, remainMatch-1, q);
       }
     } else {
-      String[] rest = subset(pat, pat.length - remainPattern + 1);
-      // by checking the first time if pattern has a '#' we can avoid multiple calls to this.
-      if (patterHasHash(rest)) {
-      } else {
-        if (x.length() < remainMatch) {
-            return;
-        }
-      }
-    }
-    
-    if (word == "*") {
-      // we need to search on all the keys that come next from this node
-      Iterator i = x.next.entrySet().iterator();
-      while (i.hasNext()) {
-        Map.Entry me = (Map.Entry)i.next();
-        String currKey = me.getKey();
-        collectWithPattern(x.next.get(currKey), pre, pat, remainPattern-1, remainMatch-1, q);
-      }
-    } else if (word == "#") {
-      // skip just one word for the matching skip many words
-      // if '#' occurs at the end of words then return everything down from there
-      if (remainPattern == 1) { // last word in the pattern
-        String[] prefix; // TODO array 
-        valuesWithPrefix(getTNode(root, prefix, 0), prefix, q);
-      } else {
-        // if '#' occurs before the end of the words then we always need to check the length of the node so we not overflow the amount of remaining words.
-        String[] rest = subset(pat, pat.length - remainPattern + 1);
-        if (patterHasHash(rest)) {
-          // we don't decrement remainMatch since '#' matches 0 or more words.
-          collectWithPattern(x.next.get(currKey), pre, pat, remainPattern-1, remainMatch, q);
-        } else {
-          if (x.length() < remainMatch) {
-            return;
-          }
-          
+      if (word == "*") {
+        // collect all the values of this node childrens without comparing keys.
+        Iterator i = x.next.entrySet().iterator();
+        while (i.hasNext()) {
+          Map.Entry me = (Map.Entry)i.next();
+          String currKey = me.getKey();
           collectWithPattern(x.next.get(currKey), pre, pat, remainPattern-1, remainMatch-1, q);
         }
+      } else if (word == "#") {
+        // collect all the values of this node childrens without comparing keys.
+        collectWithHash(x, pre, pat, remainPattern-1, remainMatch-1, q);
+      } else {
+        collectWithPattern(x.next.get(word), pre, pat, remainPattern-1, remainMatch-1, q);
       }
-      // keep in mind that '#' matches zero or more words.
-      collectWithPattern(x.next.get(word), pre, pat, remainPattern-1, remainMatch, q);
-    } else {
-      collectWithPattern(x.next.get(word), pre, pat, remainPattern-1, remainMatch-1, q);
     }
   }
   
