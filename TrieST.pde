@@ -11,9 +11,9 @@ class TNode {
     return length;
   }
   
-  void setLength(int l) {
-    if (l > length) {
-      length = l;
+  void setLength(int len) {
+    if (len > length) {
+      length = len;
     } 
   }
 }
@@ -44,7 +44,7 @@ class TrieST<Value> {
    * Public put method
    */
   void put(String bindingKey, Value val) {
-    String[] words = split(bindingKey);
+    String[] words = split(bindingKey, ".");
     root = put(root, words, val, 0);
   }
   
@@ -56,8 +56,8 @@ class TrieST<Value> {
     
     if (d == words.length) {
       if (x.val == null) {
-        size++;
         x.val = new ArrayList();
+        size++;
       }
       
       if (!x.val.contains(val)) {
@@ -88,117 +88,106 @@ class TrieST<Value> {
   }
   
   ArrayList keysWithPrefix(String pre) {
-    // we accumulate the results in q
-    ArrayList q = new ArrayList();
-    // TODO pre must be split by '.' beofre passing it here, so it will be an array not a String
+    ArrayList acc = new ArrayList();
     String[] prefix = split(pre, ".");
-    collect(getTNode(root, prefix, 0), prefix, q);
-    return q;
+    collect(getTNode(root, prefix, 0), prefix, acc);
+    return acc;
   }
   
-  void collect(TNode x, String[] pre, ArrayList q) {
+  void collect(TNode x, String[] pre, ArrayList acc) {
     if (x == null) return;
     if (x.val != null) {
-        q.add(join(pre, "."));
+      // if we have a value we join what we have so far in pre
+      acc.add(join(pre, "."));
     }
     
     Iterator i = x.next.entrySet().iterator();
     while (i.hasNext()) {
       Map.Entry me = (Map.Entry)i.next();
       String currKey = me.getKey();
-      collect(x.next.get(currKey), (String[]) append(pre, currKey), q);
+      // append the currKey so we keep track of the links visited
+      collect(x.next.get(currKey), (String[]) append(pre, currKey), acc);
     }
   }
   
   ArrayList keysThatMatch(String pat) {
-    ArrayList q = new ArrayList();
-    String[] prefix = split("", ".");
+    ArrayList acc = new ArrayList();
     String[] pattern = split(pat, ".");
-    collectWithPattern(root, prefix, pattern, q);
-    return q;
+    collectWithPattern(root, pattern, pattern.length, acc);
+    return acc;
   }
   
-  void valuesWithPrefix(TNode x, String[] pre, ArrayList q) {
-    // TODO works like collect but pushes the actual value in the key not the keys;
+  //  7  . 6   . 5   . 4   .3. 2   .  1
+  // some.words.heres.fooor.#.foooo.barrr
+  
+  void collectWithPattern(TNode x, String[] pat, int remainPattern, ArrayList acc) {
+    if (x == null) return;
+    
+    String word = pat[pat.length - remainPattern];
+    
+    if (remainPattern == 0) {
+      if(x.val != null) {
+        acc.add(x.val);
+      }
+      return;
+    } else if (remainPattern == 1) {
+      if (word == "*") {
+        // collect all the values of this node children without comparing keys.
+        Iterator i = x.next.entrySet().iterator();
+        while (i.hasNext()) {
+          Map.Entry me = (Map.Entry)i.next();
+          String currKey = me.getKey();
+          collectWithPattern(x.next.get(currKey), pat, remainPattern-1, acc);
+        }
+      } else if (word = "#") { 
+        allChildValues(x, acc);
+      } else {
+        // collect the value of the first decendant of this node comparing keys.
+        collectWithPattern(x.next.get(word), pat, remainPattern-1, acc);
+      }
+    } else {
+      if (word == "*") {
+        // collect all the values of this node childrens without comparing keys.
+        Iterator i = x.next.entrySet().iterator();
+        while (i.hasNext()) {
+          Map.Entry me = (Map.Entry)i.next();
+          String currKey = me.getKey();
+          collectWithPattern(x.next.get(currKey), pat, remainPattern-1, acc);
+        }
+      } else if (word == "#") {
+        // collect all the values of this node childrens without comparing keys.
+        collectWithHash(x, pat, remainPattern-1, acc);
+      } else {
+        collectWithPattern(x.next.get(word), pat, remainPattern-1, acc);
+      }
+    }
   }
   
-  void collectWithHash(TNode x, String[] pre, String[] pat, int remainPattern, int remainMatch, ArrayList q) {
-    if (x.length >= remainMatch) {
+  void collectWithHash(TNode x, String[] pat, int remainPattern, ArrayList acc) {
+    if (x.length >= remainPattern) {
       Iterator i = x.next.entrySet().iterator();
       while (i.hasNext()) {
         Map.Entry me = (Map.Entry)i.next();
         String currKey = me.getKey();
-        collectWithHash(x.next.get(currKey), pre, pat, remainPattern, remainMatch, q);
+        collectWithHash(x.next.get(currKey), pat, remainPattern, acc);
       }
     } else {
-      collectWithPattern(x, pre, pat, remainPattern, remainMatch, q); 
+      collectWithPattern(x, pat, remainPattern, acc); 
     }
   }
   
-  // remainPattern starts as pat.length
-  // remainMatch starts as pat.length
-  void collectWithPattern(TNode x, String[] pre, String[] pat, int remainPattern, int remainMatch, boolean withHash, ArrayList q) {
-    // int d = pre.length;
+  void allChildValues(TNode x, ArrayList acc) {
     if (x == null) return;
-    
-    if (remainPattern == 0) {
-      // add value to q
-      return;
+    if (x.val != null) {
+        acc.add(x.val);
     }
     
-    String[] rest = subset(pat, pat.length - remainPattern + 1);
-    
-    if (!patterHasHash(rest) && pat.length > x.length) {
-      return null;
+    Iterator i = x.next.entrySet().iterator();
+    while (i.hasNext()) {
+      Map.Entry me = (Map.Entry)i.next();
+      String currKey = me.getKey();
+      valuesWithPrefix(x.next.get(currKey), acc);
     }
-    
-    // TODO make sure we don't overflow the array
-    int currWord = pat.length - remainPattern;
-    String word = pat[currWord];
-    
-    if (remainPattern == 1) {
-      if (word == "*") {
-        // collect all the values of this node childrens without comparing keys.
-        Iterator i = x.next.entrySet().iterator();
-        while (i.hasNext()) {
-          Map.Entry me = (Map.Entry)i.next();
-          String currKey = me.getKey();
-          collectWithPattern(x.next.get(currKey), pre, pat, remainPattern-1, remainMatch-1, q);
-        }
-      } else if (word = "#") {
-        // collect all the values of this node childrens without comparing keys and possible decendants.
-        // String[] prefix; // TODO array 
-        // valuesWithPrefix(getTNode(root, prefix, 0), prefix, q);
-      } else {
-        // collect the value of the first decendant of this node comparing keys.
-        // and return from the function.
-        collectWithPattern(x.next.get(word), pre, pat, remainPattern-1, remainMatch-1, q);
-      }
-    } else {
-      if (word == "*") {
-        // collect all the values of this node childrens without comparing keys.
-        Iterator i = x.next.entrySet().iterator();
-        while (i.hasNext()) {
-          Map.Entry me = (Map.Entry)i.next();
-          String currKey = me.getKey();
-          collectWithPattern(x.next.get(currKey), pre, pat, remainPattern-1, remainMatch-1, q);
-        }
-      } else if (word == "#") {
-        // collect all the values of this node childrens without comparing keys.
-        collectWithHash(x, pre, pat, remainPattern-1, remainMatch-1, q);
-      } else {
-        collectWithPattern(x.next.get(word), pre, pat, remainPattern-1, remainMatch-1, q);
-      }
-    }
-  }
-  
-  boolean patterHasHash(String[] pat) {
-    for (int i = 0 ; i < pat.length ; i++) {
-      if (pat == "#") {
-        return true;
-      }
-    }
-    return false;
   }
   
   void delete(String aKey, Value val) {
