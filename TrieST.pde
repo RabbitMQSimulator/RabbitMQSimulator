@@ -117,9 +117,6 @@ class TrieST<Value> {
     return acc;
   }
   
-  //  7  . 6   . 5   . 4   .3. 2   .  1
-  // some.words.heres.fooor.#.foooo.barrr
-  
   void collectWithPattern(TNode x, String[] pat, int remainPattern, ArrayList acc) {
     if (x == null) return;
     
@@ -164,7 +161,7 @@ class TrieST<Value> {
   }
   
   void collectWithHash(TNode x, String[] pat, int remainPattern, ArrayList acc) {
-    if (x.length >= remainPattern) {
+    if (x.length > remainPattern) {
       Iterator i = x.next.entrySet().iterator();
       while (i.hasNext()) {
         Map.Entry me = (Map.Entry)i.next();
