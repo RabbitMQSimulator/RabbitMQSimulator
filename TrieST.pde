@@ -3,11 +3,11 @@ class TNode {
   ArrayList val;
   HashMap next;
   
-  TNode(int r) {
+  TNode() {
     next = new HashMap();
   }
   
-  int length() {
+  int getLength() {
     return length;
   }
   
@@ -121,10 +121,10 @@ class TrieST<Value> {
     if (x == null) return;
     
     String word = pat[pat.length - remainPattern];
-    
+
     if (remainPattern == 0) {
       if(x.val != null) {
-        acc.add(x.val);
+        acc.addAll(x.val);
       }
       return;
     } else if (remainPattern == 1) {
@@ -136,7 +136,7 @@ class TrieST<Value> {
           String currKey = me.getKey();
           collectWithPattern(x.next.get(currKey), pat, remainPattern-1, acc);
         }
-      } else if (word = "#") { 
+      } else if (word == "#") { 
         allChildValues(x, acc);
       } else {
         // collect the value of the first decendant of this node comparing keys.
@@ -161,7 +161,7 @@ class TrieST<Value> {
   }
   
   void collectWithHash(TNode x, String[] pat, int remainPattern, ArrayList acc) {
-    if (x.length > remainPattern) {
+    if (x.getLength() > remainPattern) {
       Iterator i = x.next.entrySet().iterator();
       while (i.hasNext()) {
         Map.Entry me = (Map.Entry)i.next();
@@ -176,7 +176,7 @@ class TrieST<Value> {
   void allChildValues(TNode x, ArrayList acc) {
     if (x == null) return;
     if (x.val != null) {
-        acc.add(x.val);
+        acc.addAll(x.val);
     }
     
     Iterator i = x.next.entrySet().iterator();
