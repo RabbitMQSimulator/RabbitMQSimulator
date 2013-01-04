@@ -140,7 +140,7 @@ class TrieST<Value> {
         if (remainPattern == 1) {
           allChildValues(x, acc);
         } else {
-          collectWithHash(x, pat, remainPattern-1, acc);
+          collectWithHash(x, pat, remainPattern, acc);
         }
       } else {
         // collect the value of the first decendant of this node comparing keys.
@@ -158,7 +158,7 @@ class TrieST<Value> {
         collectWithHash(x.next.get(currKey), pat, remainPattern, acc);
       }
     } else {
-      collectWithPattern(x, pat, remainPattern, acc); 
+      collectWithPattern(x, pat, remainPattern-1, acc); 
     }
   }
   
