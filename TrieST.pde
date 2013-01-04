@@ -110,7 +110,13 @@ class TrieST<Value> {
     }
   }
   
-  ArrayList keysThatMatch(String pat) {
+  ArrayList allValues() {
+    ArrayList acc = new ArrayList();
+    allChildValues(root, acc);
+    return acc;
+  }
+  
+  ArrayList valuesForPattern(String pat) {
     ArrayList acc = new ArrayList();
     String[] pattern = split(pat, ".");
     collectWithPattern(root, pattern, pattern.length, acc);
