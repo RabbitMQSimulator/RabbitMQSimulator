@@ -1,11 +1,11 @@
 class Exchange extends Node implements IConnectable {
   int type = EXCHANGE;
   int exchangeType = DIRECT;
-  HashMap bindings;
+  TrieST<Node> bindings;
   
   Exchange(String name, float x, float y) {
     super(name, colors[EXCHANGE], x, y);
-    bindings = new HashMap();
+    bindings = new TrieST();
   }
 
   int getType() {
@@ -53,20 +53,13 @@ class Exchange extends Node implements IConnectable {
   }
   
   boolean addBinding(Node n, String bindingKey) {
-    HashMap boundNodes = (HashMap) bindings.get(bindingKey);
-    if (boundNodes == null) {
-      println("boundNodes was null");
-      boundNodes = new HashMap();
-    }
-    boundNodes.put(n.getLabel(), n);
-    bindings.put(bindingKey, boundNodes);
+    bindings.put(bindingKey, n);
     return true;
   }
   
   boolean updateBinding(Node n, String oldBk, String newBk) {
     if (oldBk != newBk) {   
       removeBinding(n, oldBk);
-      
       addBinding(n, newBk);
       return true;
     }
@@ -75,8 +68,7 @@ class Exchange extends Node implements IConnectable {
   }
   
   boolean removeBinding(Node n, String bk) {
-    HashMap bd = bindings.get(bk);
-    bd.remove(n.getLabel());
+    bindings.delete();
     return true;
   }
   
@@ -98,27 +90,14 @@ class Exchange extends Node implements IConnectable {
   void directRouting(Transfer transfer) {
     println("directRouting");
     Message msg = transfer.getData();
-    HashMap bd = bindings.get(msg.getRoutingKey());
-    
-    if (bd != null) {
-      Iterator i = bd.entrySet().iterator();
-      
-      while (i.hasNext()) {
-        Map.Entry me = (Map.Entry) i.next();
-        Node n = (Node) me.getValue();
-        stage.addTransfer(new Transfer(stage, this, n, msg));
-      }
-    }
+    ArrayList nodes = bindings.getValue(msg.getRoutingKey());
+    deliverMessage(msg, nodes);
   }
   
   void fanoutRouting(Transfer transfer) {
     println("fanoutRouting");
-    for (int i = incoming.size()-1; i >= 0; i--) {
-      Node n = (Node) incoming.get(i);
-      if (n.getType() != PRODUCER) {
-        stage.addTransfer(new Transfer(stage, this, n, transfer.getData()));
-      }
-    }
+    ArrayList nodes = bindings.allValues();
+    deliverMessage(msg, nodes);
   }
   
   /**
@@ -127,15 +106,17 @@ class Exchange extends Node implements IConnectable {
     */
   void topicRouting(Transfer transfer) {
     println("topicRouting");
-    Message msg = transfer.getData();
-    Iterator i = bindings.entrySet().iterator();
-    while (i.hasNext()) {
-      Map.Entry binding = (Map.Entry) i.next();
-      String bindingKey = binding.getKey();
-      if (true) {
-        Node n = (Node) binding.getValue(bindingKey);
+    ArrayList nodes = bindings.valuesForPattern(msg.getRoutingKey());
+    deliverMessage(msg, nodes);
+  }
+  
+  void deliverMessage(Message msg, ArrayList nodes) {
+    if (nodes != null) {
+      int max = nodes.size();
+      for (int i = 0; i < max; i++) {
+        Node n = nodes.get(i);
         stage.addTransfer(new Transfer(stage, this, n, msg));
-      }  
+      }
     }
   }
   
