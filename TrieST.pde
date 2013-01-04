@@ -127,7 +127,7 @@ class TrieST<Value> {
         acc.addAll(x.val);
       }
       return;
-    } else if (remainPattern == 1) {
+    } else {
       if (word == "*") {
         // collect all the values of this node children without comparing keys.
         Iterator i = x.next.entrySet().iterator();
@@ -136,25 +136,14 @@ class TrieST<Value> {
           String currKey = me.getKey();
           collectWithPattern(x.next.get(currKey), pat, remainPattern-1, acc);
         }
-      } else if (word == "#") { 
-        allChildValues(x, acc);
+      } else if (word == "#") {
+        if (remainPattern == 1) {
+          allChildValues(x, acc);
+        } else {
+          collectWithHash(x, pat, remainPattern-1, acc);
+        }
       } else {
         // collect the value of the first decendant of this node comparing keys.
-        collectWithPattern(x.next.get(word), pat, remainPattern-1, acc);
-      }
-    } else {
-      if (word == "*") {
-        // collect all the values of this node childrens without comparing keys.
-        Iterator i = x.next.entrySet().iterator();
-        while (i.hasNext()) {
-          Map.Entry me = (Map.Entry)i.next();
-          String currKey = me.getKey();
-          collectWithPattern(x.next.get(currKey), pat, remainPattern-1, acc);
-        }
-      } else if (word == "#") {
-        // collect all the values of this node childrens without comparing keys.
-        collectWithHash(x, pat, remainPattern-1, acc);
-      } else {
         collectWithPattern(x.next.get(word), pat, remainPattern-1, acc);
       }
     }
