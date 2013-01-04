@@ -156,7 +156,7 @@ class TrieST<Value> {
   }
   
   void collectWithHash(TNode x, String[] pat, int remainPattern, ArrayList acc) {
-    if (x.getLength() > remainPattern) {
+    if (x != null && x.getLength() > remainPattern) {
       Iterator i = x.next.entrySet().iterator();
       while (i.hasNext()) {
         Map.Entry me = (Map.Entry)i.next();
@@ -183,12 +183,13 @@ class TrieST<Value> {
   }
   
   void delete(String aKey, Value val) {
-    root = delete(root, aKey, val, 0); 
+    String[] words = split(aKey, ".");
+    root = delete(root, words, val, 0);
   }
   
-  TNode delete(TNode x, String aKey, Value val, int d) {
+  TNode delete(TNode x, String[] words, Value val, int d) {
     if (x == null) return null;
-    if (d == aKey.size()) {
+    if (d == words.length) {
       // Removes the destination from the ArrayList
       x.val.remove(val);
       
@@ -197,8 +198,8 @@ class TrieST<Value> {
         x.val = null;
       }
     } else {
-      String word = (String) words.get(d);
-      x.next.put(word, delete(x.next.get(word), aKey, val, d+1));
+      String word = (String) words[d];
+      x.next.put(word, delete(x.next.get(word), words, val, d+1));
     }
     
     if ( x.val != null) return x;
