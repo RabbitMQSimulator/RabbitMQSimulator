@@ -68,7 +68,7 @@ class Exchange extends Node implements IConnectable {
   }
   
   boolean removeBinding(Node n, String bk) {
-    bindings.delete();
+    bindings.delete(bk, n);
     return true;
   }
   
@@ -96,6 +96,7 @@ class Exchange extends Node implements IConnectable {
   
   void fanoutRouting(Transfer transfer) {
     println("fanoutRouting");
+    Message msg = transfer.getData();
     ArrayList nodes = bindings.allValues();
     deliverMessage(msg, nodes);
   }
@@ -106,6 +107,7 @@ class Exchange extends Node implements IConnectable {
     */
   void topicRouting(Transfer transfer) {
     println("topicRouting");
+    Message msg = transfer.getData();
     ArrayList nodes = bindings.valuesForPattern(msg.getRoutingKey());
     deliverMessage(msg, nodes);
   }
