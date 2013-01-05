@@ -1,5 +1,6 @@
 class TNode {
   int length = 0;
+  String nodeKey;
   ArrayList val;
   HashMap next;
   
@@ -56,6 +57,7 @@ class TrieST<Value> {
     
     if (d == words.length) {
       if (x.val == null) {
+        x.nodeKey = join(words, ".");
         x.val = new ArrayList();
         size++;
       }
@@ -64,7 +66,7 @@ class TrieST<Value> {
         x.val.add(val);
         itemCount++;
       }
-       
+      
       return x;
     }
     
@@ -110,27 +112,27 @@ class TrieST<Value> {
     }
   }
   
-  ArrayList allValues() {
-    ArrayList acc = new ArrayList();
+  HashMap allValues() {
+    HashMap acc = new HashMap();
     allChildValues(root, acc);
     return acc;
   }
   
-  ArrayList valuesForPattern(String pat) {
-    ArrayList acc = new ArrayList();
+  HashMap valuesForPattern(String pat) {
+    HashMap acc = new HashMap();
     String[] pattern = split(pat, ".");
     collectWithPattern(root, pattern, pattern.length, acc);
     return acc;
   }
   
-  void collectWithPattern(TNode x, String[] pat, int remainPattern, ArrayList acc) {
+  void collectWithPattern(TNode x, String[] pat, int remainPattern, HashMap acc) {
     if (x == null) return;
     
     String word = pat[pat.length - remainPattern];
 
     if (remainPattern == 0) {
       if(x.val != null) {
-        acc.addAll(x.val);
+        acc.put(x.nodeKey, x.val);
       }
       return;
     } else {
@@ -155,7 +157,7 @@ class TrieST<Value> {
     }
   }
   
-  void collectWithHash(TNode x, String[] pat, int remainPattern, ArrayList acc) {
+  void collectWithHash(TNode x, String[] pat, int remainPattern, HashMap acc) {
     if (x != null && x.getLength() > remainPattern) {
       Iterator i = x.next.entrySet().iterator();
       while (i.hasNext()) {
@@ -168,10 +170,10 @@ class TrieST<Value> {
     }
   }
   
-  void allChildValues(TNode x, ArrayList acc) {
+  void allChildValues(TNode x, HashMap acc) {
     if (x == null) return;
     if (x.val != null) {
-        acc.addAll(x.val);
+        acc.put(x.nodeKey, x.val);
     }
     
     Iterator i = x.next.entrySet().iterator();
