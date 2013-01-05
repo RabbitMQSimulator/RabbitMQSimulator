@@ -59,7 +59,7 @@ function handle_queue_unbind() {
 function handle_advanced_mode_form() {
     jQuery('#advanced_mode').toggleClass('btn-inverse');
     var current = jQuery('#advanced_mode').text();
-    var text = current  == 'Advanced Mode' ? 'Normal Mode' : 'Advanced Mode';
+    var text = current  == 'Advanced Mode' ? 'Basic Mode' : 'Advanced Mode';
     jQuery('#advanced_mode').text(text);
 
     var pjs = getProcessing();
