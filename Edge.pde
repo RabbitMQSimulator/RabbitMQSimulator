@@ -62,6 +62,8 @@ class Edge {
     strokeWeight(1);
     line(from.x, from.y, to.x, to.y);
     
+    drawArrowHead();
+    
     // draw node text
     if (from.getType() == QUEUE || to.getType() == QUEUE) {
       fill (0);
