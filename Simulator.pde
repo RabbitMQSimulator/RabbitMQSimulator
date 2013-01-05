@@ -46,6 +46,7 @@ static final int TOOLBARWIDTH = 60;
 color[] colors = new color[20];
 
 String[] exchangeTypes = new String[3];
+String[] nodeTypes = new String[5];
 
 PFont font;
 
@@ -73,8 +74,18 @@ void setup() {
   exchangeTypes[FANOUT] = "fanout";
   exchangeTypes[TOPIC] = "topic";
   
+  nodeTypes[EXCHANGE] = "exchange";
+  nodeTypes[QUEUE] = "queue";
+  nodeTypes[PRODUCER] = "producer";
+  nodeTypes[CONSUMER] = "consumer";
+  nodeTypes[ANON_EXCHANGE] = "anon_exchange";
+  
   buildToolbar();
   anonExchange = new AnonExchange("anon-exchange", 100, 20);
+}
+
+String nodeTypeToString(int type) {
+  return nodeTypes[type]; 
 }
 
 void buildToolbar() {
@@ -82,6 +93,10 @@ void buildToolbar() {
   addToolbarItem(QUEUE, "queue", 30, 50);
   addToolbarItem(PRODUCER, "producer", 30, 80);
   addToolbarItem(CONSUMER, "consumer", 30, 110);
+}
+
+Nodes[] getNodes() {
+  return nodes;
 }
 
 ToolbarItem[] toolbarItems = new ToolbarItem[20];
