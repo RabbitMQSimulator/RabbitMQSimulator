@@ -73,7 +73,27 @@ function newBinding(source, destination, destination_type, routing_key) {
     };
 }
 
-function exportNodes() {
+
+function processBindings(pjs, source, bindings) {
+    var ret = [];
+    var es = bindings.entrySet().iterator();
+    while (es.hasNext()) {
+        var me = es.next();
+        var destinations = me.getValue();
+        for (var i = 0; i < destinations.size(); i++) {
+            var dest = destinations.get(i);
+            ret.push(newBinding(
+                source, 
+                dest.getLabel(), 
+                pjs.nodeTypeToString(dest.getType()),
+                me.getKey()
+            ));
+        }
+    }
+    return ret;
+}
+
+function buildExport() {
     var pjs = getProcessing();
     var nodes = pjs.getNodes();
     var toExport = {
@@ -89,21 +109,7 @@ function exportNodes() {
             switch(nodes[i].getType()) {
                 case EXCHANGE:
                 toExport["exchanges"].push(newExchange(nodeName, nodes[i].getExchangeTypeString()));
-                var bindings = nodes[i].getAllBindings();
-                var es = bindings.entrySet().iterator();
-                while (es.hasNext()) {
-                    var me = es.next();
-                    var destinations = me.getValue();
-                    for (var j = 0; j < destinations.size(); j++) {
-                        var dest = destinations.get(j);
-                        toExport["bindings"].push(newBinding(
-                            nodeName, 
-                            dest.getLabel(), 
-                            pjs.nodeTypeToString(dest.getType()),
-                            me.getKey()
-                        ));
-                    }
-                }
+                toExport["bindings"] = processBindings(pjs, nodeName, nodes[i].getAllBindings());
                 break;
                 case QUEUE:
                 toExport["queues"].push(newQueue(nodeName));
@@ -114,6 +120,11 @@ function exportNodes() {
         }
     }
 
+    return toExport;
+}
+
+function exportNodes() {
+    var toExport = buildExport();
     console.log(JSON.stringify(toExport));
 }
 
