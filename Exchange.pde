@@ -27,6 +27,10 @@ class Exchange extends Node implements IConnectable {
   void changeName(String name) {
     this.label = name;
   }
+  
+  HashMap getAllBindings() {
+    return bindings.allValues(); 
+  }
 
   boolean accepts(Node n) {
     switch(n.getType()) {
