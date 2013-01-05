@@ -1,10 +1,6 @@
 // from http://stackoverflow.com/a/105074/342013
-function GUID ()
-{
-    
-    var S4 = function ()
-    {
-        
+function GUID () {
+    var S4 = function () {        
         return Math.floor(
                 Math.random() * 0x10000 /* 65536 */
             ).toString(16);
@@ -40,6 +36,86 @@ function bindJavascript() {
 }
 
 bindJavascript();
+
+var EXCHANGE = 0;
+var QUEUE = 1;
+
+function newExchange(name, type) {
+    return {
+        name: name,
+        vhost: "/",
+        type: type,
+        durable: true,
+        auto_delete: false,
+        internal: false,
+        arguments: []
+    };
+}
+
+function newQueue(name) {
+    return {
+        name: name,
+        vhost: "/",
+        durable: true,
+        auto_delete: false,
+        arguments: []
+    };
+}
+
+function newBinding(source, destination, destination_type, routing_key) {
+    return {
+        source: source,
+        vhost: "/",
+        destination: destination,
+        destination_type: destination_type,
+        routing_key: routing_key,
+        arguments: []
+    };
+}
+
+function exportNodes() {
+    var pjs = getProcessing();
+    var nodes = pjs.getNodes();
+    var toExport = {
+        exchanges: [],
+        queues: [],
+        bindings: []
+    };
+
+    for (var i = 0; i < nodes.length; i++) {        
+        if (nodes[i] != null && (nodes[i].getType() == EXCHANGE || nodes[i].getType() == QUEUE)) {
+            var nodeName = nodes[i].getLabel();
+            var nodeType = pjs.nodeTypeToString(nodes[i].getType());
+            switch(nodes[i].getType()) {
+                case EXCHANGE:
+                toExport["exchanges"].push(newExchange(nodeName, nodes[i].getExchangeTypeString()));
+                var bindings = nodes[i].getAllBindings();
+                var es = bindings.entrySet().iterator();
+                while (es.hasNext()) {
+                    var me = es.next();
+                    var destinations = me.getValue();
+                    for (var j = 0; j < destinations.size(); j++) {
+                        var dest = destinations.get(j);
+                        toExport["bindings"].push(newBinding(
+                            nodeName, 
+                            dest.getLabel(), 
+                            pjs.nodeTypeToString(dest.getType()),
+                            me.getKey()
+                        ));
+                    }
+                }
+                break;
+                case QUEUE:
+                toExport["queues"].push(newQueue(nodeName));
+                break;
+                default:
+                console.log("ignoring: ", pjs.nodeTypeToString(nodes[i].getType()));
+            }
+        }
+    }
+
+    console.log(JSON.stringify(toExport));
+}
 
 jQuery(document).ready(function() {
     
