@@ -128,6 +128,44 @@ function exportNodes() {
     console.log(JSON.stringify(toExport));
 }
 
+
+var thedata = '{"rabbit_version":"3.0.1","parameters":[],"policies":[],"users":[{"name":"guest","password_hash":"Px/BrG80Qp/rlrAK3QDpYKcsONo=","tags":"administrator"}],"vhosts":[{"name":"/"}],"permissions":[{"user":"guest","vhost":"/","configure":".*","write":".*","read":".*"}],"queues":[{"name":"queue2","vhost":"/","durable":true,"auto_delete":false,"arguments":{}},{"name":"queue1","vhost":"/","durable":true,"auto_delete":false,"arguments":{}},{"name":"my-queue","vhost":"/","durable":true,"auto_delete":false,"arguments":{}},{"name":"sim.gen-LTc4MzAwMTUx","vhost":"/","durable":true,"auto_delete":false,"arguments":{}}],"exchanges":[{"name":"sim.gen-MTg5NzM4NDgy","vhost":"/","type":"direct","durable":true,"auto_delete":false,"internal":false,"arguments":{}},{"name":"exchange2","vhost":"/","type":"fanout","durable":true,"auto_delete":false,"internal":false,"arguments":{}},{"name":"sim.gen-NDM5ODEzMDY1","vhost":"/","type":"direct","durable":true,"auto_delete":false,"internal":false,"arguments":{}},{"name":"exchange3","vhost":"/","type":"topic","durable":true,"auto_delete":false,"internal":false,"arguments":{}},{"name":"my-new-exchange","vhost":"/","type":"direct","durable":true,"auto_delete":false,"internal":false,"arguments":{}},{"name":"my-second-exchange","vhost":"/","type":"direct","durable":true,"auto_delete":false,"internal":false,"arguments":{}},{"name":"exchange1","vhost":"/","type":"direct","durable":true,"auto_delete":false,"internal":false,"arguments":{}}],"bindings":[{"source":"exchange3","vhost":"/","destination":"queue1","destination_type":"queue","routing_key":"some.routing.key","arguments":{}},{"source":"sim.gen-MTg5NzM4NDgy","vhost":"/","destination":"sim.gen-LTc4MzAwMTUx","destination_type":"queue","routing_key":"key","arguments":{}},{"source":"sim.gen-NDM5ODEzMDY1","vhost":"/","destination":"sim.gen-MTg5NzM4NDgy","destination_type":"exchange","routing_key":"key","arguments":{}}]}';
+
+var exchange_types = {
+    direct: 0,
+    fanout: 1,
+    topic: 2 
+};
+
+function importNodes(data) {
+    var sections = 5;
+    var nodes = JSON.parse(data);
+    var pjs = getProcessing();
+    var imp_exchanges = {};
+    var imp_queues = {};
+
+    jQuery.each(nodes["exchanges"], function(k, v) {
+        var x = (pjs.width/sections) * 2; // 2 is the exchange section;
+        var y = ((pjs.height-50)/nodes["exchanges"].length+1) * (k+1);
+        imp_exchanges[v["name"]] = pjs.addNodeByType(EXCHANGE, v["name"], x, y);
+        imp_exchanges[v["name"]].setExchangeType(exchange_types[v["type"]]);
+    });
+
+    jQuery.each(nodes["queues"], function(k, v) {
+        var x = (pjs.width/sections) * 3; // 3 is the queue section;
+        var y = ((pjs.height-50)/nodes["queues"].length+1) * (k+1);
+        imp_queues[v["name"]] = pjs.addNodeByType(QUEUE, v["name"], x, y);
+    });
+
+    jQuery.each(nodes["bindings"], function(k, v) {        
+        var destination = v.destination_type == "queue" ? imp_queues[v.destination] : imp_exchanges[v.destination];
+        var source = imp_exchanges[v.source];
+        var routing_key = v.routing_key;
+        var binding = pjs.addConnection(destination, source);
+        binding.updateBindingKey(routing_key);
+    });
+}
+
 jQuery(document).ready(function() {
     
 });

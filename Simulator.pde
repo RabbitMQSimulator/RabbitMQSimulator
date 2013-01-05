@@ -329,6 +329,18 @@ void bindToAnonExchange(Queue n) {
   }
 }
 
+Edge addConnection(Node from, Node to) {
+  Edge e = addEdge(from, to);
+  if (e != null) {
+    // DESTINATION & SOURCE refer to the drag & drop source & dest, not RabbitMQ concepts
+    from.connectWith(to, DESTINATION);
+    to.connectWith(from, SOURCE);
+  } else {
+     println("addEdge false");
+  }
+  return e;
+}
+
 void mouseReleased() {
   // we are dragging a new node from the toolbar
   if (tmpNode != null) {
@@ -341,15 +353,8 @@ void mouseReleased() {
   // if we have a an edge below us we need to make the connection
   to = nodeBelowMouse();
   
-  // Logic to make a connection between Nodes
   if (validNodes(from, to, tmpEdge) && to.accepts(from)) {
-    Edge e = addEdge(from, to); 
-    if (e != null) {
-      from.connectWith(to, DESTINATION);
-      to.connectWith(from, SOURCE);
-    } else {
-       println("addEdge false");
-    }
+    addConnection(from, to);
   }
   
   from = null;
