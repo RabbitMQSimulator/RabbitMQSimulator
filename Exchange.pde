@@ -91,13 +91,13 @@ class Exchange extends Node implements IConnectable {
     println("directRouting");
     Message msg = transfer.getData();
     ArrayList nodes = bindings.getValue(msg.getRoutingKey());
-    deliverMessage(msg, nodes);
+    deliverMessage2(msg, nodes);
   }
   
   void fanoutRouting(Transfer transfer) {
     println("fanoutRouting");
     Message msg = transfer.getData();
-    ArrayList nodes = bindings.allValues();
+    HashMap nodes = bindings.allValues();
     deliverMessage(msg, nodes);
   }
   
@@ -108,17 +108,26 @@ class Exchange extends Node implements IConnectable {
   void topicRouting(Transfer transfer) {
     println("topicRouting");
     Message msg = transfer.getData();
-    ArrayList nodes = bindings.valuesForPattern(msg.getRoutingKey());
+    HashMap nodes = bindings.valuesForPattern(msg.getRoutingKey());
     deliverMessage(msg, nodes);
   }
   
-  void deliverMessage(Message msg, ArrayList nodes) {
+  void deliverMessage(Message msg, HashMap nodes) {
     if (nodes != null) {
-      int max = nodes.size();
-      for (int i = 0; i < max; i++) {
-        Node n = nodes.get(i);
-        stage.addTransfer(new Transfer(stage, this, n, msg));
+      Iterator i = nodes.entrySet().iterator();
+      while (i.hasNext()) {
+        Map.Entry me = (Map.Entry)i.next();
+        deliverMessage2(msg, (ArrayList)me.getValue());
       }
+    }
+  }
+  
+  void deliverMessage2(Message msg, ArrayList destinations) {
+    if (destinations == null) return;
+    int max = destinations.size();
+    for (int i = 0; i < max; i++) {
+      Node n = destinations.get(i);
+      stage.addTransfer(new Transfer(stage, this, n, msg));
     }
   }
   
