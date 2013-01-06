@@ -56,18 +56,6 @@ function handle_queue_unbind() {
     return false;
 }
 
-function handle_advanced_mode_form() {
-    jQuery('#advanced_mode').toggleClass('btn-inverse');
-    var current = jQuery('#advanced_mode').text();
-    var text = current  == 'Advanced Mode' ? 'Basic Mode' : 'Advanced Mode';
-    jQuery('#advanced_mode').text(text);
-
-    var pjs = getProcessing();
-    pjs.toggleAdvancedMode(current  == 'Advanced Mode');
-
-    return false;
-}
-
 function handle_exchange_form() {
     console.log('handle_exchange_form');
     var uuid = jQuery('#exchange_id').val();
@@ -79,12 +67,24 @@ function handle_exchange_form() {
     return false; 
 }
 
-function handle_import_form() {
+function handle_advanced_mode_btn() {
+    jQuery('#advanced_mode').toggleClass('btn-inverse');
+    var current = jQuery('#advanced_mode').text();
+    var text = current  == 'Advanced Mode' ? 'Basic Mode' : 'Advanced Mode';
+    jQuery('#advanced_mode').text(text);
+
+    var pjs = getProcessing();
+    pjs.toggleAdvancedMode(current  == 'Advanced Mode');
+
+    return false;
+}
+
+function handle_import_btn() {
     getDefinitions();
     return false;
 }
 
-function handle_export_form() {
+function handle_export_btn() {
     postDefinitions();
     return false;
 }
@@ -95,9 +95,9 @@ jQuery(document).ready(function() {
     init_form('#queue_form', handle_queue_form);
     init_form('#exchange_form', handle_exchange_form);
 
-    jQuery('#advanced_mode_form').submit(handle_advanced_mode_form);
-    jQuery('#import_form').submit(handle_import_form);
-    jQuery('#export_form').submit(handle_export_form);
+    jQuery("#advanced_mode").click(handle_advanced_mode_btn);
+    jQuery('#import').click(handle_import_btn);
+    jQuery('#export').clickt(handle_export_btn);
 
     jQuery('#binding_delete').click(handle_queue_unbind);
 });
