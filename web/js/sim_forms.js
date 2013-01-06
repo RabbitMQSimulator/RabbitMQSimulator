@@ -97,7 +97,7 @@ jQuery(document).ready(function() {
 
     jQuery("#advanced_mode").click(handle_advanced_mode_btn);
     jQuery('#import').click(handle_import_btn);
-    jQuery('#export').clickt(handle_export_btn);
+    jQuery('#export').click(handle_export_btn);
 
     jQuery('#binding_delete').click(handle_queue_unbind);
 });
