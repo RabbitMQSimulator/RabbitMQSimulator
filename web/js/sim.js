@@ -134,9 +134,8 @@ var exchange_types = {
     topic: 2 
 };
 
-function importNodes(data) {
+function importNodes(nodes) {
     var sections = 5;
-    var nodes = JSON.parse(data);
     var pjs = getProcessing();
     var imp_exchanges = {};
     var imp_queues = {};
@@ -160,6 +159,25 @@ function importNodes(data) {
         var routing_key = v.routing_key;
         var binding = pjs.addConnection(destination, source);
         binding.updateBindingKey(routing_key);
+    });
+}
+
+function getDefinitions() {
+    jQuery.getJSON('/definitions', function (data) {
+        importNodes(data);
+    });
+}
+
+function postDefinitions() {
+    var definitions = buildExport();
+    console.log(definitions);
+    jQuery.ajax('/definitions', {
+        data: JSON.stringify(definitions),
+        contentType: 'application/json',
+        type: 'POST',
+        success: function (data) {
+            console.log(data);
+        }
     });
 }
 
