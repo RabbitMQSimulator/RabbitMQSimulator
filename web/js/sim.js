@@ -184,7 +184,7 @@ function postDefinitions() {
 
 function show_message(consumer_id, msg) {
     console.log(consumer_id + " got msg: " + msg);
-    jQuery("#msg-log").append('<p>Consumer: ' + consumer_id + ' got msg:  ' + msg  + '</p>');
+    jQuery("#msg-log").append('<pre>Consumer: ' + consumer_id + ' got msg:  ' + msg  + '</pre>');
     jQuery("#msg-log").scrollTop($("#msg-log")[0].scrollHeight);
 }
 
