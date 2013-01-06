@@ -18,6 +18,7 @@ function init_form(id, submit_callback) {
 }
 
 function show_form(id) {
+    jQuery("#inspector-msg").toggleClass("hidden");
     jQuery('form').each(function (i, el) {
         var el =  jQuery(el);
         if ('#' + el.attr('id') == id) {
