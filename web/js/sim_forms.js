@@ -79,6 +79,16 @@ function handle_exchange_form() {
     return false; 
 }
 
+function handle_import_form() {
+    getDefinitions();
+    return false;
+}
+
+function handle_export_form() {
+    postDefinitions();
+    return false;
+}
+
 jQuery(document).ready(function() {
     init_form('#new_message_form', handle_new_message_form);
     init_form('#bindings_form', handle_binding_form);
@@ -86,6 +96,8 @@ jQuery(document).ready(function() {
     init_form('#exchange_form', handle_exchange_form);
 
     jQuery('#advanced_mode_form').submit(handle_advanced_mode_form);
+    jQuery('#import_form').submit(handle_import_form);
+    jQuery('#export_form').submit(handle_export_form);
 
     jQuery('#binding_delete').click(handle_queue_unbind);
 });
