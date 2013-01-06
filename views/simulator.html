@@ -1,0 +1,73 @@
+<% layout('layout') -%>
+      <h1>RabbitMQ Simulator</h1>
+      <p>Use the drawing area below to represent your messaging topology.</p>
+      <div class="row">
+        <div id="sim" class="span8">
+	  <canvas id="Simulator" data-processing-sources="js/Simulator.pde"
+		  width="800" height="410">
+	    <p>Your browser does not support the canvas tag.</p>
+	  </canvas>
+	  <noscript>
+	    <p>JavaScript is required to view the contents of this page.</p>
+	  </noscript>
+        </div>
+        <div id="forms" class="span3">
+          <form id="advanced_mode_form">
+            <fieldset>
+              <button id="advanced_mode" type="submit" class="btn btn-inverse">Advanced Mode</button>
+            </fieldset>
+          </form>
+          <form id="import_form">
+            <fieldset>
+              <button id="import" type="submit" class="btn btn-inverse">Import</button>
+            </fieldset>
+          </form>
+          <form id="export_form">
+            <fieldset>
+              <button id="export" type="submit" class="btn btn-inverse">Export</button>
+            </fieldset>
+          </form>
+          <form id="new_message_form">
+            <fieldset>
+              <legend>New Message</legend>
+              <input id="new_message_producer_id" type="hidden" name="new_message_producer_id">
+              <input id="new_message_producer_payload" name="payload" type="text" placeholder="payload">
+              <input id="new_message_producer_routing_key" name="routing_key" type="text" placeholder="routing key">
+              <button id="new_message_send" type="submit" class="btn btn-primary">Send</button>
+            </fieldset>
+          </form>
+          <form id="bindings_form">
+            <fieldset>
+              <legend>Edit Binding</legend>
+              <input id="binding_id" type="hidden" name="binding_id">
+              <input id="binding_key" name="binding_key" type="text" placeholder="binding key">
+              <button id="binding_change" type="submit" class="btn btn-primary">Change</button>
+              <button id="binding_delete" type="button" class="btn btn-danger">Delete</button>
+            </fieldset>
+          </form>
+          <form id="queue_form">
+            <fieldset>
+              <legend>Edit Queue</legend>
+              <input id="queue_id" type="hidden" name="queue_id">
+              <input id="queue_name" name="queue_name" type="text" placeholder="queue name">
+              <button id="queue_edit" type="submit" class="btn btn-primary">Edit</button>
+            </fieldset>
+          </form>
+          <form id="exchange_form">
+            <fieldset>
+              <legend>Edit Exchange</legend>
+              <input id="exchange_id" type="hidden" name="exchange_id">
+              <input id="exchange_name" name="exchange_name" type="text" placeholder="exchange name">
+              <select id="exchange_type">
+                <option value="0">direct</option>
+                <option value="1">fanout</option>
+                <option value="2">topic</option>
+              </select>
+              <button id="exchange_edit" type="submit" class="btn btn-primary">Edit</button>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div id="tutorial" class="span12"></div>
+      </div>

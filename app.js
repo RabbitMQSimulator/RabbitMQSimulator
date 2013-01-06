@@ -1,6 +1,6 @@
 var express = require('express');
 var http = require("http");
-
+var engine = require('ejs-locals')
 var app = express();
 
 app.set('mgmt-user', 'guest');
@@ -10,6 +10,11 @@ app.set('mgmt-port', '15672');
 
 app.use(express.static(__dirname + '/web'));
 app.use(express.bodyParser());
+app.use(require('express-blocks'));
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'html');
+app.engine('html', engine);
 
 function get_auth(user, pass) {
    return 'Basic ' + new Buffer(user + ':' + pass).toString('base64');
@@ -66,6 +71,14 @@ app.post('/definitions', function (req, res) {
     });
     rest.write(post_data);
     rest.end();
+});
+
+app.get('/', function (req, res) {
+    res.render('simulator');
+});
+
+app.get('/about', function (req, res) {
+    res.render('about');
 });
 
 app.listen(3000);
