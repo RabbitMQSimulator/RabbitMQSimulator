@@ -17,6 +17,19 @@ function init_form(id, submit_callback) {
     jQuery(id).submit(submit_callback);
 }
 
+function show_form(id) {
+    jQuery('form').each(function (i, el) {
+        var el =  jQuery(el);
+        if ('#' + el.attr('id') == id) {
+            el.removeClass('hidden');
+        } else {
+            if (!el.hasClass('hidden')) {
+                el.addClass('hidden');                
+            }
+        }
+    });
+}
+
 function handle_new_message_form() {
     console.log('handle_new_message_form');
     var uuid = jQuery('#new_message_producer_id').val();

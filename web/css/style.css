@@ -1,3 +1,7 @@
-form legend, form input, form button, form select {
+form legend {
+    font-size: 14px !important;
+}
+
+form input, form button, form select {
     font-size: 12px !important;
 }

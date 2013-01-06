@@ -279,6 +279,8 @@ void mouseClicked() {
       } else {
         enable_form("#bindings_form");
       }
+      
+      show_form("#bindings_form");
        
       break;
     }

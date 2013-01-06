@@ -34,5 +34,6 @@ class Producer extends Node implements IConnectable {
       jQuery("#new_message_producer_routing_key").val(msg.routingKey);
     }
     enable_form("#new_message_form");
+    show_form("#new_message_form");
   }
 }

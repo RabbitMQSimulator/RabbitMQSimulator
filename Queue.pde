@@ -79,5 +79,6 @@ class Queue extends Node implements IConnectable {
     jQuery("#queue_id").val(this.label);
     jQuery("#queue_name").val(this.label);
     enable_form("#queue_form");
+    show_form("#queue_form");
   }
 }

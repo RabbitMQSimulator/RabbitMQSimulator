@@ -21,7 +21,8 @@
 	  </noscript>
         </div>
         <div id="forms" class="span3">
-          <form id="new_message_form">
+          <h3>Properties</h3>
+          <form id="new_message_form" class="hidden">
             <fieldset>
               <legend>New Message</legend>
               <input id="new_message_producer_id" type="hidden" name="new_message_producer_id">
@@ -30,7 +31,7 @@
               <button id="new_message_send" type="submit" class="btn btn-primary">Send</button>
             </fieldset>
           </form>
-          <form id="bindings_form">
+          <form id="bindings_form" class="hidden">
             <fieldset>
               <legend>Edit Binding</legend>
               <input id="binding_id" type="hidden" name="binding_id">
@@ -39,7 +40,7 @@
               <button id="binding_delete" type="button" class="btn btn-danger">Delete</button>
             </fieldset>
           </form>
-          <form id="queue_form">
+          <form id="queue_form" class="hidden">
             <fieldset>
               <legend>Edit Queue</legend>
               <input id="queue_id" type="hidden" name="queue_id">
@@ -47,7 +48,7 @@
               <button id="queue_edit" type="submit" class="btn btn-primary">Edit</button>
             </fieldset>
           </form>
-          <form id="exchange_form">
+          <form id="exchange_form" class="hidden">
             <fieldset>
               <legend>Edit Exchange</legend>
               <input id="exchange_id" type="hidden" name="exchange_id">
