@@ -12,3 +12,8 @@ form input, form button, form select {
     padding-left: 4px;
     padding-right: 4px;
 }
+
+#msg-log {
+    height: 40px;
+    overflow: scroll;
+}
