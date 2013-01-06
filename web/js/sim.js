@@ -151,6 +151,7 @@ function importNodes(nodes) {
         var x = (pjs.width/sections) * 3; // 3 is the queue section;
         var y = ((pjs.height-50)/nodes["queues"].length+1) * (k+1);
         imp_queues[v["name"]] = pjs.addNodeByType(QUEUE, v["name"], x, y);
+        pjs.bindToAnonExchange(imp_queues[v["name"]]);
     });
 
     jQuery.each(nodes["bindings"], function(k, v) {        
