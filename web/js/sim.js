@@ -183,5 +183,17 @@ function postDefinitions() {
 }
 
 jQuery(document).ready(function() {
-    
+   $(window).focus(function() {
+       var pjs = getProcessing();
+       if (pjs != null) {
+           pjs.loop();
+       }
+   });
+
+   $(window).blur(function() {
+       var pjs = getProcessing();
+       if (pjs != null) {
+           pjs.noLoop();
+       }
+   });
 });
