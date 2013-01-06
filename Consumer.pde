@@ -17,6 +17,11 @@ class Consumer extends Node implements IConnectable {
     return outgoing.size() < 1;
   }
   
+  void trasnferArrived(Transfer transfer) {
+    Message msg = transfer.getData();
+    show_message(getLabel(), msg.getPayload());
+  }
+  
   void mouseClicked() {
     println("Consumer Clicked");
   }

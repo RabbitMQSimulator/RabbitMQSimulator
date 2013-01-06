@@ -182,6 +182,10 @@ function postDefinitions() {
     });
 }
 
+function show_message(consumer_id, msg) {
+    console.log(consumer_id + " got msg: " + msg);   
+}
+
 jQuery(document).ready(function() {
    $(window).focus(function() {
        var pjs = getProcessing();
