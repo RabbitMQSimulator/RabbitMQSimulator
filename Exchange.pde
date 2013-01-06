@@ -77,7 +77,6 @@ class Exchange extends Node implements IConnectable {
   }
   
   void trasnferArrived(Transfer transfer) {
-    println(exchangeType + " " + getExchangeTypeString());
     switch(exchangeType) {
       case DIRECT:
         directRouting(transfer);
@@ -92,14 +91,12 @@ class Exchange extends Node implements IConnectable {
   }
   
   void directRouting(Transfer transfer) {
-    println("directRouting");
     Message msg = transfer.getData();
     ArrayList nodes = bindings.getValue(msg.getRoutingKey());
     deliverMessage2(msg, nodes);
   }
   
   void fanoutRouting(Transfer transfer) {
-    println("fanoutRouting");
     Message msg = transfer.getData();
     HashMap nodes = bindings.allValues();
     deliverMessage(msg, nodes);
@@ -110,7 +107,6 @@ class Exchange extends Node implements IConnectable {
     *
     */
   void topicRouting(Transfer transfer) {
-    println("topicRouting");
     Message msg = transfer.getData();
     HashMap nodes = bindings.valuesForPattern(msg.getRoutingKey());
     deliverMessage(msg, nodes);
@@ -136,7 +132,6 @@ class Exchange extends Node implements IConnectable {
   }
   
   void mouseClicked() {
-    println("Exchange Clicked");
     reset_form("#exchange_form");
     jQuery("#exchange_id").val(this.label);
     jQuery("#exchange_name").val(this.label);

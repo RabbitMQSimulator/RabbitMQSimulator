@@ -57,7 +57,6 @@ abstract class Node {
   }
   
   void trasnferArrived(Transfer transfer) {
-    println("transferArrived");
   }
   
   void transferDelivered(Transfer transfer) {

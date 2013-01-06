@@ -42,7 +42,6 @@ class Edge {
   }
   
   void remove() {
-    println("edge remove");
     Exchange x = (Exchange) to;
     x.removeBinding(from, getBindingKey());
   }

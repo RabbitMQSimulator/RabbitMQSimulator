@@ -23,6 +23,5 @@ class Consumer extends Node implements IConnectable {
   }
   
   void mouseClicked() {
-    println("Consumer Clicked");
   }
 }

@@ -74,7 +74,6 @@ class Queue extends Node implements IConnectable {
   }
   
   void mouseClicked() {
-    println("Queue Clicked");
     reset_form("#queue_form");
     jQuery("#queue_id").val(this.label);
     jQuery("#queue_name").val(this.label);
