@@ -65,7 +65,7 @@ class Edge {
     drawArrowHead();
     
     // draw node text
-    if (from.getType() == QUEUE || to.getType() == QUEUE  || to.getType() == EXCHANGE) {
+    if (from.getType() == QUEUE || from.getType() == EXCHANGE) {
       fill (0);
       textAlign(CENTER, CENTER);
       text(bindingKeyLabel, middleX(), middleY());
