@@ -17,6 +17,10 @@ class TNode {
       length = len;
     } 
   }
+  
+  void setNodeKey(String[] words) {
+    nodeKey = join(words, ".");
+  }
 }
 
 class TrieST<Value> {
@@ -41,6 +45,12 @@ class TrieST<Value> {
     return getTNode(x.next.get(word), words, d+1);
   }
   
+  TNode getParentNode(TNode x) {
+    String[] keys = split(x.nodeKey, ".");
+    String[] parentKey = subset(keys, 0, keys.length - 1);
+    return getTNode(root, parentKey, 0);
+  }
+  
   /**
    * Public put method
    */
@@ -54,10 +64,12 @@ class TrieST<Value> {
    */
   TNode put(TNode x, String[] words, Value val, int d) {
     if (x == null) x = new TNode();
+    x.setLength(words.length - d);
+    x.setNodeKey(subset(words, 0, d));
+    
     
     if (d == words.length) {
       if (x.val == null) {
-        x.nodeKey = join(words, ".");
         x.val = new ArrayList();
         size++;
       }
@@ -72,8 +84,7 @@ class TrieST<Value> {
     
     String word = words[d];
     x.next.put(word, put(x.next.get(word), words, val, d+1));
-    
-    x.setLength(words.length - d);
+
     return x;
   } 
   
@@ -158,7 +169,9 @@ class TrieST<Value> {
   }
   
   void collectWithHash(TNode x, String[] pat, int remainPattern, HashMap acc) {
-    if (x != null && x.getLength() > remainPattern) {
+    if (x == null) return; 
+    
+    if (x.getLength() >= remainPattern) {
       Iterator i = x.next.entrySet().iterator();
       while (i.hasNext()) {
         Map.Entry me = (Map.Entry)i.next();
@@ -166,7 +179,7 @@ class TrieST<Value> {
         collectWithHash(x.next.get(currKey), pat, remainPattern, acc);
       }
     } else {
-      collectWithPattern(x, pat, remainPattern, acc); 
+      collectWithPattern(getParentNode(x), pat, remainPattern, acc);
     }
   }
   
