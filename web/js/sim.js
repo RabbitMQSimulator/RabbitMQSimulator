@@ -161,11 +161,30 @@ function importNodes(nodes) {
         var binding = pjs.addConnection(destination, source);
         binding.updateBindingKey(routing_key);
     });
+
+    return nodes["exchanges"].length + nodes["queues"].length + nodes["bindings"].length;
+}
+
+function getResultMessage(msg) {
+    return '<span id="result-msg" class="label label-success" style="float: right;">' + msg +'</span>';
+}
+
+function displayResultMessage(msg) {
+    jQuery("#btn-toolbar").append(getResultMessage(msg));
+    setTimeout(function () {
+        jQuery("#result-msg").remove();
+    }, 5000);
 }
 
 function getDefinitions() {
     jQuery.getJSON('/definitions', function (data) {
-        importNodes(data);
+        var nb = importNodes(data);
+
+        if (nb > 0) {
+            displayResultMessage("Success");
+        } else {
+            displayResultMessage("Nothing to import");
+        }
     });
 }
 
@@ -177,7 +196,7 @@ function postDefinitions() {
         contentType: 'application/json',
         type: 'POST',
         success: function (data) {
-            console.log(data);
+            displayResultMessage("Success");
         }
     });
 }
