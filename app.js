@@ -1,6 +1,6 @@
 var express = require('express');
 var http = require("http");
-var engine = require('ejs-locals')
+var engine = require('ejs-locals');
 var app = express();
 
 app.set('mgmt-user', 'guest');
