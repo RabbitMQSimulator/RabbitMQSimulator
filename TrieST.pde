@@ -197,6 +197,34 @@ class TrieST<Value> {
     }
   }
   
+  HashMap valuesForRoutingKey(String rkey) {
+    HashMap acc = new HashMap();
+    String[] pattern = split(rkey, ".");
+    collectWithRoutingKey(root, pattern, pattern.length, acc);
+    return acc;
+  }
+  
+  void collectWithRoutingKey(TNode x, String[] pat, int remainPattern, HashMap acc) {
+    if (x == null) return;
+    String word = pat[pat.length - remainPattern];
+    if (remainPattern == 0) {
+      if(x.val != null) {
+        acc.put(x.nodeKey, x.val);
+      }
+      collectWithRoutingKeyHash(x.next.get("#"), pat, remainPattern, acc);
+    } else {
+      collectWithRoutingKey(x.next.get(word), pat, remainPattern-1, acc);
+      collectWithRoutingKey(x.next.get("*"), pat, remainPattern-1, acc);
+      collectWithRoutingKeyHash(x.next.get("#"), pat, remainPattern, acc);
+    }
+  }
+  
+  void collectWithRoutingKeyHash(TNode x, String[] pat, String remainPattern, HashMap acc) {
+    for (var i = 0; i <= pat.length; i++) {
+      collectWithRoutingKey(x, pat, i, acc);
+    }
+  }
+  
   void delete(String aKey, Value val) {
     String[] words = split(aKey, ".");
     root = delete(root, words, val, 0);

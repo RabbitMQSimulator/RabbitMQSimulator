@@ -108,7 +108,7 @@ class Exchange extends Node implements IConnectable {
     */
   void topicRouting(Transfer transfer) {
     Message msg = transfer.getData();
-    HashMap nodes = bindings.valuesForPattern(msg.getRoutingKey());
+    HashMap nodes = bindings.valuesForRoutingKey(msg.getRoutingKey());
     deliverMessage(msg, nodes);
   }
   
