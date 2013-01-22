@@ -46,7 +46,7 @@ app.get('/definitions', function (req, res) {
             res.set('Content-Type', 'application/json');
             console.log("sending output:", output);
             res.send(output);            
-        })
+        });
     });
     rest.end();
 });
@@ -67,7 +67,7 @@ app.post('/definitions', function (req, res) {
         response.on('end', function() {
             res.set('Content-Type', 'application/json');
             res.send(output);
-        })
+        });
     });
     rest.write(post_data);
     rest.end();

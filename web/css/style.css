@@ -15,7 +15,7 @@ form input, form button, form select {
 
 #msg-log {
     border: 1px solid rgba(0, 0, 0, 0.2);
-    height: 200px;
+    height: 80px;
     overflow: scroll;
 }
 
