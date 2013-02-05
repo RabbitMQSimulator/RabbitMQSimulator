@@ -58,7 +58,7 @@ class Edge {
     }
     
     stroke(this.edgeColor);
-    strokeWeight(1);
+    strokeWeight(edgeStroke);
     line(from.x, from.y, to.x, to.y);
     
     drawArrowHead();

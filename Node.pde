@@ -78,7 +78,7 @@ abstract class Node {
   void draw() {
     fill(this.nodeColor);
     stroke(0);
-    strokeWeight(0.5);
+    strokeWeight(nodeStroke);
     
     //draw node
     ellipse(x, y, this.radii * 2, this.radii * 2);

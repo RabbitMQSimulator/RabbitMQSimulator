@@ -21,6 +21,9 @@ boolean advancedMode = false;
 static final int WIDTH = 780;
 static final int HEIGHT = 410;
 
+static final int edgeStroke = 2;
+static final int nodeStroke = 2;
+
 static final color nodeColor   = #F0C070;
 static final color selectColor = #FF3030;
 static final color fixedColor  = #FF8080;
@@ -49,6 +52,7 @@ String[] exchangeTypes = new String[3];
 String[] nodeTypes = new String[5];
 
 PFont font;
+static final int fontSize = 12;
 
 void bindJavascript(JavaScript js) {
   javascript = js;
@@ -60,7 +64,7 @@ void setup() {
   Processing.logger = console;
   
   size(780, 410);
-  font = createFont("SansSerif", 10);
+  font = createFont("SansSerif", fontSize);
   textFont(font);
   smooth();
   
