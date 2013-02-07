@@ -8,5 +8,10 @@
     "ejs": "~0.8.3",
     "ejs-locals": "~1.0.2",
     "express-blocks": "~0.2.2"
+  },
+  "devDependencies": {
+    "grunt-contrib-watch": "~0.1.4",
+    "grunt-contrib-concat": "~0.1.2rc6",
+    "grunt": "~0.4.0rc7"
   }
 }
