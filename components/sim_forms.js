@@ -31,6 +31,16 @@ function show_form(id) {
     });
 }
 
+function disable_button(selector) {
+    jQuery(selector).attr('disabled', 'disabled');
+    jQuery(selector).addClass('disabled');
+}
+
+function enable_button(selector) {
+    jQuery(selector).removeAttr('disabled');
+    jQuery(selector).removeClass('disabled');
+}
+
 function handle_new_message_form() {
     console.log('handle_new_message_form');
     var uuid = jQuery('#new_message_producer_id').val();
@@ -42,10 +52,16 @@ function handle_new_message_form() {
     var interval = null;
         
     if (seconds > 0) {
+        pjs.stopPublisher(uuid);
+
         interval = setInterval(function () {
             pjs.publishMessage(uuid, payload, routing_key);
         }, seconds * 1000);
+
         pjs.setProducerInterval(uuid, interval, seconds);
+        enable_button('#new_message_stop');
+    } else {
+        disable_button('#new_message_stop');
     }
         
     pjs.publishMessage(uuid, payload, routing_key);
@@ -97,6 +113,8 @@ function handle_stop_publisher_btn() {
     var uuid = jQuery('#new_message_producer_id').val();
     var pjs = getProcessing();
     pjs.stopPublisher(uuid);
+    disable_button('#new_message_stop');
+    jQuery('#new_message_producer_seconds').val(null);
 }
 
 function handle_advanced_mode_btn() {

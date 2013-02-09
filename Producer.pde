@@ -34,7 +34,8 @@ class Producer extends Node implements IConnectable {
     }
 
     void stopPublisher() {
-        clearInterval(this.intervalId);
+        clearInterval(intervalId);
+        intervalId = null;
     }
 
     void mouseClicked() {
@@ -42,9 +43,9 @@ class Producer extends Node implements IConnectable {
         jQuery("#new_message_producer_id").val(this.label);
 
         if (intervalId != null) {
-            jQuery("#new_message_stop").removeAttr('disabled');
+            enable_button('#new_message_stop');
         } else {
-            jQuery("#new_message_stop").attr('disabled', 'disabled');
+            disable_button('#new_message_stop');
         }
 
         if (msg != null) {
