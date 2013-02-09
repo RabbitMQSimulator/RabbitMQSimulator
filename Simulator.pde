@@ -62,34 +62,34 @@ JavaScript javascript;
 
 void setup() {
   Processing.logger = console;
-  
+
   size(780, 410);
   font = createFont("SansSerif", fontSize);
   textFont(font);
   smooth();
-  
+
   colors[EXCHANGE] = #FF8408;
   colors[QUEUE] = #0816FF;
   colors[PRODUCER] = #3F4031;
   colors[CONSUMER] = #E1FF08;
   colors[ANON_EXCHANGE] = #FFFFFF;
-  
+
   exchangeTypes[DIRECT] = "direct";
   exchangeTypes[FANOUT] = "fanout";
   exchangeTypes[TOPIC] = "topic";
-  
+
   nodeTypes[EXCHANGE] = "exchange";
   nodeTypes[QUEUE] = "queue";
   nodeTypes[PRODUCER] = "producer";
   nodeTypes[CONSUMER] = "consumer";
   nodeTypes[ANON_EXCHANGE] = "anon_exchange";
-  
+
   buildToolbar();
   anonExchange = new AnonExchange("anon-exchange", 100, 20);
 }
 
 String nodeTypeToString(int type) {
-  return nodeTypes[type]; 
+  return nodeTypes[type];
 }
 
 void buildToolbar() {
@@ -120,7 +120,7 @@ Edge addEdge(Node from, Node to) {
       return null;
     }
   }
-  
+
   Edge e = new Edge(from, to, edgeColor);
   edges.add(e);
   return e;
@@ -150,16 +150,16 @@ Node newNodeByType(int type, String label, float x, float y) {
 
 Node addNodeByType(int type, String label, float x, float y) {
   Node n = newNodeByType(type, label, x, y);
-  
+
   if (n != null) {
       if (nodeCount == nodes.length) {
         nodes = (Node[]) expand(nodes);
       }
-  
+
       nodeTable.put(label, n);
       nodes[nodeCount++] = n;
   }
-  
+
   return n;
 }
 
@@ -183,9 +183,9 @@ void editQueue(String oldName, String name) {
   if (name == "") {
     return;
   }
-  
+
   Node n = changeNodeName(oldName, name);
-  
+
   // update the binding to the anon exchange.
   n.getAnonBinding().updateBindingKey(name);
 }
@@ -194,7 +194,7 @@ void editExchange(String oldName, String name, int type) {
   if (name == "") {
     return;
   }
-  
+
   Node n = changeNodeName(oldName, name);
   n.setExchangeType(type);
 }
@@ -202,6 +202,16 @@ void editExchange(String oldName, String name, int type) {
 void publishMessage(String uuid, String payload, String routingKey) {
   Producer n = (Producer) findNode(uuid);
   n.publishMessage(payload, routingKey);
+}
+
+void setProducerInterval(String uuid, int intervalId, int seconds) {
+  Producer n = (Producer) findNode(uuid);
+  n.setIntervalId(intervalId, seconds);
+}
+
+void stopPublisher(String uuid) {
+  Producer n = (Producer) findNode(uuid);
+  n.stopPublisher();
 }
 
 void updateBindingKey(int i, String bk) {
@@ -217,75 +227,75 @@ void removeBinding(int i) {
 
 void draw() {
   background(255);
-  
+
   stroke(0);
   strokeWeight(2);
   noFill();
   rect(0, 0, WIDTH, HEIGHT);
   line(TOOLBARWIDTH, 0, TOOLBARWIDTH, height);
-  
+
   for (int i = 0; i < toolbarItemsCount ; i++) {
     toolbarItems[i].draw();
   }
-  
+
   anonExchange.draw();
-  
+
   for (int i = 0 ; i < nodeCount ; i++) {
     nodes[i].draw();
   }
-  
+
   for (int i = edges.size()-1; i >= 0; i--) {
     Edge e = (Edge) edges.get(i);
     e.draw();
   }
-  
+
   if (tmpEdge != null) {
     tmpEdge.draw();
   }
-  
+
   if (tmpNode != null) {
     tmpNode.draw();
   }
-  
+
   stage.draw();
 }
 
 Node nodeBelowMouse() {
   for (int i = 0; i < nodeCount; i++) {
-    Node n = nodes[i];    
+    Node n = nodes[i];
     if (n.isBelowMouse()) {
       return n;
     }
   }
-  
+
   if (anonExchange.isBelowMouse()) {
-    return anonExchange; 
+    return anonExchange;
   }
-  
+
   return null;
 }
 
 void mouseClicked() {
   Node target = nodeBelowMouse();
-  
+
   if (target != null) {
     target.mouseClicked();
   }
-  
+
   for (int i = edges.size()-1; i >= 0; i--) {
     Edge e = (Edge) edges.get(i);
     if (e.labelClicked()) {
       jQuery("#binding_id").val(i);
       jQuery("#binding_key").val(e.getBindingKey());
-      
+
       if (e.connectedToAnonExchange()) {
         disable_form("#bindings_form");
       } else {
         enable_form("#bindings_form");
       }
-      
+
       show_form("#bindings_form");
-       
+
       break;
     }
   }
@@ -293,7 +303,7 @@ void mouseClicked() {
 
 void mousePressed() {
   from = nodeBelowMouse();
-  
+
   if (from != null && altKeyPressed() && from.canStartConnection()) {
     tmpEdge = new TmpEdge(from, mouseX, mouseY, edgeColor);
   }
@@ -311,22 +321,22 @@ void mouseDragged() {
       from.mouseDragged();
     }
   }
-  
+
   for (int i = 0; i < toolbarItemsCount ; i++) {
     toolbarItems[i].mouseDragged();
   }
-  
+
   if (tmpNode != null) {
     tmpNode.mouseDragged();
   }
 }
 
 boolean validNodes(Node from, Node to, TmpEdge tmpEdge) {
-  return to != null && from != null && tmpEdge != null && to != from; 
+  return to != null && from != null && tmpEdge != null && to != from;
 }
 
 void bindToAnonExchange(Queue n) {
-  Edge e = addEdge(n, anonExchange); 
+  Edge e = addEdge(n, anonExchange);
   if (e != null) {
     n.connectWith(anonExchange, DESTINATION);
     n.setAnonBinding(e);
@@ -355,14 +365,14 @@ void mouseReleased() {
       bindToAnonExchange(n);
     }
   }
-  
+
   // if we have a an edge below us we need to make the connection
   to = nodeBelowMouse();
-  
+
   if (validNodes(from, to, tmpEdge) && to.accepts(from)) {
     addConnection(from, to);
   }
-  
+
   from = null;
   to = null;
   tmpEdge = null;
@@ -376,7 +386,7 @@ void mouseReleased() {
 /***************************************************/
 /***************************************************/
 
-// From http://www.openprocessing.org/sketch/7029 
+// From http://www.openprocessing.org/sketch/7029
 /*
  * Draws a lines with arrows of the given angles at the ends.
  * x0 - starting x-coordinate of line
@@ -400,7 +410,7 @@ void arrowLine(float x0, float y0, float x1, float y1,
     arrowhead(x1, y1, atan2(y0 - y1, x0 - x1), endAngle, solid);
   }
 }
- 
+
 /*
  * Draws an arrow head at given location
  * x0 - arrow vertex x-coordinate
@@ -418,7 +428,7 @@ void arrowhead(float x0, float y0, float lineAngle,
   float x3;
   float y3;
   final float SIZE = 8;
-   
+
   x2 = x0 + SIZE * cos(lineAngle + arrowAngle);
   y2 = y0 + SIZE * sin(lineAngle + arrowAngle);
   x3 = x0 + SIZE * cos(lineAngle - arrowAngle);
@@ -431,5 +441,5 @@ void arrowhead(float x0, float y0, float lineAngle,
   {
     line(x0, y0, x2, y2);
     line(x0, y0, x3, y3);
-  } 
+  }
 }

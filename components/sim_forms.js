@@ -36,8 +36,20 @@ function handle_new_message_form() {
     var uuid = jQuery('#new_message_producer_id').val();
     var payload = jQuery('#new_message_producer_payload').val();
     var routing_key = jQuery('#new_message_producer_routing_key').val();
+    var seconds = parseInt(jQuery('#new_message_producer_seconds').val(), 10);
     var pjs = getProcessing();
+
+    var interval = null;
+        
+    if (seconds > 0) {
+        interval = setInterval(function () {
+            pjs.publishMessage(uuid, payload, routing_key);
+        }, seconds * 1000);
+        pjs.setProducerInterval(uuid, interval, seconds);
+    }
+        
     pjs.publishMessage(uuid, payload, routing_key);
+
     return false;
 }
 
@@ -81,6 +93,12 @@ function handle_exchange_form() {
     return false; 
 }
 
+function handle_stop_publisher_btn() {
+    var uuid = jQuery('#new_message_producer_id').val();
+    var pjs = getProcessing();
+    pjs.stopPublisher(uuid);
+}
+
 function handle_advanced_mode_btn() {
     jQuery('#advanced_mode').toggleClass('btn-inverse');
     var current = jQuery('#advanced_mode').text();
@@ -110,6 +128,7 @@ jQuery(document).ready(function() {
     init_form('#exchange_form', handle_exchange_form);
 
     jQuery("#advanced_mode").click(handle_advanced_mode_btn);
+    jQuery("#new_message_stop").click(handle_stop_publisher_btn);
     jQuery('#import').click(handle_import_btn);
     jQuery('#export').click(handle_export_btn);
 

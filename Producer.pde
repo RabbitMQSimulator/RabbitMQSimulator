@@ -1,5 +1,7 @@
 class Producer extends Node implements IConnectable {
     int type = PRODUCER;
+    int intervalId = null;
+    int seconds = 0;
     Message msg = null;
 
     Producer(String name, float x, float y) {
@@ -26,9 +28,25 @@ class Producer extends Node implements IConnectable {
         }
     }
 
+    void setIntervalId(int interval, int seconds) {
+        intervalId = interval;
+        intervalSeconds = seconds;
+    }
+
+    void stopPublisher() {
+        clearInterval(this.intervalId);
+    }
+
     void mouseClicked() {
         reset_form("#new_message_form");
         jQuery("#new_message_producer_id").val(this.label);
+
+        if (intervalId != null) {
+            jQuery("#new_message_stop").removeAttr('disabled');
+        } else {
+            jQuery("#new_message_stop").attr('disabled', 'disabled');
+        }
+
         if (msg != null) {
             jQuery("#new_message_producer_payload").val(msg.payload);
             jQuery("#new_message_producer_routing_key").val(msg.routingKey);
