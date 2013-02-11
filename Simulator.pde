@@ -171,6 +171,10 @@ void toggleAdvancedMode(boolean mode) {
   advancedMode = mode;
 }
 
+void getAdvancedMode() {
+    return advancedMode;
+}
+
 Node changeNodeName(String oldName, String name) {
   Node n = findNode(oldName);
   n.changeName(name);

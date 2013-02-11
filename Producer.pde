@@ -1,7 +1,7 @@
 class Producer extends Node implements IConnectable {
     int type = PRODUCER;
     int intervalId = null;
-    int seconds = 0;
+    int intervalSeconds = 0;
     Message msg = null;
 
     Producer(String name, float x, float y) {
@@ -36,6 +36,7 @@ class Producer extends Node implements IConnectable {
     void stopPublisher() {
         clearInterval(intervalId);
         intervalId = null;
+        intervalSeconds = 0;
     }
 
     void mouseClicked() {

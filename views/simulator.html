@@ -7,6 +7,7 @@
             <button id="advanced_mode" class="btn btn-inverse">Advanced Mode</button>
             <button id="import" class="btn">Import</button>
             <button id="export" class="btn">Export</button>
+            <button id="export-player" class="btn">To Player</button>
           </div>
         </div>
       </div>
@@ -72,6 +73,18 @@
         <div class="span12">
           <h4>Message Log</h4>
           <div id="msg-log"></div>
+        </div>
+      </div>
+      <div id="player-modal" class="modal hide fade">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h3>JSON data for RabbitMQ Simulator Player</h3>
+        </div>
+        <div id="player-modal-code" class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <label class="checkbox" style="float: left;"><input id="pretty-print" type="checkbox">Pretty Print</label>
+          <button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
         </div>
       </div>
       <div class="row">

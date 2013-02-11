@@ -124,7 +124,7 @@ function handle_advanced_mode_btn() {
     jQuery('#advanced_mode').text(text);
 
     var pjs = getProcessing();
-    pjs.toggleAdvancedMode(current  == 'Advanced Mode');
+    pjs.toggleAdvancedMode(current == 'Advanced Mode');
 
     return false;
 }
@@ -139,16 +139,42 @@ function handle_export_btn() {
     return false;
 }
 
+function display_export_json() {
+    var exp = exportToPlayer(),
+        json_string; 
+
+    if (jQuery('#pretty-print').is(':checked')) {
+        json_string = JSON.stringify(exp, null, 2);
+    } else {
+        json_string = JSON.stringify(exp);
+    }
+
+    jQuery('#player-modal-code').html('<pre>' + json_string + '</pre>');
+}
+
+function handle_pretty_print_checkbox() {
+    display_export_json();
+}
+
+function handle_export_player_btn() {
+    display_export_json();
+    jQuery('#player-modal').modal('show');
+    return false;
+}
+
 jQuery(document).ready(function() {
     init_form('#new_message_form', handle_new_message_form);
     init_form('#bindings_form', handle_binding_form);
     init_form('#queue_form', handle_queue_form);
     init_form('#exchange_form', handle_exchange_form);
 
-    jQuery("#advanced_mode").click(handle_advanced_mode_btn);
     jQuery("#new_message_stop").click(handle_stop_publisher_btn);
+
+    jQuery("#advanced_mode").click(handle_advanced_mode_btn);
     jQuery('#import').click(handle_import_btn);
     jQuery('#export').click(handle_export_btn);
+    jQuery('#export-player').click(handle_export_player_btn);
+    jQuery('#pretty-print').change(handle_pretty_print_checkbox);
 
     jQuery('#binding_delete').click(handle_queue_unbind);
 });

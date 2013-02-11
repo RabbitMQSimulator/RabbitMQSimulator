@@ -39,6 +39,8 @@ bindJavascript();
 
 var EXCHANGE = 0;
 var QUEUE = 1;
+var PRODUCER = 2;
+var CONSUMER = 3;
 
 function newExchange(name, type) {
     return {
@@ -199,6 +201,64 @@ function postDefinitions() {
             displayResultMessage("Success");
         }
     });
+}
+
+function processPublish(node) {
+    if (node.outgoing.size() > 0) {
+        return node.outgoing.get(0).getLabel();   
+    } else {
+        return null;
+    }    
+}
+
+function processConsume(node) {
+    if (node.outgoing.size() > 0) {
+        return node.outgoing.get(0).getLabel();   
+    } else {
+        return null;
+    }
+}
+
+function exportToPlayer() {
+    var pjs = getProcessing();
+    var nodes = pjs.getNodes();
+    var toExport = {
+        exchanges: [],
+        queues: [],
+        bindings: [],
+        producers: [],
+        consumers: []
+    };
+
+    for (var i = 0; i < nodes.length; i++) {        
+        if (nodes[i] != null) {
+            var nodeName = nodes[i].getLabel();
+            var nodeType = pjs.nodeTypeToString(nodes[i].getType());
+            var nodeX = nodes[i].x;
+            var nodeY = nodes[i].y;            
+            switch(nodes[i].getType()) {
+                case EXCHANGE:
+                toExport["exchanges"].push({name: nodeName, type: nodes[i].getExchangeType(), x: nodeX, y: nodeY});
+                toExport["bindings"] = processBindings(pjs, nodeName, nodes[i].getAllBindings());
+                break;
+                case QUEUE:
+                toExport["queues"].push({name: nodeName, x: nodeX, y: nodeY});
+                break;
+                case PRODUCER:
+                toExport["producers"].push({name: nodeName, x: nodeX, y: nodeY, interval: nodes[i].intervalSeconds, publish: processPublish(nodes[i])});
+                break;
+                case CONSUMER:
+                toExport["consumers"].push({name: nodeName, x: nodeX, y: nodeY, consume: processConsume(nodes[i])});
+                break;
+                default:
+                console.log("ignoring: ", pjs.nodeTypeToString(nodes[i].getType()));
+            }
+        }
+    }
+
+    toExport.advanced_mode = pjs.getAdvancedMode();
+
+    return toExport;
 }
 
 function show_message(consumer_id, msg) {
