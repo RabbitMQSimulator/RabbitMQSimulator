@@ -111,7 +111,7 @@ function buildExport() {
             switch(nodes[i].getType()) {
                 case EXCHANGE:
                 toExport["exchanges"].push(newExchange(nodeName, nodes[i].getExchangeTypeString()));
-                toExport["bindings"] = processBindings(pjs, nodeName, nodes[i].getAllBindings());
+                toExport["bindings"] = toExport["bindings"].concat(processBindings(pjs, nodeName, nodes[i].getAllBindings()));
                 break;
                 case QUEUE:
                 toExport["queues"].push(newQueue(nodeName));
@@ -205,7 +205,13 @@ function postDefinitions() {
 
 function processPublish(node) {
     if (node.outgoing.size() > 0) {
-        return node.outgoing.get(0).getLabel();   
+        var payload = node.msg ? node.msg.payload : null;
+        var routingKey = node.msg ? node.msg.routingKey : null;
+        return {
+            to: node.outgoing.get(0).getLabel(), 
+            payload: payload,
+            routing_key: routingKey
+        };
     } else {
         return null;
     }    
@@ -239,7 +245,7 @@ function exportToPlayer() {
             switch(nodes[i].getType()) {
                 case EXCHANGE:
                 toExport["exchanges"].push({name: nodeName, type: nodes[i].getExchangeType(), x: nodeX, y: nodeY});
-                toExport["bindings"] = processBindings(pjs, nodeName, nodes[i].getAllBindings());
+                toExport["bindings"] = toExport["bindings"].concat(processBindings(pjs, nodeName, nodes[i].getAllBindings()));
                 break;
                 case QUEUE:
                 toExport["queues"].push({name: nodeName, x: nodeX, y: nodeY});
@@ -261,6 +267,60 @@ function exportToPlayer() {
     return toExport;
 }
 
+function loadIntoPlayer(data) {
+    var nodes = JSON.parse(data);
+    var pjs = getProcessing();
+    var imp_exchanges = {};
+    var imp_queues = {};
+    var imp_producers = {};
+    var imp_consumers = {};
+
+    jQuery.each(nodes["exchanges"], function(k, v) {
+        imp_exchanges[v["name"]] = pjs.addNodeByType(EXCHANGE, v["name"], v['x'], v['y']);
+        imp_exchanges[v["name"]].setExchangeType(v["type"]);
+    });
+
+    jQuery.each(nodes["queues"], function(k, v) {
+        imp_queues[v["name"]] = pjs.addNodeByType(QUEUE, v["name"], v['x'], v['y']);
+        pjs.bindToAnonExchange(imp_queues[v["name"]]);
+    });
+
+    jQuery.each(nodes["bindings"], function(k, v) {        
+        var destination = v.destination_type == "queue" ? imp_queues[v.destination] : imp_exchanges[v.destination];
+        var source = imp_exchanges[v.source];
+        var routing_key = v.routing_key;
+        var binding = pjs.addConnection(destination, source);
+        binding.updateBindingKey(routing_key);
+    });
+
+    jQuery.each(nodes['producers'], function(k, v) {
+        imp_producers[v["name"]] = pjs.addNodeByType(PRODUCER, v["name"], v['x'], v['y']);
+        if (v['publish']) {
+            var from = imp_producers[v['name']];
+            var to = imp_exchanges[v['publish']['to']];
+            pjs.addConnection(from, to);
+        }
+
+        if (v['interval'] > 0) {
+            var interval = setInterval(function () {
+                pjs.publishMessage(v['name'], v['publish']['payload'], v['publish']['routing_key']);
+            }, v['interval'] * 1000);
+            pjs.publishMessage(v['name'], v['publish']['payload'], v['publish']['routing_key']);
+        }
+    });
+
+    jQuery.each(nodes['consumers'], function(k, v) {
+        imp_consumers[v["name"]] = pjs.addNodeByType(CONSUMER, v["name"], v['x'], v['y']);
+        if (v['consume']) {
+            var from = imp_consumers[v['name']];
+            var to = imp_queues[v['consume']];
+            pjs.addConnection(from, to);
+        }
+    });
+
+    pjs.toggleAdvancedMode(nodes.advanced_mode);
+}
+
 function show_message(consumer_id, msg) {
     console.log(consumer_id + " got msg: " + msg);
     jQuery("#msg-log").append('<pre>Consumer: ' + consumer_id + ' got msg:  ' + msg  + '</pre>');
@@ -268,14 +328,14 @@ function show_message(consumer_id, msg) {
 }
 
 jQuery(document).ready(function() {
-   $(window).focus(function() {
+   jQuery(window).focus(function() {
        var pjs = getProcessing();
        if (pjs != null) {
            pjs.loop();
        }
    });
 
-   $(window).blur(function() {
+   jQuery(window).blur(function() {
        var pjs = getProcessing();
        if (pjs != null) {
            pjs.noLoop();
