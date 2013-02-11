@@ -46,6 +46,9 @@ static final String DEFAULT_BINDING_KEY = "binding key";
 
 static final int TOOLBARWIDTH = 60;
 
+static final int anonX = 150;
+static final int anonY = 20;
+
 color[] colors = new color[20];
 
 String[] exchangeTypes = new String[3];
@@ -85,7 +88,7 @@ void setup() {
   nodeTypes[ANON_EXCHANGE] = "anon_exchange";
 
   buildToolbar();
-  anonExchange = new AnonExchange("anon-exchange", 100, 20);
+  anonExchange = new AnonExchange("anon-exchange", anonX, anonY);
 }
 
 String nodeTypeToString(int type) {
