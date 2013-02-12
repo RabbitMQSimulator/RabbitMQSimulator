@@ -23,19 +23,9 @@ function getProcessing() {
     return Processing.getInstanceById("Simulator");
 }
 
-var bound = false;
-
-function bindJavascript() {
-    var pjs = getProcessing();
-    if(pjs!=null) {
-        pjs.bindJavascript(this);
-        bound = true;
-    }
-
-    if(!bound) setTimeout(bindJavascript, 250);
+function bindJavascript(pjs) {
+    pjs.bindJavascript(this);
 }
-
-bindJavascript();
 
 function newExchange(name, type) {
     return {
@@ -339,4 +329,6 @@ jQuery(document).ready(function() {
            pjs.noLoop();
        }
    });
+
+    withProcessing("Simulator", bindJavascript);
 });
