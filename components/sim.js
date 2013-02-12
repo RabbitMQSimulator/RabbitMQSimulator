@@ -259,8 +259,8 @@ function withProcessing() {
     }
 
     if (typeof withPTimeouts[id] == 'undefined') {
+        var the_args = Array.prototype.slice.call(arguments);
         withPTimeouts[id] = setTimeout(function () {
-            var the_args = Array.prototype.slice.call(arguments);
             withProcessing.apply(null, the_args);
         }, 250);
     }
