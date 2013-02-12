@@ -240,19 +240,28 @@ function exportToPlayer() {
     return toExport;
 }
 
-var withP = false;
+var withPTimeouts = {};
 
-function withProcessing(id, callback, data) {
+function withProcessing() {
+    var id = arguments[0];
+    var callback = arguments[1];
+    var args = Array.prototype.slice.call(arguments, 2);        
     var pjs = Processing.getInstanceById(id);
 
-    if(pjs != null) {
-        withP = true;
-        callback(pjs, data);
+    if (typeof withPTimeouts[id] != 'undefined') {
+        clearTimeout(withPTimeouts[id]);
     }
 
-    if (!withP) {
-        setTimeout(function () {
-            withProcessing(id, callback, data);
+    if(pjs != null) {
+        args.unshift(pjs);
+        callback.apply(null, args);
+        return;
+    }
+
+    if (typeof withPTimeouts[id] == 'undefined') {
+        withPTimeouts[id] = setTimeout(function () {
+            var the_args = Array.prototype.slice.call(arguments);
+            withProcessing.apply(null, the_args);
         }, 250);
     }
 }
