@@ -250,9 +250,25 @@ function exportToPlayer() {
     return toExport;
 }
 
-function loadIntoPlayer(data) {
+var withP = false;
+
+function withProcessing(id, callback, data) {
+    var pjs = Processing.getInstanceById(id);
+
+    if(pjs != null) {
+        withP = true;
+        callback(pjs, data);
+    }
+
+    if (!withP) {
+        setTimeout(function () {
+            withProcessing(id, callback, data);
+        }, 250);
+    }
+}
+
+function loadIntoPlayer(pjs, data) {
     var nodes = JSON.parse(data);
-    var pjs = getProcessing();
     var imp_exchanges = {};
     var imp_queues = {};
     var imp_producers = {};
