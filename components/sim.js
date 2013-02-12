@@ -329,20 +329,25 @@ function show_message(consumer_id, msg) {
     jQuery("#msg-log").scrollTop($("#msg-log")[0].scrollHeight);
 }
 
+function stopRendering(pjs) {
+    console.log("stopRendering");
+    pjs.stopRendering();    
+}
+
+function startRendering(pjs, pId) {
+    console.log("startRendering");
+    pjs.startRendering(pId);
+}
+
 jQuery(document).ready(function() {
    jQuery(window).focus(function() {
-       var pjs = getProcessing();
-       if (pjs != null) {
-           pjs.loop();
-       }
+       withProcessing("Simulator", startRendering, "Simulator");
    });
 
    jQuery(window).blur(function() {
-       var pjs = getProcessing();
-       if (pjs != null) {
-           pjs.noLoop();
-       }
+       withProcessing("Simulator", stopRendering);
    });
 
-    withProcessing("Simulator", bindJavascript);
+    // withProcessing("Simulator", setSketchId, "Simulator");
+    // withProcessing("Simulator", bindJavascript);
 });

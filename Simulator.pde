@@ -185,6 +185,36 @@ void getAdvancedMode() {
 void togglePlayerMode(boolean mode) {
     isPlayer = mode;
 }
+
+void stopRendering() {
+    noLoop();
+    for (int i = 0 ; i < nodeCount ; i++) {
+        if (nodes[i].type == PRODUCER) {
+            nodes[i].pausePublisher();
+        }
+    }
+}
+
+/**
+ * restoreProducers requires the sketch id to pass back to javascript
+ * hackish as hackish can be
+ */
+void startRendering(String pId) {
+    loop();
+    restoreProducers(pId);
+}
+
+void restoreProducers(String pId) {
+    for (int i = 0 ; i < nodeCount ; i++) {
+        if (nodes[i].type == PRODUCER && nodes[i].intervalSeconds > 0) {
+            if (nodes[i].msg != null) {
+                withProcessing2(pId, publishMsgWithInterval, nodes[i].intervalSeconds, nodes[i].getLabel(),
+                                nodes[i].msg.payload, nodes[i].msg.routingKey);
+            }
+        }
+    }
+}
+
 Node changeNodeName(String oldName, String name) {
   Node n = findNode(oldName);
   n.changeName(name);
