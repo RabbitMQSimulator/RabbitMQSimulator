@@ -53,12 +53,7 @@ function handle_new_message_form() {
         
     if (seconds > 0) {
         pjs.stopPublisher(uuid);
-
-        interval = setInterval(function () {
-            pjs.publishMessage(uuid, payload, routing_key);
-        }, seconds * 1000);
-
-        pjs.setProducerInterval(uuid, interval, seconds);
+        publishMsgWithInterval(pjs, seconds, uuid, payload, routing_key);
         enable_button('#new_message_stop');
     } else {
         disable_button('#new_message_stop');

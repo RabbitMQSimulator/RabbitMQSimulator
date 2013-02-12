@@ -257,6 +257,14 @@ function withProcessing(id, callback, data) {
     }
 }
 
+function publishMsgWithInterval(pjs, seconds, uuid, payload, routingKey) {
+    var interval = setInterval(function () {
+        pjs.publishMessage(uuid, payload, routingKey);
+    }, seconds * 1000);
+    pjs.publishMessage(uuid, payload, routingKey);
+    pjs.setProducerInterval(uuid, interval, seconds);
+}
+
 function loadIntoPlayer(pjs, data) {
     var nodes = JSON.parse(data);
     var imp_exchanges = {};
@@ -291,10 +299,7 @@ function loadIntoPlayer(pjs, data) {
         }
 
         if (v['interval'] > 0) {
-            var interval = setInterval(function () {
-                pjs.publishMessage(v['name'], v['publish']['payload'], v['publish']['routing_key']);
-            }, v['interval'] * 1000);
-            pjs.publishMessage(v['name'], v['publish']['payload'], v['publish']['routing_key']);
+            publishMsgWithInterval(pjs, v['interval'], v['name'], v['publish']['payload'], v['publish']['routing_key']);
         }
     });
 
