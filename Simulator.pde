@@ -1,3 +1,5 @@
+/* @pjs pauseOnBlur="true"; */
+
 Stage stage = new Stage();
 
 int nodeCount;
