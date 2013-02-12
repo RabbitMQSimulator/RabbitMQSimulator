@@ -34,9 +34,13 @@ class Producer extends Node implements IConnectable {
     }
 
     void stopPublisher() {
+        pausePublisher();
+        intervalSeconds = 0;
+    }
+
+    void pausePublisher() {
         clearInterval(intervalId);
         intervalId = null;
-        intervalSeconds = 0;
     }
 
     void mouseClicked() {
