@@ -18,6 +18,8 @@ AnonExchange anonExchange;
 // whether the anon exchange + bindings are displayed
 boolean advancedMode = false;
 
+boolean isPlayer = false;
+
 static final int WIDTH = 780;
 static final int HEIGHT = 410;
 
@@ -178,6 +180,9 @@ void getAdvancedMode() {
     return advancedMode;
 }
 
+void togglePlayerMode(boolean mode) {
+    isPlayer = mode;
+}
 Node changeNodeName(String oldName, String name) {
   Node n = findNode(oldName);
   n.changeName(name);
@@ -232,6 +237,17 @@ void removeBinding(int i) {
   edges.remove(e);
 }
 
+void drawToolbar() {
+  stroke(0);
+  strokeWeight(2);
+
+  line(TOOLBARWIDTH, 0, TOOLBARWIDTH, height);
+
+  for (int i = 0; i < toolbarItemsCount ; i++) {
+    toolbarItems[i].draw();
+  }
+}
+
 void draw() {
   background(255);
 
@@ -239,10 +255,9 @@ void draw() {
   strokeWeight(2);
   noFill();
   rect(0, 0, WIDTH, HEIGHT);
-  line(TOOLBARWIDTH, 0, TOOLBARWIDTH, height);
 
-  for (int i = 0; i < toolbarItemsCount ; i++) {
-    toolbarItems[i].draw();
+  if (!isPlayer) {
+      drawToolbar();
   }
 
   anonExchange.draw();
