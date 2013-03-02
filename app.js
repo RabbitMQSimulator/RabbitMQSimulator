@@ -81,5 +81,9 @@ app.get('/about', function (req, res) {
     res.render('about');
 });
 
+app.get('/player', function (req, res) {
+    res.render('player');
+});
+
 app.listen(3000);
 console.log('Listening on port 3000');
