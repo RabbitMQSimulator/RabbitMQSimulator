@@ -208,7 +208,7 @@ void restoreProducers(String pId) {
     for (int i = 0 ; i < nodeCount ; i++) {
         if (nodes[i].type == PRODUCER && nodes[i].intervalSeconds > 0) {
             if (nodes[i].msg != null) {
-                withProcessing2(pId, publishMsgWithInterval, nodes[i].intervalSeconds, nodes[i].getLabel(),
+                withProcessing(pId, publishMsgWithInterval, nodes[i].intervalSeconds, nodes[i].getLabel(),
                                 nodes[i].msg.payload, nodes[i].msg.routingKey);
             }
         }
