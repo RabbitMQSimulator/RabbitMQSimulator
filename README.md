@@ -8,7 +8,7 @@ Here's how a messaging topology represneted with the simulator looks like:
 
 ![Overview](https://raw.github.com/RabbitMQSimulator/RabbitMQSimulator/master/docs/overview.png "Overview")
 
-And you can see it in action in this Video: [https://vimeo.com/56986242](https://vimeo.com/56986242)
+And you can see it in action in this video: [https://vimeo.com/56986242](https://vimeo.com/56986242)
 
 ## Possible Uses ##
 
@@ -55,6 +55,6 @@ If you want to be able to **import/export** from RabbitMQ then a broker needs to
 - Fix login credentials for the RabbitMQ Management API.
 - …
 
-# Controbituions #
+# Contributions #
 
 Thank you for your interest in making a contribution of code to the RabbitMQ Simulator Project. If you are interested in contributing to this project please contact us at <mailto:contribute@tryrabbitmq.com>. Before making a contribution, whether it be via a pull request on Github or a code fragment or patch submitted by email or a public discussion group, we ask that you agree to the terms of the RabbitMQ Simulator Contributor Agreement. This Contributor Agreement provides that any code you contribute to the RabbitMQ Simulator project, will be jointly owned by VMware and the contributor.
