@@ -6,7 +6,7 @@ The idea is to be able to drag & drop components like _Exchanges_, _Queues_, _Pr
 
 Here's how a messaging topology represneted with the simulator looks like:
 
-![Overview](https://github.com/RabbitMQSimulator/RabbitMQSimulator/raw/master/doc/overview.png "Overview")
+![Overview](https://raw.github.com/RabbitMQSimulator/RabbitMQSimulator/master/docs/overview.png "Overview")
 
 And you can see it in action in this Video: [https://vimeo.com/56986242](https://vimeo.com/56986242)
 
