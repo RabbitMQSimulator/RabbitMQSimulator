@@ -339,15 +339,14 @@ function startRendering(pjs, pId) {
     pjs.startRendering(pId);
 }
 
-jQuery(document).ready(function() {
-   jQuery(window).focus(function() {
-       withProcessing("Simulator", startRendering, "Simulator");
-   });
+function initSimulator(id) {
+    jQuery(window).focus(function() {
+        withProcessing(id, startRendering, id);
+    });
+    
+    jQuery(window).blur(function() {
+        withProcessing(id, stopRendering);
+    });
 
-   jQuery(window).blur(function() {
-       withProcessing("Simulator", stopRendering);
-   });
-
-    // withProcessing("Simulator", setSketchId, "Simulator");
-    // withProcessing("Simulator", bindJavascript);
-});
+    // withProcessing(id, bindJavascript);
+}
