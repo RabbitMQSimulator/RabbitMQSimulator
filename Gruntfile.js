@@ -9,7 +9,7 @@ module.exports = function(grunt) {
             },
             processing: {
                 src: [
-                    '*.pde'
+                    'processing/*.pde'
                 ],
                 dest: 'web/js/Simulator.pde'
             }
@@ -24,4 +24,4 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
-}; 
+};
