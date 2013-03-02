@@ -38,7 +38,7 @@ cd RabbitMQSimulator
 npm install
 ```
 
-Once you have everything in place you can run the `node.js` by calling:
+Once you have everything in place you can run the `node.js` app by calling:
 
 ```bash
 node app.js
