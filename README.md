@@ -44,6 +44,8 @@ After the modules have been installed then run Grunt in order to build the Simul
 grunt
 ```
 
+If you don't have Grunt installed as a CLI tool then follow the instructions here: [http://gruntjs.com/getting-started](http://gruntjs.com/getting-started).
+
 Once you have everything in place you can run the `node.js` app by calling:
 
 ```bash
