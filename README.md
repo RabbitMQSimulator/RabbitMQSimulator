@@ -38,6 +38,12 @@ cd RabbitMQSimulator
 npm install
 ```
 
+After the modules have been installed then run Grunt in order to build the Simulator files. Type the following command inside the Simulator folder:
+
+```bash
+grunt
+```
+
 Once you have everything in place you can run the `node.js` app by calling:
 
 ```bash
