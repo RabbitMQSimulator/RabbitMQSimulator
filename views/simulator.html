@@ -1,13 +1,15 @@
 <% layout('layout') -%>
       <h1>RabbitMQ Simulator</h1>
-      <p>Use the drawing area below to represent your messaging topology.</p>
+      <p>Use the drawing area below to represent your messaging topology.  Drag messaging elements from the toolbox on the left to the canvas.  Hold the ALT key, then click and drag on a source node to connect it to a destination node.</p>
       <div class="row">
         <div id="btn-toolbar" class="btn-toolbar span8" style="margin-left: 40px;">
           <div class="btn-group">
             <button id="advanced_mode" class="btn btn-inverse">Advanced Mode</button>
+            <% if(typeof isCF != 'undefined' && !isCF) { %>
             <button id="import" class="btn">Import</button>
             <button id="export" class="btn">Export</button>
             <button id="export-player" class="btn">To Player</button>
+            <% } %>
           </div>
         </div>
       </div>
