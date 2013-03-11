@@ -86,6 +86,6 @@ abstract class Node {
     // draw node text
     fill (0);
     textAlign(CENTER, CENTER);
-    text(label, x, y);
+    text(label, x, y+20);
   }
 }
