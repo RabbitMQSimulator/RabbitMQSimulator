@@ -101,9 +101,9 @@ String nodeTypeToString(int type) {
 
 void buildToolbar() {
   addToolbarItem(EXCHANGE, "exchange", 30, 20);
-  addToolbarItem(QUEUE, "queue", 30, 50);
-  addToolbarItem(PRODUCER, "producer", 30, 80);
-  addToolbarItem(CONSUMER, "consumer", 30, 110);
+  addToolbarItem(QUEUE, "queue", 30, 60);
+  addToolbarItem(PRODUCER, "producer", 30, 100);
+  addToolbarItem(CONSUMER, "consumer", 30, 140);
 }
 
 Nodes[] getNodes() {
