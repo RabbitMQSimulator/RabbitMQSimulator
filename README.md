@@ -58,7 +58,7 @@ If you want to be able to **import/export** from RabbitMQ then a broker needs to
 
 # Using the Simulator #
 
-Once you accessed the simulator from [http:localhost:3000](http:localhost:3000) you can drag elements into the white canvas. To interconnect them simply hold _alt_ while dragging from the connection source to the target. 
+Once you accessed the simulator from [http:localhost:3000](http:localhost:3000) you can drag elements into the white canvas. To interconnect them simply hold _alt_ or _shift_ while dragging from the connection source to the target. 
 
 You can click on the different elements in order to change names, routing keys and so on. 
 
