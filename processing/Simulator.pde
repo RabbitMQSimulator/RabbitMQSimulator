@@ -101,9 +101,9 @@ String nodeTypeToString(int type) {
 
 void buildToolbar() {
   addToolbarItem(EXCHANGE, "exchange", 30, 20);
-  addToolbarItem(QUEUE, "queue", 30, 50);
-  addToolbarItem(PRODUCER, "producer", 30, 80);
-  addToolbarItem(CONSUMER, "consumer", 30, 110);
+  addToolbarItem(QUEUE, "queue", 30, 60);
+  addToolbarItem(PRODUCER, "producer", 30, 100);
+  addToolbarItem(CONSUMER, "consumer", 30, 140);
 }
 
 Nodes[] getNodes() {
@@ -246,6 +246,16 @@ void editExchange(String oldName, String name, int type) {
 void publishMessage(String uuid, String payload, String routingKey) {
   Producer n = (Producer) findNode(uuid);
   n.publishMessage(payload, routingKey);
+}
+
+void editProducer(String uuid, String name) {
+    Producer n = (Producer) findNode(uuid);
+    n.updateName(name);
+}
+
+void editConsumer(String uuid, String name) {
+    Consumer n = (Consumer) findNode(uuid);
+    n.updateName(name);
 }
 
 void setProducerInterval(String uuid, int intervalId, int seconds) {
