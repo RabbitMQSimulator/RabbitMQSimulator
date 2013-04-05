@@ -17,15 +17,19 @@ function init_form(id, submit_callback) {
     jQuery(id).submit(submit_callback);
 }
 
-function show_form(id) {
+function show_form() {
+    if (arguments.length == 0) return;
+
+    ids = Array.prototype.slice.call(arguments);
+
     jQuery("#inspector-msg").addClass("hidden");
     jQuery('form').each(function (i, el) {
         var el =  jQuery(el);
-        if ('#' + el.attr('id') == id) {
+        if (ids.indexOf('#' + el.attr('id')) != -1) {
             el.removeClass('hidden');
         } else {
             if (!el.hasClass('hidden')) {
-                el.addClass('hidden');                
+                el.addClass('hidden');
             }
         }
     });
