@@ -2,7 +2,9 @@ var express = require('express');
 var http = require("http");
 var engine = require('ejs-locals');
 var app = express();
-var isCF = typeof(process.env.VCAP_APP_HOST) !== 'undefined';
+
+// TODO instead of using VCAP_APP_HOST it should use an ENV var.
+var expImpEnabled = typeof(process.env.VCAP_APP_HOST) !== 'undefined';
 
 app.set('mgmt-user', 'guest');
 app.set('mgmt-pass', 'guest');
@@ -75,7 +77,7 @@ app.post('/definitions', function (req, res) {
 });
 
 app.get('/', function (req, res) {
-    res.render('simulator', {isCF:isCF});
+    res.render('simulator', {expImpEnabled: expImpEnabled});
 });
 
 app.get('/about', function (req, res) {
