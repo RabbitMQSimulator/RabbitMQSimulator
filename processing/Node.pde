@@ -83,11 +83,6 @@ abstract class Node {
     //draw node
     ellipse(x, y, this.radii * 2, this.radii * 2);
     
-    // draw node text
-    fill (0);
-    textAlign(CENTER, CENTER);
-    text(label, x, y+20);
-    
     drawLabel();
   }
   

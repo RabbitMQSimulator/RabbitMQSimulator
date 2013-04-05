@@ -474,11 +474,6 @@ abstract class Node {
     //draw node
     ellipse(x, y, this.radii * 2, this.radii * 2);
     
-    // draw node text
-    fill (0);
-    textAlign(CENTER, CENTER);
-    text(label, x, y+20);
-    
     drawLabel();
   }
   
@@ -543,7 +538,7 @@ class Producer extends Node implements IConnectable {
         fill (0);
         textAlign(CENTER, CENTER);
         String l = name == null ? label : name;
-        text(l, x, y);
+        text(l, x, y+20);
     }
 
     void mouseClicked() {
