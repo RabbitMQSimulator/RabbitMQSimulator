@@ -54,6 +54,15 @@ function handle_edit_producer_form() {
     return false;
 }
 
+function handle_edit_consumer_form() {
+    console.log('handle_edit_consumer_form');
+    var uuid = jQuery('#edit_consumer_id').val();
+    var name = jQuery('#edit_consumer_name').val();
+    var pjs = getProcessing();
+    pjs.editConsumer(uuid, name);
+    return false;
+}
+
 function handle_new_message_form() {
     console.log('handle_new_message_form');
     var uuid = jQuery('#new_message_producer_id').val();
@@ -172,6 +181,7 @@ function handle_export_player_btn() {
 
 jQuery(document).ready(function() {
     init_form('#edit_producer_form', handle_edit_producer_form);
+    init_form('#edit_consumer_form', handle_edit_consumer_form);
     init_form('#new_message_form', handle_new_message_form);
     init_form('#bindings_form', handle_binding_form);
     init_form('#queue_form', handle_queue_form);

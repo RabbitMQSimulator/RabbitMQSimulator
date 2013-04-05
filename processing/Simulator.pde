@@ -253,6 +253,11 @@ void editProducer(String uuid, String name) {
     n.updateName(name);
 }
 
+void editConsumer(String uuid, String name) {
+    Consumer n = (Consumer) findNode(uuid);
+    n.updateName(name);
+}
+
 void setProducerInterval(String uuid, int intervalId, int seconds) {
   Producer n = (Producer) findNode(uuid);
   n.setIntervalId(intervalId, seconds);
