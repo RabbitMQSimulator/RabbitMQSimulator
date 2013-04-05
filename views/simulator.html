@@ -26,6 +26,14 @@
           <div id="inspector-msg">
             <p>Click on an element inside the drawing area to display its properties or perform actions with it.</p>
           </div>
+          <form id="edit_producer_form" class="hidden">
+            <fieldset>
+              <legend>Edit Producer</legend>
+              <input id="edit_producer_id" type="hidden" name="edit_producer_id">
+               <input id="edit_producer_name" name="name" type="text" placeholder="name">
+              <button id="edit_producer_change" type="submit" class="btn btn-primary">Edit</button>
+            </fieldset>
+          </form>
           <form id="new_message_form" class="hidden">
             <fieldset>
               <legend>New Message</legend>
