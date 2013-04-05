@@ -87,5 +87,13 @@ abstract class Node {
     fill (0);
     textAlign(CENTER, CENTER);
     text(label, x, y+20);
+    
+    drawLabel();
+  }
+  
+  void drawLabel() {
+      fill (0);
+      textAlign(CENTER, CENTER);
+      text(getLabel(), x, y+20);
   }
 }

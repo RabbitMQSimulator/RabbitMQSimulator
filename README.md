@@ -38,14 +38,6 @@ cd RabbitMQSimulator
 npm install
 ```
 
-After the modules have been installed then run Grunt in order to build the Simulator files. Type the following command inside the Simulator folder:
-
-```bash
-grunt
-```
-
-If you don't have Grunt installed as a CLI tool then follow the instructions here: [http://gruntjs.com/getting-started](http://gruntjs.com/getting-started).
-
 Once you have everything in place you can run the `node.js` app by calling:
 
 ```bash
@@ -69,6 +61,16 @@ The _Advanced Mode_ button will let you see bindings to the _Default_ or _Anon E
 The _Export_ and _Import_ buttons are used to save/load configuration from RabbitMQ.
 
 The _To Player_ functionality is currently in development and therefore not documented.
+
+# Developing the Simulator #
+
+The file `web/js/Simulator.pde` and the file `web/js/scripts.js` are built using Grunt. To build them type the following command inside the Simulator folder:
+
+```bash
+grunt
+```
+
+If you don't have Grunt installed as a CLI tool then follow the instructions here: [http://gruntjs.com/getting-started](http://gruntjs.com/getting-started).
 
 # TODO #
 

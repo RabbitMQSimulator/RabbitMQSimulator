@@ -17,15 +17,19 @@ function init_form(id, submit_callback) {
     jQuery(id).submit(submit_callback);
 }
 
-function show_form(id) {
+function show_form() {
+    if (arguments.length == 0) return;
+
+    ids = Array.prototype.slice.call(arguments);
+
     jQuery("#inspector-msg").addClass("hidden");
     jQuery('form').each(function (i, el) {
         var el =  jQuery(el);
-        if ('#' + el.attr('id') == id) {
+        if (ids.indexOf('#' + el.attr('id')) != -1) {
             el.removeClass('hidden');
         } else {
             if (!el.hasClass('hidden')) {
-                el.addClass('hidden');                
+                el.addClass('hidden');
             }
         }
     });
@@ -39,6 +43,24 @@ function disable_button(selector) {
 function enable_button(selector) {
     jQuery(selector).removeAttr('disabled');
     jQuery(selector).removeClass('disabled');
+}
+
+function handle_edit_producer_form() {
+    console.log('handle_edit_producer_form');
+    var uuid = jQuery('#edit_producer_id').val();
+    var name = jQuery('#edit_producer_name').val();    
+    var pjs = getProcessing();
+    pjs.editProducer(uuid, name);
+    return false;
+}
+
+function handle_edit_consumer_form() {
+    console.log('handle_edit_consumer_form');
+    var uuid = jQuery('#edit_consumer_id').val();
+    var name = jQuery('#edit_consumer_name').val();
+    var pjs = getProcessing();
+    pjs.editConsumer(uuid, name);
+    return false;
 }
 
 function handle_new_message_form() {
@@ -158,6 +180,8 @@ function handle_export_player_btn() {
 }
 
 jQuery(document).ready(function() {
+    init_form('#edit_producer_form', handle_edit_producer_form);
+    init_form('#edit_consumer_form', handle_edit_consumer_form);
     init_form('#new_message_form', handle_new_message_form);
     init_form('#bindings_form', handle_binding_form);
     init_form('#queue_form', handle_queue_form);

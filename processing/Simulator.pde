@@ -248,6 +248,16 @@ void publishMessage(String uuid, String payload, String routingKey) {
   n.publishMessage(payload, routingKey);
 }
 
+void editProducer(String uuid, String name) {
+    Producer n = (Producer) findNode(uuid);
+    n.updateName(name);
+}
+
+void editConsumer(String uuid, String name) {
+    Consumer n = (Consumer) findNode(uuid);
+    n.updateName(name);
+}
+
 void setProducerInterval(String uuid, int intervalId, int seconds) {
   Producer n = (Producer) findNode(uuid);
   n.setIntervalId(intervalId, seconds);
