@@ -52,7 +52,7 @@ class Producer extends Node implements IConnectable {
         fill (0);
         textAlign(CENTER, CENTER);
         String l = name == null ? label : name;
-        text(l, x, y+20);
+        text(l, x, y+labelPadding);
     }
 
     void mouseClicked() {

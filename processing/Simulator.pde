@@ -27,6 +27,7 @@ static final int HEIGHT = 410;
 
 static final int edgeStroke = 2;
 static final int nodeStroke = 2;
+static final int labelPadding = 20;
 
 static final color nodeColor   = #F0C070;
 static final color selectColor = #FF3030;

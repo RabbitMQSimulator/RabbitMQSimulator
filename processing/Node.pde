@@ -89,6 +89,6 @@ abstract class Node {
   void drawLabel() {
       fill (0);
       textAlign(CENTER, CENTER);
-      text(getLabel(), x, y+20);
+      text(getLabel(), x, y+labelPadding);
   }
 }

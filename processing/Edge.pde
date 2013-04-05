@@ -67,7 +67,7 @@ class Edge {
     if (from.getType() == QUEUE || from.getType() == EXCHANGE) {
       fill (0);
       textAlign(CENTER, CENTER);
-      text(bindingKeyLabel, middleX(), middleY()+20);
+      text(bindingKeyLabel, middleX(), middleY()+labelPadding);
     }
   }
   

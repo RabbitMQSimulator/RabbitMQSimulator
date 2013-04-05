@@ -100,7 +100,7 @@ class Consumer extends Node implements IConnectable {
       fill (0);
       textAlign(CENTER, CENTER);
       String l = name == null ? label : name;
-      text(l, x, y+20);
+      text(l, x, y+labelPadding);
   }
 
   void mouseClicked() {
@@ -187,7 +187,7 @@ class Edge {
     if (from.getType() == QUEUE || from.getType() == EXCHANGE) {
       fill (0);
       textAlign(CENTER, CENTER);
-      text(bindingKeyLabel, middleX(), middleY()+20);
+      text(bindingKeyLabel, middleX(), middleY()+labelPadding);
     }
   }
   
@@ -480,7 +480,7 @@ abstract class Node {
   void drawLabel() {
       fill (0);
       textAlign(CENTER, CENTER);
-      text(getLabel(), x, y+20);
+      text(getLabel(), x, y+labelPadding);
   }
 }
 
@@ -538,7 +538,7 @@ class Producer extends Node implements IConnectable {
         fill (0);
         textAlign(CENTER, CENTER);
         String l = name == null ? label : name;
-        text(l, x, y+20);
+        text(l, x, y+labelPadding);
     }
 
     void mouseClicked() {
@@ -691,6 +691,7 @@ static final int HEIGHT = 410;
 
 static final int edgeStroke = 2;
 static final int nodeStroke = 2;
+static final int labelPadding = 20;
 
 static final color nodeColor   = #F0C070;
 static final color selectColor = #FF3030;
@@ -1258,7 +1259,7 @@ class ToolbarItem {
     // draw node text
     fill (0);
     textAlign(CENTER, CENTER);
-    text(label, x, y+20);
+    text(label, x, y+labelPadding);
   }
 }
 
