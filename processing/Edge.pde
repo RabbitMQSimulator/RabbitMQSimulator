@@ -64,7 +64,7 @@ class Edge {
     drawArrowHead();
     
     // draw node text
-    if (from.getType() == QUEUE || from.getType() == EXCHANGE) {
+    if ((from.getType() == QUEUE || from.getType() == EXCHANGE) && to.getExchangeType() != FANOUT) {
       fill (0);
       textAlign(CENTER, CENTER);
       text(bindingKeyLabel, middleX(), middleY()+labelPadding);
