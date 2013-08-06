@@ -26,7 +26,7 @@ class TNode {
 class TrieST<Value> {
   TNode root;
   int size = 0;
-  int itemCount = 0;
+  int itemCnt = 0;
   
   ArrayList getValue(String aKey) {
     String[] words = split(aKey, ".");
@@ -76,7 +76,7 @@ class TrieST<Value> {
       
       if (!x.val.contains(val)) {
         x.val.add(val);
-        itemCount++;
+        itemCnt++;
       }
       
       return x;
@@ -93,7 +93,7 @@ class TrieST<Value> {
   }
   
   int itemCount() {
-    return itemCount;
+    return itemCnt;
   }
   
   ArrayList keys() {
@@ -235,6 +235,7 @@ class TrieST<Value> {
     if (d == words.length) {
       // Removes the destination from the ArrayList
       x.val.remove(val);
+      itemCnt--;
       
       // if the ArrayList is empty then we reset it to null
       if (x.val.isEmpty()) {
