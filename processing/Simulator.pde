@@ -369,13 +369,13 @@ void mouseClicked() {
 void mousePressed() {
   from = nodeBelowMouse();
 
-  if (from != null && altKeyPressed() && from.canStartConnection()) {
+  if (from != null && altOrShiftKeyPressed() && from.canStartConnection()) {
     tmpEdge = new TmpEdge(from, mouseX, mouseY, edgeColor);
   }
 }
 
-boolean altKeyPressed() {
-  return keyPressed && key == CODED && keyCode == ALT;
+boolean altOrShiftKeyPressed() {
+  return keyPressed && key == CODED && (keyCode == ALT || keyCode == SHIFT);
 }
 
 void mouseDragged() {
