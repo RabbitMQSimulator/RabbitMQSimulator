@@ -1,15 +1,17 @@
 class ToolbarItem {
   float x, y;
   int type;
+  int radii;
   String label;
   color nodeColor;
   
   ToolbarItem(int type, String label, float x, float y) {
     this.x = x;
     this.y = y;
+    this.radii = 10;
     this.type = type;
     this.label = label;
-    nodeColor = colors[type];
+    this.nodeColor = colors[type];
   }
   
   boolean isBelowMouse() {
@@ -25,12 +27,13 @@ class ToolbarItem {
   }
   
   void draw() {
-    fill(this.nodeColor);
-    stroke(0);
-    strokeWeight(0.5);
-    
-    //draw node
-    ellipse(x, y, 20, 20);
+    switch(this.type) {
+      case EXCHANGE:
+        ExchangeFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, this.radii, 3);
+        break;
+      default:
+        NodeFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, this.radii);
+    }
     
     // draw node text
     fill (0);

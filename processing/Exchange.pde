@@ -10,33 +10,8 @@ class Exchange extends Node implements IConnectable {
   }
   
   void draw() {
-    fill(this.nodeColor);
-    stroke(0);
-    strokeWeight(nodeStroke);
-    
-    //draw node
-    // ellipse(x, y, this.radii * 2, this.radii * 2);
-    console.log(bindings.itemCount());
-    polygon(initialSides + bindings.itemCount(), x, y, this.radii * 2, this.radii * 2, -PI / 2.0);
-    
+    ExchangeFigure.draw(this.x, this.y, this.nodeColor, 0, nodeStroke, this.radii, this.initialSides + this.bindings.itemCount());
     super.drawLabel();
-  }
-  
-  void polygon(int n, float cx, float cy, float w, float h, float startAngle) {
-    float angle = TWO_PI/ n;
-
-    /* The horizontal "radius" is one half the width;
-       the vertical "radius" is one half the height */
-    w = w / 2.0;
-    h = h / 2.0;
-
-    beginShape();
-    for (int i = 0; i < n; i++)
-    {
-      vertex(cx + w * cos(startAngle + angle * i),
-        cy + h * sin(startAngle + angle * i));
-    }
-    endShape(CLOSE);
   }
 
   int getType() {
