@@ -225,6 +225,7 @@ class Edge {
 }
 
 class Exchange extends Node implements IConnectable {
+  int initialSides = 3;
   int type = EXCHANGE;
   int exchangeType = DIRECT;
   TrieST<Node> bindings;
@@ -232,6 +233,11 @@ class Exchange extends Node implements IConnectable {
   Exchange(String name, float x, float y) {
     super(name, colors[EXCHANGE], x, y);
     bindings = new TrieST();
+  }
+  
+  void draw() {
+    ExchangeFigure.draw(this.x, this.y, this.nodeColor, 0, nodeStroke, this.radii, this.initialSides + this.bindings.itemCount());
+    super.drawLabel();
   }
 
   int getType() {
@@ -367,6 +373,32 @@ class Exchange extends Node implements IConnectable {
   }
 }
 
+static class ExchangeFigure
+{
+    static void draw(float x, float y, color nodeColor, int strk, int nodeStroke, int radii, int sides) {
+        fill(nodeColor);
+        stroke(strk);
+        strokeWeight(nodeStroke);
+        polygon(sides, x, y, radii * 2, radii * 2, -PI / 2.0);
+    }
+    
+    static void polygon(int n, float cx, float cy, float w, float h, float startAngle) {
+      float angle = TWO_PI/ n;
+
+      /* The horizontal "radius" is one half the width;
+         the vertical "radius" is one half the height */
+      w = w / 2.0;
+      h = h / 2.0;
+
+      beginShape();
+      for (int i = 0; i < n; i++)
+      {
+        vertex(cx + w * cos(startAngle + angle * i),
+          cy + h * sin(startAngle + angle * i));
+      }
+      endShape(CLOSE);
+    }
+}
 interface IConnectable {
   boolean accepts(Node n);
 }
@@ -467,13 +499,7 @@ abstract class Node {
   }
   
   void draw() {
-    fill(this.nodeColor);
-    stroke(0);
-    strokeWeight(nodeStroke);
-    
-    //draw node
-    ellipse(x, y, this.radii * 2, this.radii * 2);
-    
+    NodeFigure.draw(this.x, this.y, this.nodeColor, 0, nodeStroke, this.radii)
     drawLabel();
   }
   
@@ -484,6 +510,17 @@ abstract class Node {
   }
 }
 
+static class NodeFigure
+{
+    static void draw(float x, float y, color nodeColor, int strk, int nodeStroke, int radii) {
+        fill(nodeColor);
+        stroke(strk);
+        strokeWeight(nodeStroke);
+
+        //draw node
+        ellipse(x, y, radii * 2, radii * 2);
+    }
+}
 class Producer extends Node implements IConnectable {
     int type = PRODUCER;
     int intervalId = null;
@@ -1225,15 +1262,17 @@ class TmpEdge {
 class ToolbarItem {
   float x, y;
   int type;
+  int radii;
   String label;
   color nodeColor;
   
   ToolbarItem(int type, String label, float x, float y) {
     this.x = x;
     this.y = y;
+    this.radii = 10;
     this.type = type;
     this.label = label;
-    nodeColor = colors[type];
+    this.nodeColor = colors[type];
   }
   
   boolean isBelowMouse() {
@@ -1249,12 +1288,13 @@ class ToolbarItem {
   }
   
   void draw() {
-    fill(this.nodeColor);
-    stroke(0);
-    strokeWeight(0.5);
-    
-    //draw node
-    ellipse(x, y, 20, 20);
+    switch(this.type) {
+      case EXCHANGE:
+        ExchangeFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, this.radii, 3);
+        break;
+      default:
+        NodeFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, this.radii);
+    }
     
     // draw node text
     fill (0);
@@ -1358,7 +1398,7 @@ class TNode {
 class TrieST<Value> {
   TNode root;
   int size = 0;
-  int itemCount = 0;
+  int itemCnt = 0;
   
   ArrayList getValue(String aKey) {
     String[] words = split(aKey, ".");
@@ -1408,7 +1448,7 @@ class TrieST<Value> {
       
       if (!x.val.contains(val)) {
         x.val.add(val);
-        itemCount++;
+        itemCnt++;
       }
       
       return x;
@@ -1425,7 +1465,7 @@ class TrieST<Value> {
   }
   
   int itemCount() {
-    return itemCount;
+    return itemCnt;
   }
   
   ArrayList keys() {
@@ -1567,6 +1607,7 @@ class TrieST<Value> {
     if (d == words.length) {
       // Removes the destination from the ArrayList
       x.val.remove(val);
+      itemCnt--;
       
       // if the ArrayList is empty then we reset it to null
       if (x.val.isEmpty()) {
