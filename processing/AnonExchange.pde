@@ -1,4 +1,5 @@
 class AnonExchange extends Node {
+  int initialSides = 3;
   int type = ANON_EXCHANGE;
   int exchangeType = ANON;
   
@@ -39,6 +40,7 @@ class AnonExchange extends Node {
   
   boolean addBinding(Node n, String bindingKey) {
     bindings.put(bindingKey, n);
+    console.log(bindings);
     return true;
   }
   
@@ -69,7 +71,12 @@ class AnonExchange extends Node {
   
   void draw() {
     if (advancedMode) {
-      super.draw();
+      int sides = this.initialSides;
+      if (bindings) {
+          sides = this.initialSides + bindings.size();
+      }
+      ExchangeFigure.draw(this.x, this.y, this.nodeColor, 0, nodeStroke, this.radii, sides);
+      super.drawLabel();
     }
   }
 }
