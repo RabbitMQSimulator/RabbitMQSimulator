@@ -43,6 +43,7 @@ static final int ANON_EXCHANGE = 4;
 static final int DIRECT = 0;
 static final int FANOUT = 1;
 static final int TOPIC = 2;
+static final int ANON = 3;
 
 static final int SOURCE = 0;
 static final int DESTINATION = 1;
@@ -88,6 +89,7 @@ void setup() {
   exchangeTypes[DIRECT] = "direct";
   exchangeTypes[FANOUT] = "fanout";
   exchangeTypes[TOPIC] = "topic";
+  exchangeTypes[ANON] = "anon";
 
   nodeTypes[EXCHANGE] = "exchange";
   nodeTypes[QUEUE] = "queue";

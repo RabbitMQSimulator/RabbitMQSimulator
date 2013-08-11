@@ -1,5 +1,6 @@
 class AnonExchange extends Node {
   int type = ANON_EXCHANGE;
+  int exchangeType = ANON;
   
   AnonExchange(String name, float x, float y) {
     super(name, colors[ANON_EXCHANGE], x, y);
@@ -8,6 +9,14 @@ class AnonExchange extends Node {
   
   int getType() {
     return type;
+  }
+  
+  int getExchangeType() {
+    return exchangeType;
+  }
+  
+  int getExchangeTypeString() {
+    return exchangeTypes[exchangeType];
   }
   
   boolean accepts(Node n) {
