@@ -65,12 +65,13 @@ class Queue extends Node implements IConnectable {
   }
   
   void draw() {
-    super.draw();
+    QueueFigure.draw(this.x, this.y, this.nodeColor, 0, nodeStroke, Q_WIDTH, Q_HEIGHT, this.messages.size());
+    drawLabel();
     
     // draw queue depth text
     fill (0);
     textAlign(CENTER, CENTER);
-    text(str(messages.size()), x + radii + 5, y - radii - 5);
+    text("Msgs: " + str(messages.size()), x, y - radii - 5);
   }
   
   void mouseClicked() {

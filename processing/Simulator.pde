@@ -51,6 +51,9 @@ static final String DEFAULT_BINDING_KEY = "binding key";
 
 static final int TOOLBARWIDTH = 60;
 
+static final int Q_HEIGHT = 10;
+static final int Q_WIDTH = 20;
+
 static final int anonX = 150;
 static final int anonY = 20;
 

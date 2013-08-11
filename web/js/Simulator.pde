@@ -682,12 +682,13 @@ class Queue extends Node implements IConnectable {
   }
   
   void draw() {
-    super.draw();
+    QueueFigure.draw(this.x, this.y, this.nodeColor, 0, nodeStroke, Q_WIDTH, Q_HEIGHT, this.messages.size());
+    drawLabel();
     
     // draw queue depth text
     fill (0);
     textAlign(CENTER, CENTER);
-    text(str(messages.size()), x + radii + 5, y - radii - 5);
+    text("Msgs: " + str(messages.size()), x, y - radii - 5);
   }
   
   void mouseClicked() {
@@ -699,6 +700,17 @@ class Queue extends Node implements IConnectable {
   }
 }
 
+static class QueueFigure
+{
+    static void draw(float x, float y, color nodeColor, int strk, int nodeStroke, int w, int h, int msgs) {
+        fill(nodeColor);
+        stroke(strk);
+        strokeWeight(nodeStroke);
+        rectMode(CENTER);
+        rect(x, y, w, h, 2);
+        rectMode(CORNER);
+    }
+}
 /* @pjs pauseOnBlur="true"; */
 
 Stage stage = new Stage();
@@ -751,6 +763,9 @@ static final int DESTINATION = 1;
 static final String DEFAULT_BINDING_KEY = "binding key";
 
 static final int TOOLBARWIDTH = 60;
+
+static final int Q_HEIGHT = 10;
+static final int Q_WIDTH = 20;
 
 static final int anonX = 150;
 static final int anonY = 20;
@@ -1291,6 +1306,9 @@ class ToolbarItem {
     switch(this.type) {
       case EXCHANGE:
         ExchangeFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, this.radii, 3);
+        break;
+      case QUEUE:
+        QueueFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, Q_WIDTH, Q_HEIGHT, 0);
         break;
       default:
         NodeFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, this.radii);

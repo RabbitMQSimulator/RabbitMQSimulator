@@ -31,6 +31,9 @@ class ToolbarItem {
       case EXCHANGE:
         ExchangeFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, this.radii, 3);
         break;
+      case QUEUE:
+        QueueFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, Q_WIDTH, Q_HEIGHT, 0);
+        break;
       default:
         NodeFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, this.radii);
     }
