@@ -52,7 +52,7 @@ static final String DEFAULT_BINDING_KEY = "binding key";
 
 static final int TOOLBARWIDTH = 60;
 
-static final int Q_HEIGHT = 10;
+static final int Q_HEIGHT = 15;
 static final int Q_WIDTH = 20;
 
 static final int anonX = 150;
@@ -81,7 +81,7 @@ void setup() {
   smooth();
 
   colors[EXCHANGE] = #FF8408;
-  colors[QUEUE] = #0816FF;
+  colors[QUEUE] = #42C0FB;
   colors[PRODUCER] = #3F4031;
   colors[CONSUMER] = #E1FF08;
   colors[ANON_EXCHANGE] = #FFFFFF;
