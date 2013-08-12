@@ -40,7 +40,6 @@ class AnonExchange extends Node {
   
   boolean addBinding(Node n, String bindingKey) {
     bindings.put(bindingKey, n);
-    console.log(bindings);
     return true;
   }
   
@@ -82,7 +81,9 @@ class AnonExchange extends Node {
 }
 
 class Consumer extends Node implements IConnectable {
+  int size = 5;
   int type = CONSUMER;
+  float angle = -90;
   String name = null;
 
   Consumer(String label, float x, float y) {
@@ -91,6 +92,10 @@ class Consumer extends Node implements IConnectable {
 
   int getType() {
     return type;
+  }
+  
+  String getLabel() {
+    return name == null ? label : name;
   }
 
   void updateName(String name) {
@@ -110,13 +115,20 @@ class Consumer extends Node implements IConnectable {
         Message msg = transfer.getData();
         show_message(getLabel(), msg.getPayload());
     }
+    
+    rotateConsumer();
   }
-
-  void drawLabel() {
-      fill (0);
-      textAlign(CENTER, CENTER);
-      String l = name == null ? label : name;
-      text(l, x, y+labelPadding);
+  
+  void rotateConsumer() {
+      this.angle -= 45;
+      if (this.angle <= -360) {
+          this.angle = 0;
+      }
+  }
+  
+  void draw() {
+      ConsumerFigure.draw(this.x, this.y, this.nodeColor, 0, nodeStroke, this.radii, this.sides, this.angle);
+      drawLabel();
   }
 
   void mouseClicked() {
@@ -134,6 +146,45 @@ class Consumer extends Node implements IConnectable {
   }
 }
 
+static class ConsumerFigure
+{
+    static void draw(float cx, float cy, color nodeColor, int strk, int nodeStroke, float radius, int sides, float angle) {
+        fill(nodeColor);
+        stroke(strk);
+        strokeWeight(nodeStroke);
+        
+        ConsumerFigure.star(sides, cx, cy, radius*2, radius*2, radians(angle), 0.6);
+    }
+    
+    // based on http://processing.org/tutorials/anatomy/
+    static void star(int n, float cx, float cy, float w, float h, float startAngle, float proportion)
+    {
+        if (n > 2)
+        {
+            float angle = TWO_PI/ (2 *n);  // twice as many sides
+            float dw; // draw width
+            float dh; // draw height
+    
+            w = w / 2.0;
+            h = h / 2.0;
+    
+            beginShape();
+            for (int i = 0; i < 2 * n; i++)
+            {
+                dw = w;
+                dh = h;
+                if (i % 2 == 1) // for odd vertices, use short radius
+                {
+                    dw = w * proportion;
+                    dh = h * proportion;
+                }
+                vertex(cx + dw * cos(startAngle + angle * i),
+                cy + dh * sin(startAngle + angle * i));
+            }
+            endShape(CLOSE);
+        }
+    }
+}
 class Edge {
   Node from;
   Node to;
@@ -1342,6 +1393,9 @@ class ToolbarItem {
         break;
       case QUEUE:
         QueueFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, Q_WIDTH, Q_HEIGHT, 0);
+        break;
+      case CONSUMER:
+        ConsumerFigure.draw(this.x, this.y, this.nodeColor, 0, 0, this.radii, 5, -90);
         break;
       default:
         NodeFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, this.radii);

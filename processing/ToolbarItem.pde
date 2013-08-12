@@ -34,6 +34,9 @@ class ToolbarItem {
       case QUEUE:
         QueueFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, Q_WIDTH, Q_HEIGHT, 0);
         break;
+      case CONSUMER:
+        ConsumerFigure.draw(this.x, this.y, this.nodeColor, 0, 0, this.radii, 5, -90);
+        break;
       default:
         NodeFigure.draw(this.x, this.y, this.nodeColor, 0, 0.5, this.radii);
     }

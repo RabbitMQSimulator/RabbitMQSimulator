@@ -1,5 +1,7 @@
 class Consumer extends Node implements IConnectable {
+  int size = 5;
   int type = CONSUMER;
+  float angle = -90;
   String name = null;
 
   Consumer(String label, float x, float y) {
@@ -8,6 +10,10 @@ class Consumer extends Node implements IConnectable {
 
   int getType() {
     return type;
+  }
+  
+  String getLabel() {
+    return name == null ? label : name;
   }
 
   void updateName(String name) {
@@ -27,13 +33,20 @@ class Consumer extends Node implements IConnectable {
         Message msg = transfer.getData();
         show_message(getLabel(), msg.getPayload());
     }
+    
+    rotateConsumer();
   }
-
-  void drawLabel() {
-      fill (0);
-      textAlign(CENTER, CENTER);
-      String l = name == null ? label : name;
-      text(l, x, y+labelPadding);
+  
+  void rotateConsumer() {
+      this.angle -= 45;
+      if (this.angle <= -360) {
+          this.angle = 0;
+      }
+  }
+  
+  void draw() {
+      ConsumerFigure.draw(this.x, this.y, this.nodeColor, 0, nodeStroke, this.radii, this.sides, this.angle);
+      drawLabel();
   }
 
   void mouseClicked() {
