@@ -40,7 +40,6 @@ class AnonExchange extends Node {
   
   boolean addBinding(Node n, String bindingKey) {
     bindings.put(bindingKey, n);
-    console.log(bindings);
     return true;
   }
   
