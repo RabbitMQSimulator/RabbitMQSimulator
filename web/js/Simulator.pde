@@ -395,7 +395,7 @@ static class ExchangeFigure
         fill(nodeColor);
         stroke(strk);
         strokeWeight(nodeStroke);
-        polygon(sides, x, y, radii * 2, radii * 2, -PI / 2.0);
+        ExchangeFigure.polygon(sides, x, y, radii * 2, radii * 2, -PI / 2.0);
     }
     
     static void polygon(int n, float cx, float cy, float w, float h, float startAngle) {
@@ -726,6 +726,10 @@ static class QueueFigure
         rect(x, y, w, h, 2);
         rectMode(CORNER);
         
+        QueueFigure.drawMessages(msgs, x, y, w, h);
+    }
+    
+    static void drawMessages(int msgs, float x, float y, int w, int h) {
         strokeWeight(0.5);
         stroke(0);
         for (int i = 1; i <= msgs; i++) {

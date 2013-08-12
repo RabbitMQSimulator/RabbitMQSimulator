@@ -4,7 +4,7 @@ static class ExchangeFigure
         fill(nodeColor);
         stroke(strk);
         strokeWeight(nodeStroke);
-        polygon(sides, x, y, radii * 2, radii * 2, -PI / 2.0);
+        ExchangeFigure.polygon(sides, x, y, radii * 2, radii * 2, -PI / 2.0);
     }
     
     static void polygon(int n, float cx, float cy, float w, float h, float startAngle) {
