@@ -82,7 +82,7 @@ void setup() {
 
   colors[EXCHANGE] = #FF8408;
   colors[QUEUE] = #42C0FB;
-  colors[PRODUCER] = #3F4031;
+  colors[PRODUCER] = #8DE8D1;
   colors[CONSUMER] = #E1FF08;
   colors[ANON_EXCHANGE] = #FFFFFF;
 
