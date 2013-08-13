@@ -120,7 +120,7 @@ class Consumer extends Node implements IConnectable {
   }
   
   void rotateConsumer() {
-      this.angle += 0.05;
+      this.angle += 0.2;
   }
   
   void draw() {
