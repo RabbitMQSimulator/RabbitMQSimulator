@@ -1,7 +1,7 @@
 class Consumer extends Node implements IConnectable {
   int size = 5;
   int type = CONSUMER;
-  float angle = -90;
+  float angle = 0;
   String name = null;
 
   Consumer(String label, float x, float y) {
@@ -38,10 +38,7 @@ class Consumer extends Node implements IConnectable {
   }
   
   void rotateConsumer() {
-      this.angle -= 45;
-      if (this.angle <= -360) {
-          this.angle = 0;
-      }
+      this.angle += 0.05;
   }
   
   void draw() {

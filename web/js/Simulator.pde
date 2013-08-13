@@ -83,7 +83,7 @@ class AnonExchange extends Node {
 class Consumer extends Node implements IConnectable {
   int size = 5;
   int type = CONSUMER;
-  float angle = -90;
+  float angle = 0;
   String name = null;
 
   Consumer(String label, float x, float y) {
@@ -120,10 +120,7 @@ class Consumer extends Node implements IConnectable {
   }
   
   void rotateConsumer() {
-      this.angle -= 45;
-      if (this.angle <= -360) {
-          this.angle = 0;
-      }
+      this.angle += 0.05;
   }
   
   void draw() {
@@ -152,37 +149,23 @@ static class ConsumerFigure
         fill(nodeColor);
         stroke(strk);
         strokeWeight(nodeStroke);
-        
-        ConsumerFigure.star(sides, cx, cy, radius*2, radius*2, radians(angle), 0.6);
+        ConsumerFigure.gear(8, 8, 10, cx, cy, PI/32, angle);
     }
     
-    // based on http://processing.org/tutorials/anatomy/
-    static void star(int n, float cx, float cy, float w, float h, float startAngle, float proportion)
-    {
-        if (n > 2)
-        {
-            float angle = TWO_PI/ (2 *n);  // twice as many sides
-            float dw; // draw width
-            float dh; // draw height
-    
-            w = w / 2.0;
-            h = h / 2.0;
-    
-            beginShape();
-            for (int i = 0; i < 2 * n; i++)
-            {
-                dw = w;
-                dh = h;
-                if (i % 2 == 1) // for odd vertices, use short radius
-                {
-                    dw = w * proportion;
-                    dh = h * proportion;
-                }
-                vertex(cx + dw * cos(startAngle + angle * i),
-                cy + dh * sin(startAngle + angle * i));
-            }
-            endShape(CLOSE);
+    // based on http://www.local-guru.net/blog/2009/9/3/processing-gears
+    static void gear( int tooth, int ri, int ro, float cx, float cy, float o, float angle) {
+        pushMatrix();
+        translate(cx, cy);
+        rotate(angle);
+        beginShape();
+        for( int i = 0; i < tooth; i++ ) {
+            vertex(cos(2*PI/tooth * i - o ) * ri, sin(2*PI/tooth*i - o) * ri);
+            vertex(cos(2*PI/tooth * i + o ) * ro, sin(2*PI/tooth*i + o) * ro);
+            vertex(cos(2*PI/(2*tooth) * (2*i+1) - o) * ro, sin(2*PI/(2*tooth)*(2*i+1) - o) * ro);
+            vertex(cos(2*PI/(2*tooth) * (i*2+1) + o) * ri, sin(2*PI/(2*tooth)*(2*i+1) + o) * ri);
         }
+        endShape(CLOSE);
+        popMatrix();
     }
 }
 class Edge {
