@@ -75,7 +75,7 @@ function handle_new_message_form() {
         
     if (seconds > 0) {
         pjs.stopPublisher(uuid);
-        publishMsgWithInterval(pjs, seconds, uuid, payload, routing_key);
+        publishMsgWithInterval(pjs, seconds, uuid, payload, routing_key, !PLAYER);
         enable_button('#new_message_stop');
     } else {
         disable_button('#new_message_stop');

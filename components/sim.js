@@ -1,3 +1,5 @@
+var PLAYER = true;
+
 // from http://stackoverflow.com/a/105074/342013
 function GUID () {
     var S4 = function () {        
@@ -266,11 +268,13 @@ function withProcessing() {
     }
 }
 
-function publishMsgWithInterval(pjs, seconds, uuid, payload, routingKey) {
+function publishMsgWithInterval(pjs, seconds, uuid, payload, routingKey, isPlayer) {
     var interval = setInterval(function () {
         pjs.publishMessage(uuid, payload, routingKey);
     }, seconds * 1000);
-    pjs.publishMessage(uuid, payload, routingKey);
+    if (isPlayer) {
+        pjs.publishMessage(uuid, payload, routingKey);
+    }
     pjs.setProducerInterval(uuid, interval, seconds);
 }
 
@@ -308,7 +312,7 @@ function loadIntoPlayer(pjs, data) {
         }
 
         if (v['interval'] > 0) {
-            publishMsgWithInterval(pjs, v['interval'], v['name'], v['publish']['payload'], v['publish']['routing_key']);
+            publishMsgWithInterval(pjs, v['interval'], v['name'], v['publish']['payload'], v['publish']['routing_key'], PLAYER);
         }
     });
 
