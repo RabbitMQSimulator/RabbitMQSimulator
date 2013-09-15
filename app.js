@@ -5,6 +5,7 @@ var app = express();
 
 // TODO instead of using VCAP_APP_HOST it should use an ENV var.
 var expImpEnabled = typeof(process.env.VCAP_APP_HOST) !== 'undefined';
+var playerEnabled = true;
 
 app.set('mgmt-user', 'guest');
 app.set('mgmt-pass', 'guest');
@@ -77,7 +78,7 @@ app.post('/definitions', function (req, res) {
 });
 
 app.get('/', function (req, res) {
-    res.render('simulator', {expImpEnabled: expImpEnabled});
+    res.render('simulator', {expImpEnabled: expImpEnabled, playerEnabled: playerEnabled});
 });
 
 app.get('/about.html', function (req, res) {
