@@ -80,11 +80,11 @@ app.get('/', function (req, res) {
     res.render('simulator', {expImpEnabled: expImpEnabled});
 });
 
-app.get('/about', function (req, res) {
+app.get('/about.html', function (req, res) {
     res.render('about');
 });
 
-app.get('/player', function (req, res) {
+app.get('/player.html', function (req, res) {
     res.render('player');
 });
 
