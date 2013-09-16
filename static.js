@@ -6,7 +6,11 @@ var staticPath = __dirname + '/static';
 
 function dumpHTML(page, dest) {
     engine(viewPath + '/' + page, {settings: {'view engine': 'html', 'views': __dirname + '/views'}}, function(err, template) {
-        fs.writeFileSync(staticPath + '/' + dest, template);
+        if (err) {
+            console.log(err);
+        } else {
+            fs.writeFileSync(staticPath + '/' + dest, template);
+        }
     });
 }
 
