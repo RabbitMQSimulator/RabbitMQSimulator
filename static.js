@@ -1,7 +1,4 @@
-var express = require('express');
-var http = require("http");
 var engine = require('ejs-locals');
-var app = express();
 var fs = require('fs');
 
 var viewPath =  __dirname + '/views';
