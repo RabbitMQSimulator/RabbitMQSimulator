@@ -79,6 +79,12 @@
     <script type="text/javascript">
       jQuery(document).ready(function() {
           initSimulator("Simulator");
+          <% if(typeof playerConfiguration != 'undefined') { %>
+          var simulator = '<%- playerConfiguration %>';
+          withProcessing('Simulator', function (pjs, data) {
+              loadIntoPlayer(pjs, data);
+          }, simulator);
+          <% } %>
       });
     </script>
   </body>

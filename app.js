@@ -78,7 +78,10 @@ app.post('/definitions', function (req, res) {
 });
 
 app.get('/', function (req, res) {
-    res.render('simulator', {expImpEnabled: expImpEnabled, playerEnabled: playerEnabled});
+    res.render(
+        'simulator',
+        {expImpEnabled: expImpEnabled, playerEnabled: playerEnabled, playerConfiguration: req.query.conf}
+    );
 });
 
 app.get('/about.html', function (req, res) {
