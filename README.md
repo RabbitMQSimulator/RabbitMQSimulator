@@ -30,6 +30,14 @@ The simulator currently implements the following features:
 
 # Running the Simulator #
 
+There are many ways to run the Simulator: you can do it either as a bunch of static HTML/JS/CSS files, or with a node.js server. The node.js server way will allow you to import/export data from RabbitMQ.
+
+## Running as static HTML/JS/CSS files ##
+
+Just open the file `build/index.html` in your browser and you will have access to the simulator.
+
+## Running from node.js ##
+
 This project depends on _node.js_ and various node libraries for building the source files, therefore you will need to install node on your machine if you want to run it.
 
 ```bash
@@ -74,7 +82,6 @@ If you don't have Grunt installed as a CLI tool then follow the instructions her
 
 # TODO #
 
-- Improve components visual representation. Now they can only be distinguished by color. They should have a different shape.
 - Improve form usability for the different components.
 - Fix login credentials for the RabbitMQ Management API.
 - Better placement algorithm when importing data from RabbitMQ.
