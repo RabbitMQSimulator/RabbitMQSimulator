@@ -1,0 +1,25 @@
+form legend {
+    font-size: 14px !important;
+}
+
+form input, form button, form select {
+    font-size: 12px !important;
+}
+
+#forms {
+    border-style: solid;
+    border-width: thin;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+#msg-log {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    height: 80px;
+    overflow: scroll;
+}
+
+#msg-log pre {
+    font-size: 10px;
+    padding: 2px;
+}
