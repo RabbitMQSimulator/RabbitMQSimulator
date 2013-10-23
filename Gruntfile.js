@@ -19,12 +19,18 @@ module.exports = function(grunt) {
             tasks: 'default'
         },
         copy: {
-            main: {
+            website: {
                 cwd: 'web/',
                 expand: true,
                 src: ['**'],
-                dest: 'static/',
+                dest: 'static/'
               },
+            build: {
+                cwd: 'web/',
+                expand: true,
+                src: ['**'],
+                dest: 'build/'
+              }
         }
     });
 
