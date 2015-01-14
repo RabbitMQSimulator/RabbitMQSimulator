@@ -800,7 +800,7 @@ boolean advancedMode = false;
 
 boolean isPlayer = false;
 
-static final int WIDTH = 780;
+static final int WIDTH = 600;
 static final int HEIGHT = 410;
 
 static final int edgeStroke = 2;
@@ -853,7 +853,7 @@ JavaScript javascript;
 void setup() {
   Processing.logger = console;
 
-  size(780, 410);
+  size(600, 410);
   font = createFont("SansSerif", fontSize);
   textFont(font);
   smooth();
