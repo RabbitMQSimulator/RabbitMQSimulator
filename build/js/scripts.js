@@ -11929,7 +11929,7 @@ function enable_button(selector) {
 function handle_edit_producer_form() {
     console.log('handle_edit_producer_form');
     var uuid = jQuery('#edit_producer_id').val();
-    var name = jQuery('#edit_producer_name').val();    
+    var name = jQuery('#edit_producer_name').val();
     var pjs = getProcessing();
     pjs.editProducer(uuid, name);
     return false;
@@ -11953,7 +11953,7 @@ function handle_new_message_form() {
     var pjs = getProcessing();
 
     var interval = null;
-        
+
     if (seconds > 0) {
         pjs.stopPublisher(uuid);
         publishMsgWithInterval(pjs, seconds, uuid, payload, routing_key, !PLAYER);
@@ -11961,7 +11961,7 @@ function handle_new_message_form() {
     } else {
         disable_button('#new_message_stop');
     }
-        
+
     pjs.publishMessage(uuid, payload, routing_key);
 
     return false;
@@ -12004,7 +12004,7 @@ function handle_exchange_form() {
     var pjs = getProcessing();
     pjs.editExchange(uuid, name, type);
     jQuery('#exchange_id').val(name);
-    return false; 
+    return false;
 }
 
 function handle_stop_publisher_btn() {
@@ -12039,7 +12039,7 @@ function handle_export_btn() {
 
 function display_export_json() {
     var exp = exportToPlayer(),
-        json_string; 
+        json_string;
 
     if (jQuery('#pretty-print').is(':checked')) {
         json_string = JSON.stringify(exp, null, 2);
