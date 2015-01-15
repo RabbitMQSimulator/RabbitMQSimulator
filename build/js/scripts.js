@@ -11944,6 +11944,16 @@ function handle_edit_consumer_form() {
     return false;
 }
 
+function handle_consumer_delete() {
+    console.log('handle_consumer_delete');
+    var consumer_id = jQuery('#edit_consumer_id').val();
+    var pjs = getProcessing();
+    pjs.deleteNode(consumer_id);
+    reset_form("#edit_consumer_form");
+    disable_form("#edit_consumer_form");
+    return false;
+}
+
 function handle_new_message_form() {
     console.log('handle_new_message_form');
     var uuid = jQuery('#new_message_producer_id').val();
@@ -12077,4 +12087,5 @@ jQuery(document).ready(function() {
     jQuery('#pretty-print').change(handle_pretty_print_checkbox);
 
     jQuery('#binding_delete').click(handle_queue_unbind);
+    jQuery('#consumer_delete').click(handle_consumer_delete);
 });

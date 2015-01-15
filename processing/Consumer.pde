@@ -28,6 +28,10 @@ class Consumer extends Node implements IConnectable {
     return true;
   }
 
+  void removeConnections() {
+    this.disconnectOutgoing();
+  }
+
   void trasnferArrived(Transfer transfer) {
     if (!isPlayer) {
         Message msg = transfer.getData();
@@ -58,5 +62,10 @@ class Consumer extends Node implements IConnectable {
 
       enable_form("#edit_consumer_form");
       show_form("#edit_consumer_form");
+  }
+
+  void remove() {
+      disconnectNode(this);
+      removeNode(this);
   }
 }

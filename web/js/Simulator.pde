@@ -107,7 +107,11 @@ class Consumer extends Node implements IConnectable {
   }
 
   boolean canStartConnection() {
-    return true; //outgoing.size() < 1;
+    return true;
+  }
+
+  void removeConnections() {
+    this.disconnectOutgoing();
   }
 
   void trasnferArrived(Transfer transfer) {
@@ -140,6 +144,11 @@ class Consumer extends Node implements IConnectable {
 
       enable_form("#edit_consumer_form");
       show_form("#edit_consumer_form");
+  }
+
+  void remove() {
+      disconnectNode(this);
+      removeNode(this);
   }
 }
 
@@ -476,87 +485,131 @@ abstract class Node {
   int radii = 10;
   String label;
   color nodeColor;
-  
+
   ArrayList incoming = new ArrayList(); // nodes that connected to this node
   ArrayList outgoing = new ArrayList(); // nodes this node connected to
-  
+
   Node(String label, color nodeColor, float x, float y) {
      this.label = label;
      this.nodeColor = nodeColor;
      this.x = x;
      this.y = y;
   }
-  
+
   abstract int getType();
   abstract boolean accepts(Node n);
   abstract boolean canStartConnection();
-  
+
   String getLabel() {
     return label;
   }
-  
+
   float getX() {
     return x;
   }
-  
+
   float getY() {
     return y;
   }
-  
+
   boolean isBelowMouse() {
     float closest = 20;
     float d = dist(mouseX, mouseY, this.x, this.y);
     return d < closest;
   }
-  
-  /** 
+
+  /**
     endpoint DESTINATION | SOURCE specifies the role of the
-    Node n.  
+    Node n.
   */
   void connectWith(Node n, int endpoint) {
+    console.log(this, n, endpoint);
     if (endpoint == DESTINATION) {
       this.addOutgoing(n);
     } else {
       this.addIncoming(n);
     }
   }
-  
+
+  void removeConnections() {
+  }
+
+  void disconnectFrom(Node n, int endpoint) {
+    if (endpoint == DESTINATION) {
+      this.removeOutgoing(n);
+    } else {
+      this.removeIncoming(n);
+    }
+  }
+
+  void disconnectOutgoing() {
+    this.disconnectNodes(SOURCE);
+  }
+
+  void disconnectIncomming() {
+    this.disconnectNodes(DESTINATION);
+  }
+
+  void disconnectNodes(int endpoint) {
+    if (endpoint == DESTINATION) {
+      ArrayList nodes = incommig;
+    } else {
+      ArrayList nodes = outgoing;
+    }
+
+    for (int i = nodes.size()-1; i >= 0; i--) {
+        Node n = (Ball) nodes.get(i);
+        n.disconnectFrom(this, endpoint);
+    }
+  }
+
   void addIncoming(Node n) {
     incoming.add(n);
   }
-  
+
+  void removeIncoming(Node n) {
+    incoming.remove(n);
+  }
+
   void addOutgoing(Node n) {
     outgoing.add(n);
   }
-  
+
+  void removeOutgoing(Node n) {
+    outgoing.remove(n);
+  }
+
   void trasnferArrived(Transfer transfer) {
   }
-  
+
   void transferDelivered(Transfer transfer) {
     println("transferDelivered");
   }
-  
+
   /**
    * Padding from the simulator boundaries
    */
   int padding() {
     return this.radii * 2 + 2;
   }
-  
+
   void mouseDragged() {
     x = constrain(mouseX, TOOLBARWIDTH + padding(), width - padding());
     y = constrain(mouseY, 0 + padding(), height - padding());
   }
-  
+
   void draw() {
     NodeFigure.draw(this.x, this.y, this.nodeColor, 0, nodeStroke, this.radii)
     drawLabel();
   }
-  
+
   void drawLabel() {
       fill (0);
       textAlign(CENTER, CENTER);
       text(getLabel(), x, y+labelPadding);
+  }
+
+  void remove() {
   }
 }
 
@@ -570,6 +623,107 @@ static class NodeFigure
         //draw node
         ellipse(x, y, radii * 2, radii * 2);
     }
+}
+class NullNode extends Node implements IConnectable {
+  int type = NULL_NODE;
+  float x, y;
+  int radii = 0;
+  String label;
+  color nodeColor;
+
+  ArrayList incoming = new ArrayList(); // nodes that connected to this node
+  ArrayList outgoing = new ArrayList(); // nodes this node connected to
+
+  NullNode(String label, color nodeColor, float x, float y) {
+    super(label, #FFFFFF, x, y);
+  }
+
+  int getType() {
+    return type;
+  }
+
+  boolean accepts(Node n) {
+    return false;
+  }
+
+  boolean canStartConnection() {
+    return false;
+  }
+
+  String getLabel() {
+    return label;
+  }
+
+  float getX() {
+    return 0;
+  }
+
+  float getY() {
+    return 0;
+  }
+
+  boolean isBelowMouse() {
+    return false;
+  }
+
+  /**
+    endpoint DESTINATION | SOURCE specifies the role of the
+    Node n.
+  */
+  void connectWith(Node n, int endpoint) {
+  }
+
+  void removeConnections() {
+  }
+
+  void disconnectFrom(Node n, int endpoint) {
+  }
+
+  void disconnectOutgoing() {
+  }
+
+  void disconnectIncomming() {
+  }
+
+  void disconnectNodes(int endpoint) {
+  }
+
+  void addIncoming(Node n) {
+  }
+
+  void removeIncoming(Node n) {
+  }
+
+  void addOutgoing(Node n) {
+  }
+
+  void removeOutgoing(Node n) {
+  }
+
+  void trasnferArrived(Transfer transfer) {
+  }
+
+  void transferDelivered(Transfer transfer) {
+  }
+
+  /**
+   * Padding from the simulator boundaries
+   */
+  int padding() {
+    return 0;
+  }
+
+  void mouseDragged() {
+  }
+
+  void draw() {
+  }
+
+  void drawLabel() {
+  }
+
+  void remove() {
+  }
 }
 class Producer extends Node implements IConnectable {
     int type = PRODUCER;
@@ -812,6 +966,7 @@ static final color selectColor = #FF3030;
 static final color fixedColor  = #FF8080;
 static final color edgeColor   = #000000;
 
+static final int NULL_NODE = -1;
 static final int EXCHANGE = 0;
 static final int QUEUE = 1;
 static final int PRODUCER = 2;
@@ -917,6 +1072,17 @@ Edge addEdge(Node from, Node to) {
   return e;
 }
 
+void disconnectNode(Node n) {
+  for (int i = edges.size()-1; i >= 0; i--) {
+    Edge et = (Edge) edges.get(i);
+    if (et.from == n || et.to == n) {
+      edges.remove(et);
+    }
+  }
+
+  n.removeConnections();
+}
+
 Node newNodeByType(int type, String label, float x, float y) {
   Node n = null;
   switch (type) {
@@ -956,6 +1122,15 @@ Node addNodeByType(int type, String label, float x, float y) {
 
 Node findNode(String label) {
   return nodeTable.get(label);
+}
+
+void removeNode(Node n) {
+  for (int i = 0 ; i < nodeCount ; i++) {
+    if (nodes[i] == n) {
+      nodes[i] = new NullNode(NULL_NODE, "", 0, 0);
+      // don't reduce nodeCount since we just mark it as null
+    }
+  }
 }
 
 void toggleAdvancedMode(boolean mode) {
@@ -1040,6 +1215,11 @@ void editProducer(String uuid, String name) {
 void editConsumer(String uuid, String name) {
     Consumer n = (Consumer) findNode(uuid);
     n.updateName(name);
+}
+
+void deleteNode(String uuid) {
+  Node n = findNode(uuid);
+  n.remove();
 }
 
 void setProducerInterval(String uuid, int intervalId, int seconds) {
