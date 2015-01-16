@@ -11935,6 +11935,18 @@ function handle_edit_producer_form() {
     return false;
 }
 
+function handle_producer_delete() {
+    console.log('handle_producer_delete');
+    var producer_id = jQuery('#edit_producer_id').val();
+    var pjs = getProcessing();
+    pjs.deleteNode(producer_id);
+    reset_form("#edit_producer_form");
+    disable_form("#edit_producer_form");
+    reset_form("#new_message_form");
+    disable_form("#new_message_form");
+    return false;
+}
+
 function handle_edit_consumer_form() {
     console.log('handle_edit_consumer_form');
     var uuid = jQuery('#edit_consumer_id').val();
@@ -12088,4 +12100,5 @@ jQuery(document).ready(function() {
 
     jQuery('#binding_delete').click(handle_queue_unbind);
     jQuery('#consumer_delete').click(handle_consumer_delete);
+    jQuery('#producer_delete').click(handle_producer_delete);
 });

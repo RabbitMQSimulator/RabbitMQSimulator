@@ -523,7 +523,6 @@ abstract class Node {
     Node n.
   */
   void connectWith(Node n, int endpoint) {
-    console.log(this, n, endpoint);
     if (endpoint == DESTINATION) {
       this.addOutgoing(n);
     } else {
@@ -739,7 +738,7 @@ class Producer extends Node implements IConnectable {
     int getType() {
         return type;
     }
-    
+
     void updateName(String name) {
         this.name = name;
     }
@@ -750,6 +749,10 @@ class Producer extends Node implements IConnectable {
 
     boolean canStartConnection() {
         return outgoing.size() < 1;
+    }
+
+    void removeConnections() {
+      this.disconnectOutgoing();
     }
 
     void publishMessage(String payload, String routingKey) {
@@ -774,7 +777,7 @@ class Producer extends Node implements IConnectable {
         clearInterval(intervalId);
         intervalId = null;
     }
-    
+
     void drawLabel() {
         fill (0);
         textAlign(CENTER, CENTER);
@@ -787,24 +790,24 @@ class Producer extends Node implements IConnectable {
         prepareNewMessageForm();
         show_form("#edit_producer_form", "#new_message_form");
     }
-    
+
     void prepareEditProducerForm() {
         reset_form("#edit_producer_form");
         jQuery("#edit_producer_id").val(this.label);
-        
+
         if (name != null) {
             jQuery("#edit_producer_name").val(name);
         } else {
             jQuery("#edit_producer_name").val(label);
         }
-        
+
         enable_form("#edit_producer_form");
     }
-    
+
     void prepareNewMessageForm() {
         reset_form("#new_message_form");
         jQuery("#new_message_producer_id").val(this.label);
-        
+
         if (intervalId != null) {
             enable_button('#new_message_stop');
         } else {
@@ -816,6 +819,11 @@ class Producer extends Node implements IConnectable {
             jQuery("#new_message_producer_routing_key").val(msg.routingKey);
         }
         enable_form("#new_message_form");
+    }
+
+    void remove() {
+        disconnectNode(this);
+        removeNode(this);
     }
 }
 
