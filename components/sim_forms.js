@@ -127,6 +127,16 @@ function handle_queue_form() {
     return false;
 }
 
+function handle_queue_delete() {
+    console.log('handle_queue_delete');
+    var queue_id = jQuery('#queue_id').val();
+    var pjs = getProcessing();
+    pjs.deleteNode(queue_id);
+    reset_form("#edit_queue_form");
+    disable_form("#edit_queue_form");
+    return false;
+}
+
 function handle_queue_unbind() {
     console.log('handle_queue_unbind');
     var binding_id = jQuery('#binding_id').val();
@@ -220,4 +230,5 @@ jQuery(document).ready(function() {
     jQuery('#binding_delete').click(handle_queue_unbind);
     jQuery('#consumer_delete').click(handle_consumer_delete);
     jQuery('#producer_delete').click(handle_producer_delete);
+    jQuery('#queue_delete').click(handle_queue_delete);
 });

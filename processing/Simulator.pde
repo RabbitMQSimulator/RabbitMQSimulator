@@ -144,6 +144,10 @@ void disconnectNode(Node n) {
   for (int i = edges.size()-1; i >= 0; i--) {
     Edge et = (Edge) edges.get(i);
     if (et.from == n || et.to == n) {
+      if (et.to.getType() == EXCHANGE
+        && (et.from.getType() == QUEUE || et.from.getType() == EXCHANGE)) {
+          et.remove();
+      }
       edges.remove(et);
     }
   }
