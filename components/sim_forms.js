@@ -158,6 +158,16 @@ function handle_exchange_form() {
     return false;
 }
 
+function handle_exchange_delete() {
+    console.log('handle_exchange_delete');
+    var exchange_id = jQuery('#exchange_id').val();
+    var pjs = getProcessing();
+    pjs.deleteNode(exchange_id);
+    reset_form("#edit_queue_form");
+    disable_form("#edit_queue_form");
+    return false;
+}
+
 function handle_stop_publisher_btn() {
     var uuid = jQuery('#new_message_producer_id').val();
     var pjs = getProcessing();
@@ -231,4 +241,5 @@ jQuery(document).ready(function() {
     jQuery('#consumer_delete').click(handle_consumer_delete);
     jQuery('#producer_delete').click(handle_producer_delete);
     jQuery('#queue_delete').click(handle_queue_delete);
+    jQuery('#exchange_delete').click(handle_exchange_delete);
 });

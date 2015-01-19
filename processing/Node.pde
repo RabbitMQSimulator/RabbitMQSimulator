@@ -69,7 +69,7 @@ abstract class Node {
 
   void disconnectNodes(int endpoint) {
     if (endpoint == DESTINATION) {
-      ArrayList nodes = incommig;
+      ArrayList nodes = incoming;
     } else {
       ArrayList nodes = outgoing;
     }

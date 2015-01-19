@@ -288,12 +288,12 @@ class Exchange extends Node implements IConnectable {
   int type = EXCHANGE;
   int exchangeType = DIRECT;
   TrieST<Node> bindings;
-  
+
   Exchange(String name, float x, float y) {
     super(name, colors[EXCHANGE], x, y);
     bindings = new TrieST();
   }
-  
+
   void draw() {
     ExchangeFigure.draw(this.x, this.y, this.nodeColor, 0, nodeStroke, this.radii, this.initialSides + this.bindings.itemCount());
     super.drawLabel();
@@ -302,25 +302,25 @@ class Exchange extends Node implements IConnectable {
   int getType() {
     return type;
   }
-  
+
   int getExchangeType() {
     return exchangeType;
   }
-  
+
   int getExchangeTypeString() {
     return exchangeTypes[exchangeType];
   }
-  
+
   void setExchangeType(int type) {
     exchangeType = int(type);
   }
-  
+
   void changeName(String name) {
     this.label = name;
   }
-  
+
   HashMap getAllBindings() {
-    return bindings.allValues(); 
+    return bindings.allValues();
   }
 
   boolean accepts(Node n) {
@@ -333,40 +333,45 @@ class Exchange extends Node implements IConnectable {
         return false;
     }
   }
-  
+
   boolean canStartConnection() {
     return true;
   }
-  
-  void connectWith(Node n, int endpoint) {    
+
+  void removeConnections() {
+    this.disconnectOutgoing();
+    this.disconnectIncomming();
+  }
+
+  void connectWith(Node n, int endpoint) {
     super.connectWith(n, endpoint);
-    
+
     if (endpoint == SOURCE && (n.getType() == QUEUE || n.getType() == EXCHANGE)) {
       String defaultRoutingKey = "";
       addBinding(n, defaultRoutingKey);
     }
   }
-  
+
   boolean addBinding(Node n, String bindingKey) {
     bindings.put(bindingKey, n);
     return true;
   }
-  
+
   boolean updateBinding(Node n, String oldBk, String newBk) {
-    if (oldBk != newBk) {   
+    if (oldBk != newBk) {
       removeBinding(n, oldBk);
       addBinding(n, newBk);
       return true;
     }
-    
+
     return false;
   }
-  
+
   boolean removeBinding(Node n, String bk) {
     bindings.delete(bk, n);
     return true;
   }
-  
+
   void trasnferArrived(Transfer transfer) {
     switch(exchangeType) {
       case DIRECT:
@@ -377,22 +382,22 @@ class Exchange extends Node implements IConnectable {
         break;
       case TOPIC:
         topicRouting(transfer);
-        break;      
+        break;
     }
   }
-  
+
   void directRouting(Transfer transfer) {
     Message msg = transfer.getData();
     ArrayList nodes = bindings.getValue(msg.getRoutingKey());
     deliverMessage2(msg, nodes);
   }
-  
+
   void fanoutRouting(Transfer transfer) {
     Message msg = transfer.getData();
     HashMap nodes = bindings.allValues();
     deliverMessage(msg, nodes);
   }
-  
+
   /**
     * Naive topic routing
     *
@@ -402,7 +407,7 @@ class Exchange extends Node implements IConnectable {
     HashMap nodes = bindings.valuesForRoutingKey(msg.getRoutingKey());
     deliverMessage(msg, nodes);
   }
-  
+
   void deliverMessage(Message msg, HashMap nodes) {
     if (nodes != null) {
       Iterator i = nodes.entrySet().iterator();
@@ -412,7 +417,7 @@ class Exchange extends Node implements IConnectable {
       }
     }
   }
-  
+
   void deliverMessage2(Message msg, ArrayList destinations) {
     if (destinations == null) return;
     int max = destinations.size();
@@ -421,7 +426,7 @@ class Exchange extends Node implements IConnectable {
       stage.addTransfer(new Transfer(stage, this, n, msg));
     }
   }
-  
+
   void mouseClicked() {
     reset_form("#exchange_form");
     jQuery("#exchange_id").val(this.label);
@@ -429,6 +434,11 @@ class Exchange extends Node implements IConnectable {
     jQuery("#exchange_type").val(this.exchangeType);
     enable_form("#exchange_form");
     show_form("#exchange_form");
+  }
+
+  void remove() {
+      disconnectNode(this);
+      removeNode(this);
   }
 }
 
@@ -551,7 +561,7 @@ abstract class Node {
 
   void disconnectNodes(int endpoint) {
     if (endpoint == DESTINATION) {
-      ArrayList nodes = incommig;
+      ArrayList nodes = incoming;
     } else {
       ArrayList nodes = outgoing;
     }
