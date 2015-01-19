@@ -12013,8 +12013,8 @@ function handle_queue_delete() {
     var queue_id = jQuery('#queue_id').val();
     var pjs = getProcessing();
     pjs.deleteNode(queue_id);
-    reset_form("#edit_queue_form");
-    disable_form("#edit_queue_form");
+    reset_form("#queue_form");
+    disable_form("#queue_form");
     return false;
 }
 
@@ -12044,8 +12044,8 @@ function handle_exchange_delete() {
     var exchange_id = jQuery('#exchange_id').val();
     var pjs = getProcessing();
     pjs.deleteNode(exchange_id);
-    reset_form("#edit_queue_form");
-    disable_form("#edit_queue_form");
+    reset_form("#exchange_form");
+    disable_form("#exchange_form");
     return false;
 }
 
