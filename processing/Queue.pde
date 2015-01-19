@@ -32,6 +32,11 @@ class Queue extends Node implements IConnectable {
     maybeDeliverMessage();
   }
 
+  void removeConnections() {
+    this.disconnectOutgoing();
+    this.disconnectIncomming();
+  }
+
   void trasnferArrived(Transfer transfer) {
     enqueue(transfer);
     maybeDeliverMessage();
