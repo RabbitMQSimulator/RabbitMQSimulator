@@ -11927,7 +11927,6 @@ function enable_button(selector) {
 }
 
 function handle_edit_producer_form() {
-    console.log('handle_edit_producer_form');
     var uuid = jQuery('#edit_producer_id').val();
     var name = jQuery('#edit_producer_name').val();
     var pjs = getProcessing();
@@ -11936,7 +11935,6 @@ function handle_edit_producer_form() {
 }
 
 function handle_producer_delete() {
-    console.log('handle_producer_delete');
     var producer_id = jQuery('#edit_producer_id').val();
     var pjs = getProcessing();
     pjs.deleteNode(producer_id);
@@ -11948,7 +11946,6 @@ function handle_producer_delete() {
 }
 
 function handle_edit_consumer_form() {
-    console.log('handle_edit_consumer_form');
     var uuid = jQuery('#edit_consumer_id').val();
     var name = jQuery('#edit_consumer_name').val();
     var pjs = getProcessing();
@@ -11957,7 +11954,6 @@ function handle_edit_consumer_form() {
 }
 
 function handle_consumer_delete() {
-    console.log('handle_consumer_delete');
     var consumer_id = jQuery('#edit_consumer_id').val();
     var pjs = getProcessing();
     pjs.deleteNode(consumer_id);
@@ -11967,7 +11963,6 @@ function handle_consumer_delete() {
 }
 
 function handle_new_message_form() {
-    console.log('handle_new_message_form');
     var uuid = jQuery('#new_message_producer_id').val();
     var payload = jQuery('#new_message_producer_payload').val();
     var routing_key = jQuery('#new_message_producer_routing_key').val();
@@ -11990,7 +11985,6 @@ function handle_new_message_form() {
 }
 
 function handle_binding_form() {
-    console.log('handle_binding_form');
     var binding_id = jQuery('#binding_id').val();
     var bk = jQuery.trim(jQuery('#binding_key').val());
     var pjs = getProcessing();
@@ -11999,7 +11993,6 @@ function handle_binding_form() {
 }
 
 function handle_queue_form() {
-    console.log('handle_queue_form');
     var uuid = jQuery('#queue_id').val();
     var name = jQuery.trim(jQuery('#queue_name').val());
     var pjs = getProcessing();
@@ -12009,7 +12002,6 @@ function handle_queue_form() {
 }
 
 function handle_queue_delete() {
-    console.log('handle_queue_delete');
     var queue_id = jQuery('#queue_id').val();
     var pjs = getProcessing();
     pjs.deleteNode(queue_id);
@@ -12019,7 +12011,6 @@ function handle_queue_delete() {
 }
 
 function handle_queue_unbind() {
-    console.log('handle_queue_unbind');
     var binding_id = jQuery('#binding_id').val();
     var pjs = getProcessing();
     pjs.removeBinding(binding_id);
@@ -12029,7 +12020,6 @@ function handle_queue_unbind() {
 }
 
 function handle_exchange_form() {
-    console.log('handle_exchange_form');
     var uuid = jQuery('#exchange_id').val();
     var name = jQuery.trim(jQuery('#exchange_name').val());
     var type = jQuery('#exchange_type').val();
@@ -12040,7 +12030,6 @@ function handle_exchange_form() {
 }
 
 function handle_exchange_delete() {
-    console.log('handle_exchange_delete');
     var exchange_id = jQuery('#exchange_id').val();
     var pjs = getProcessing();
     pjs.deleteNode(exchange_id);

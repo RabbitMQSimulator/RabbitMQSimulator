@@ -743,6 +743,7 @@ class Producer extends Node implements IConnectable {
 
     Producer(String label, float x, float y) {
         super(label, colors[PRODUCER], x, y);
+        showForm();
     }
 
     int getType() {
@@ -796,9 +797,13 @@ class Producer extends Node implements IConnectable {
     }
 
     void mouseClicked() {
-        prepareEditProducerForm();
-        prepareNewMessageForm();
-        show_form("#edit_producer_form", "#new_message_form");
+      showForm();
+    }
+
+    void showForm() {
+      prepareEditProducerForm();
+      prepareNewMessageForm();
+      show_form("#edit_producer_form", "#new_message_form");
     }
 
     void prepareEditProducerForm() {
