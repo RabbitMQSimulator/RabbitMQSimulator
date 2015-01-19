@@ -27,6 +27,7 @@ The simulator currently implements the following features:
 - Round-robin message delivery
 - Default "Anon" exchange representation
 - Export topology for a "play only" mode (useful for tutorials)
+- Load a topology from "play only" mode via url ([http:localhost:3000?conf={"exchanges":\[{...}\],"advanced_mode":false}] (http:localhost:3000?conf={"exchanges":[{...}],"advanced_mode":false}))
 
 # Running the Simulator #
 
