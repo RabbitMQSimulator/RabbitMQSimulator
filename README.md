@@ -56,11 +56,17 @@ Then open [http:localhost:3000](http:localhost:3000).
 
 If you want to be able to **import/export** from RabbitMQ then a broker needs to be running on _localhost_, with the management plugin enabled. At the moment the simulator uses the default `guest:guest` credentials but that will be fixed in the future.
 
+To have the **import/export** feature enabled you need to create the following environment variable:
+
+```bash
+export SIM_ENABLE_EXPORT=true
+```
+
 # Using the Simulator #
 
-Once you accessed the simulator from [http:localhost:3000](http:localhost:3000) you can drag elements into the white canvas. To interconnect them simply hold _alt_ or _shift_ while dragging from the connection source to the target. 
+Once you accessed the simulator from [http:localhost:3000](http:localhost:3000) you can drag elements into the white canvas. To interconnect them simply hold _alt_ or _shift_ while dragging from the connection source to the target.
 
-You can click on the different elements in order to change names, routing keys and so on. 
+You can click on the different elements in order to change names, routing keys and so on.
 
 Each element has its own functionality when clicked. For example a producer will open the _New Message Form_ while an exchange will allow you to change its name and type.
 

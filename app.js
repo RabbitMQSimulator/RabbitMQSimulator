@@ -4,7 +4,7 @@ var engine = require('ejs-locals');
 var app = express();
 
 // TODO instead of using VCAP_APP_HOST it should use an ENV var.
-var expImpEnabled = typeof(process.env.VCAP_APP_HOST) !== 'undefined';
+var expImpEnabled = typeof(process.env.SIM_ENABLE_EXPORT) !== 'undefined';
 var playerEnabled = true;
 
 app.set('mgmt-user', 'guest');
@@ -49,7 +49,7 @@ app.get('/definitions', function (req, res) {
         response.on('end', function() {
             res.set('Content-Type', 'application/json');
             console.log("sending output:", output);
-            res.send(output);            
+            res.send(output);
         });
     });
     rest.end();
@@ -78,6 +78,7 @@ app.post('/definitions', function (req, res) {
 });
 
 app.get('/', function (req, res) {
+  console.log('rendering simulator');
     res.render('simulator', {expImpEnabled: expImpEnabled, playerEnabled: playerEnabled});
 });
 
@@ -91,3 +92,4 @@ app.get('/player.html', function (req, res) {
 
 app.listen(3000);
 console.log('Listening on port 3000');
+console.log("expImpEnabled", expImpEnabled);

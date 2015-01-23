@@ -5,11 +5,11 @@
         <div id="btn-toolbar" class="btn-toolbar span8" style="margin-left: 40px;">
           <div class="btn-group">
             <button id="advanced_mode" class="btn btn-inverse">Advanced Mode</button>
-            <% if(typeof expImpEnabled != 'undefined' && !expImpEnabled) { %>
+            <% if(expImpEnabled) { %>
             <button id="import" class="btn">Import</button>
             <button id="export" class="btn">Export</button>
             <% } %>
-            <% if(typeof playerEnabled != 'undefined' && playerEnabled) { %>
+            <% if(playerEnabled) { %>
             <button id="export-player" class="btn">To Player</button>
             <% } %>
           </div>
