@@ -30,6 +30,12 @@ module.exports = function(grunt) {
                 expand: true,
                 src: ['**'],
                 dest: 'build/'
+              },
+            build: {
+                cwd: 'web/',
+                expand: true,
+                src: ['**'],
+                dest: 'web-export/'
               }
         }
     });
