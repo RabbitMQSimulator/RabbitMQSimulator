@@ -44,6 +44,7 @@ This project depends on _node.js_ and various node libraries for building the so
 git clone https://github.com/RabbitMQSimulator/RabbitMQSimulator.git
 cd RabbitMQSimulator
 npm install
+cp config.sample.json config.json
 ```
 
 Once you have everything in place you can run the `node.js` app by calling:

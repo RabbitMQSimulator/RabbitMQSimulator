@@ -3,3 +3,4 @@ node_modules
 manifest.yml
 *.swp
 static
+config.json
