@@ -2,15 +2,16 @@ var express = require('express');
 var http = require("http");
 var engine = require('ejs-locals');
 var app = express();
+var config = require('./config.json');
 
 // TODO instead of using VCAP_APP_HOST it should use an ENV var.
 var expImpEnabled = typeof(process.env.SIM_ENABLE_EXPORT) !== 'undefined';
 var playerEnabled = true;
 
-app.set('mgmt-user', 'guest');
-app.set('mgmt-pass', 'guest');
-app.set('mgmt-host', 'localhost');
-app.set('mgmt-port', '15672');
+app.set('mgmt-user', config.mgmt.user || 'guest');
+app.set('mgmt-pass', config.mgmt.pass || 'guest');
+app.set('mgmt-host', config.mgmt.host || 'localhost');
+app.set('mgmt-port', config.mgmt.port || '15672');
 
 app.use(express.static(__dirname + '/web'));
 app.use(express.bodyParser());
