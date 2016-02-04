@@ -1,6 +1,7 @@
 {
 	"mgmt": {
 		"host": "localhost",
+		"path": "",
 		"port": 15672,
 		"user": "guest",
 		"pass": "guest"
