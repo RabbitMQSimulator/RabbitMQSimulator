@@ -11,6 +11,7 @@ var playerEnabled = true;
 app.set('mgmt-user', config.mgmt.user || 'guest');
 app.set('mgmt-pass', config.mgmt.pass || 'guest');
 app.set('mgmt-host', config.mgmt.host || 'localhost');
+app.set('mgmt-path', config.mgmt.path || '');
 app.set('mgmt-port', config.mgmt.port || '15672');
 
 app.use(express.static(__dirname + '/web'));
@@ -29,6 +30,7 @@ function get_base_req_opts() {
     return {
         'host': app.get('mgmt-host'),
         'port': app.get('mgmt-port'),
+        'path': app.get('mgmt-path'),
         'headers': {
             'Content-Type': 'application/json',
             'Authorization': get_auth(app.get('mgmt-user'), app.get('mgmt-pass'))
@@ -38,7 +40,7 @@ function get_base_req_opts() {
 
 app.get('/definitions', function (req, res) {
     var options = get_base_req_opts();
-    options.path = '/api/definitions';
+    options.path = options.path + '/api/definitions';
     options.method = 'GET';
     var rest = http.request(options, function (response){
         var output = '';
@@ -59,7 +61,7 @@ app.get('/definitions', function (req, res) {
 app.post('/definitions', function (req, res) {
     var post_data = JSON.stringify(req.body);
     var options = get_base_req_opts();
-    options.path = '/api/definitions';
+    options.path = options.path + '/api/definitions';
     options.method = 'POST';
     options.headers['Content-Length'] = post_data.length;
     var rest = http.request(options, function (response){
